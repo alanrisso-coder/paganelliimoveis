@@ -112,8 +112,6 @@ export default function PaginaInicial() {
       <section className="border-b border-linha bg-areia-50">
         <div className="container-paganelli grid grid-cols-2 gap-8 py-10 lg:grid-cols-3">
           {[
-            { valor: "1 interlocutor", rotulo: "a mesma corretora do primeiro contato à escritura" },
-            { valor: "CRECI 9578J", rotulo: "registro ativo em Santa Catarina" },
           ].map((item) => (
             <div key={item.rotulo}>
               <p className="font-display text-2xl text-verde-800 lg:text-3xl">{item.valor}</p>
