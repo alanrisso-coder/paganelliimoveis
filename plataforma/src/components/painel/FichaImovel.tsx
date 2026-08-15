@@ -407,22 +407,6 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
         </div>
       </div>
 
-      {pode("editar_imovel") && (
-        <div className="mt-6 rounded-sm border border-dashed border-linha bg-white p-5 text-center">
-          <p className="text-sm text-grafite-500">
-            Edição completa de fotos, plantas, tour virtual e documentos fica disponível quando o
-            armazenamento de arquivos for conectado.
-          </p>
-          <Botao
-            variante="contorno"
-            tamanho="sm"
-            className="mt-3"
-            onClick={() => avisar("Upload de mídia pendente de integração com o storage.", "info")}
-          >
-            Enviar arquivos
-          </Botao>
-        </div>
-      )}
     </>
   );
 }
