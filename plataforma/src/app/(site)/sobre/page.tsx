@@ -155,38 +155,6 @@ export default function PaginaSobre() {
         </div>
       </section>
 
-      <section className="bg-verde-900 py-20 text-areia-100 lg:py-28">
-        <div className="container-paganelli">
-          <p className="eyebrow text-dourado-400">A equipe</p>
-          <h2 className="mt-3 font-display text-3xl text-areia-50 lg:text-[2.5rem]">
-            Quem vai atender você
-          </h2>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-areia-100/70">
-            Atendimento conduzido pela corretora responsável, com registro ativo no CRECI-SC.
-          </p>
-
-          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {equipe.map((pessoa) => (
-              <li key={pessoa.id} className="rounded-sm border border-areia-100/12 p-6">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-dourado-500 font-display text-lg text-verde-950">
-                  {pessoa.avatarIniciais}
-                </span>
-                <p className="mt-4 font-display text-lg text-areia-50">{pessoa.nome}</p>
-                <p className="mt-1 text-xs text-dourado-300">{rotuloPerfil[pessoa.perfil]}</p>
-                {pessoa.creci && (
-                  <p className="mt-2 font-mono text-[0.6875rem] text-areia-100/50">{pessoa.creci}</p>
-                )}
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-8 text-xs text-areia-100/45">
-            A responsável técnica é real; os demais integrantes são demonstrativos, criados para
-            esta versão da plataforma.
-          </p>
-        </div>
-      </section>
-
       <section className="container-paganelli py-20 text-center lg:py-28">
         <h2 className="mx-auto max-w-2xl font-display text-3xl leading-tight text-verde-900 lg:text-[2.5rem]">
           Vamos conversar sobre o seu próximo imóvel?
