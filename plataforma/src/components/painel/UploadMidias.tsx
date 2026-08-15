@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { uploadArquivo, deletarArquivo } from "@/lib/storage";
 import { Botao } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
 
@@ -37,7 +36,22 @@ export function UploadMidias({
 
     setEnviando(true);
     try {
-      const { url, caminho } = await uploadArquivo(arquivo, tipo, imovelId);
+      const formData = new FormData();
+      formData.append("arquivo", arquivo);
+      formData.append("pasta", tipo);
+      formData.append("imovelId", imovelId);
+
+      const res = await fetch("/api/storage/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const erro = await res.json();
+        throw new Error(erro.erro || "Erro ao enviar arquivo");
+      }
+
+      const { url, caminho } = await res.json();
       setCaminhoDeUrl(url, caminho);
       onUpload(url);
       avisar(`${arquivo.name} enviado com sucesso!`);
@@ -106,7 +120,17 @@ export function GaleriaFotos({
     try {
       const caminho = getCaminhoDeUrl(url);
       if (caminho) {
-        await deletarArquivo(caminho);
+        const res = await fetch("/api/storage/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ caminho }),
+        });
+
+        if (!res.ok) {
+          const erro = await res.json();
+          throw new Error(erro.erro || "Erro ao deletar arquivo");
+        }
+
         localStorage.removeItem(`${CACHE_KEY_PREFIX}${url}`);
       }
       onDelete(url);
