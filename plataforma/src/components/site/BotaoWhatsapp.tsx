@@ -20,7 +20,7 @@ export function BotaoWhatsappFlutuante() {
       href={montarLink("Olá! Vim pelo site da Paganelli Imóveis e gostaria de mais informações.")}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 left-5 z-40 flex items-center gap-2.5 rounded-full bg-[#25d366] py-3 pl-3.5 pr-4 text-sm font-extrabold text-white shadow-cartao transition-transform hover:scale-[1.03]"
+      className="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 rounded-full bg-[#25d366] py-3 pl-3.5 pr-4 text-sm font-extrabold text-white shadow-cartao transition-transform hover:scale-[1.03]"
     >
       <IconeWhatsapp tamanho={20} />
       <span className="hidden sm:inline">Falar no WhatsApp</span>

@@ -133,6 +133,63 @@ export default function PaginaServicos() {
             </section>
           ))}
         </div>
+
+      {/* ------------------------------------------------- Por que escolher */}
+      <section className="bg-verde-900 text-areia-100">
+        <div className="container-paganelli grid gap-14 py-20 lg:grid-cols-[0.85fr_1.15fr] lg:py-28">
+          <div>
+            <p className="eyebrow text-dourado-400">Por que escolher a Paganelli</p>
+            <h2 className="mt-4 font-display text-3xl leading-tight text-areia-50 lg:text-[2.75rem]">
+              Não vendemos apenas imóveis. Abrimos espaço para novas histórias.
+            </h2>
+            <p className="mt-6 max-w-md text-sm leading-relaxed text-areia-100/75">
+              A diferença entre uma boa e uma má experiência imobiliária quase nunca está no
+              imóvel. Está em quem conduz.
+            </p>
+            <Link
+              href="/sobre"
+              className="mt-8 inline-block rounded-sm bg-dourado-500 px-6 py-3.5 text-sm font-extrabold text-verde-950 transition-colors hover:bg-dourado-400"
+            >
+              Conheça a imobiliária
+            </Link>
+          </div>
+
+          <ul className="grid gap-x-10 gap-y-9 sm:grid-cols-2">
+            <li>
+              <p className="font-display text-lg text-areia-50">01</p>
+              <h3 className="mt-2 text-base font-bold text-areia-50">Curadoria, não catálogo</h3>
+              <p className="mt-2 text-sm leading-relaxed text-areia-100/75">
+                Cada imóvel passa por visita técnica, checagem documental e avaliação de mercado antes de entrar na
+                nossa vitrine. Você vê menos opções — e todas fazem sentido.
+              </p>
+            </li>
+            <li>
+              <p className="font-display text-lg text-areia-50">02</p>
+              <h3 className="mt-2 text-base font-bold text-areia-50">Um corretor do início ao fim</h3>
+              <p className="mt-2 text-sm leading-relaxed text-areia-100/75">
+                Nada de trocar de interlocutor a cada etapa. Quem atende a sua primeira ligação é quem
+                acompanha a visita, negocia e senta com você na assinatura.
+              </p>
+            </li>
+            <li>
+              <p className="font-display text-lg text-areia-50">03</p>
+              <h3 className="mt-2 text-base font-bold text-areia-50">Transparência sobre o valor</h3>
+              <p className="mt-2 text-sm leading-relaxed text-areia-100/75">
+                Apresentamos o histórico de preço do imóvel, os custos recorrentes e a comparação com transações reais
+                da região. Sem número inflado para depois negociar.
+              </p>
+            </li>
+            <li>
+              <p className="font-display text-lg text-areia-50">04</p>
+              <h3 className="mt-2 text-base font-bold text-areia-50">Jurídico e documentação integrados</h3>
+              <p className="mt-2 text-sm leading-relaxed text-areia-100/75">
+                Análise documental e aprovação de financiamento sem custo, no banco da sua preferência. Você recebe um
+                único cronograma, com prazos claros e responsáveis nomeados.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </section>
       </div>
 
       <section className="bg-areia-50 py-20 lg:py-24">

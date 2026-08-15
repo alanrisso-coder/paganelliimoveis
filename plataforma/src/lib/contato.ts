@@ -6,14 +6,14 @@ export const CONTATO = {
   razaoSocial: "Paganelli Imóveis",
   responsavel: "Leomara Paganelli",
   creci: "CRECI 9578J",
-  telefone: "(48) 98412-8000",
+  telefone: "(48) 99201-8882",
   /** Formato internacional, sem máscara — usado nos links wa.me. */
-  whatsapp: "5548984128000",
-  whatsappExibicao: "(48) 98412-8000",
-  email: "leomaracorretora@hotmail.com",
+  whatsapp: "5548992018882",
+  whatsappExibicao: "(48) 99201-8882",
+  email: "",
   endereco:
-    "Avenida Atílio Pedro Pagani, 115 · Duetto Office, Sala 1304 — Pagani, Palhoça/SC · CEP 88132-149",
-  enderecoCurto: "Duetto Office, Sala 1304 — Pagani, Palhoça/SC",
+    "Av Atílio Pedro Pagani, 115, Sala 1304 — Pagani, Palhoça/SC · CEP 88132-149",
+  enderecoCurto: "Sala 1304 — Pagani, Palhoça/SC",
   cidade: "Palhoça",
   estado: "SC",
   regiaoAtuacao: "Palhoça e Grande Florianópolis",
@@ -21,7 +21,6 @@ export const CONTATO = {
   latitude: -27.6386,
   longitude: -48.6689,
   redes: {
-    facebook: "https://facebook.com/leomaracorretora.com.br",
-    instagram: "https://instagram.com/leomaracorretora",
+    instagram: "https://instagram.com/paganelliimoveis",
   },
 } as const;

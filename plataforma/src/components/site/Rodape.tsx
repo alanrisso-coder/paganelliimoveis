@@ -74,11 +74,6 @@ export function Rodape() {
               </a>{" "}
               · WhatsApp {CONTATO.whatsappExibicao}
             </p>
-            <p>
-              <a href={`mailto:${CONTATO.email}`} className="hover:text-dourado-300">
-                {CONTATO.email}
-              </a>
-            </p>
             <p className="text-areia-100/55">Atendemos {CONTATO.regiaoAtuacao}.</p>
           </div>
 
@@ -87,7 +82,6 @@ export function Rodape() {
             <div className="mt-3 flex gap-3 md:justify-end">
               {[
                 { nome: "Instagram", href: CONTATO.redes.instagram },
-                { nome: "Facebook", href: CONTATO.redes.facebook },
               ].map((rede) => (
                 <a
                   key={rede.nome}

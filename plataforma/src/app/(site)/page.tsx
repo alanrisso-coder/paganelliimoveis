@@ -110,10 +110,8 @@ export default function PaginaInicial() {
 
       {/* -------------------------------------------------------- Números */}
       <section className="border-b border-linha bg-areia-50">
-        <div className="container-paganelli grid grid-cols-2 gap-8 py-10 lg:grid-cols-4">
+        <div className="container-paganelli grid grid-cols-2 gap-8 py-10 lg:grid-cols-3">
           {[
-            { valor: "Sem custo", rotulo: "análise documental e aprovação de financiamento" },
-            { valor: `${formatarNumero(6)} bancos`, rotulo: "Caixa, BB, Santander, Bradesco, Itaú e Banrisul" },
             { valor: "1 interlocutor", rotulo: "a mesma corretora do primeiro contato à escritura" },
             { valor: "CRECI 9578J", rotulo: "registro ativo em Santa Catarina" },
           ].map((item) => (
@@ -176,100 +174,6 @@ export default function PaginaInicial() {
         )}
       </section>
 
-      {/* ------------------------------------------------- Por que escolher */}
-      <section className="bg-verde-900 text-areia-100">
-        <div className="container-paganelli grid gap-14 py-20 lg:grid-cols-[0.85fr_1.15fr] lg:py-28">
-          <div>
-            <p className="eyebrow text-dourado-400">Por que escolher a Paganelli</p>
-            <h2 className="mt-4 font-display text-3xl leading-tight text-areia-50 lg:text-[2.75rem]">
-              Não vendemos apenas imóveis. Abrimos espaço para novas histórias.
-            </h2>
-            <p className="mt-6 max-w-md text-sm leading-relaxed text-areia-100/75">
-              A diferença entre uma boa e uma má experiência imobiliária quase nunca está no
-              imóvel. Está em quem conduz.
-            </p>
-            <Link
-              href="/sobre"
-              className="mt-8 inline-block rounded-sm bg-dourado-500 px-6 py-3.5 text-sm font-extrabold text-verde-950 transition-colors hover:bg-dourado-400"
-            >
-              Conheça a imobiliária
-            </Link>
-          </div>
-
-          <ul className="grid gap-x-10 gap-y-9 sm:grid-cols-2">
-            {diferenciais.map((item) => (
-              <li key={item.numero}>
-                <p className="eyebrow text-dourado-400">{item.numero}</p>
-                <h3 className="mt-2.5 font-display text-xl text-areia-50">{item.titulo}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-areia-100/70">{item.texto}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------ Bloco proprietário */}
-      <section className="container-paganelli py-20 lg:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          <div className="relative aspect-[5/4] overflow-hidden rounded-sm bg-areia-200">
-            <Image
-              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=75"
-              alt="Interior de imóvel de alto padrão representado no portfólio da Paganelli"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-          </div>
-
-          <div>
-            <p className="eyebrow text-dourado-600">Para proprietários</p>
-            <h2 className="mt-3 font-display text-3xl leading-tight text-verde-900 lg:text-[2.5rem]">
-              Seu imóvel merece mais do que um anúncio
-            </h2>
-            <p className="mt-5 text-sm leading-relaxed text-grafite-500">
-              Avaliação com base em transações reais da região, book fotográfico profissional, vídeo
-              e tour virtual, divulgação segmentada e um relatório mensal com visualizações, contatos
-              e feedback de cada visita. Você acompanha tudo — sem precisar cobrar.
-            </p>
-
-            <ul className="mt-7 space-y-3">
-              {[
-                "Avaliação gratuita em até 48 horas",
-                "Book fotográfico e vídeo por nossa conta",
-                "Relatório mensal de desempenho do anúncio",
-                "Assessoria jurídica e documental inclusa",
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm text-grafite-700">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="mt-0.5 shrink-0 text-dourado-600"
-                    aria-hidden="true"
-                  >
-                    <path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/anuncie"
-                className="rounded-sm bg-verde-800 px-6 py-3.5 text-sm font-extrabold text-areia-50 transition-colors hover:bg-verde-700"
-              >
-                Quero anunciar meu imóvel
-              </Link>
-              <BotaoWhatsapp mensagem="Olá! Gostaria de uma avaliação do meu imóvel.">
-                Falar com um especialista
-              </BotaoWhatsapp>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ------------------------------------------------------ Depoimentos */}
       <section className="bg-areia-50 py-20 lg:py-28">
         <div className="container-paganelli">
@@ -329,7 +233,7 @@ export default function PaginaInicial() {
                 <span className="block text-xs font-bold uppercase tracking-wide text-grafite-400">
                   Atendimento
                 </span>
-                {CONTATO.telefone} · WhatsApp e e-mail em {CONTATO.email}
+                {CONTATO.telefone} · WhatsApp {CONTATO.whatsappExibicao}
               </p>
             </div>
           </div>
