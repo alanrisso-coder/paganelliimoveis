@@ -23,19 +23,6 @@ const servicos = [
   },
   {
     numero: "02",
-    titulo: "Locação",
-    resumo: "Imóveis selecionados e uma gestão que simplifica cada etapa.",
-    itens: [
-      "Curadoria de imóveis com vistoria prévia da equipe",
-      "Análise cadastral e definição de garantia adequada ao caso",
-      "Contrato redigido pelo jurídico da casa, sem modelo genérico",
-      "Vistoria de entrada e de saída com laudo fotográfico",
-      "Gestão de repasses, reajustes e renovações",
-      "Canal único para manutenção e intercorrências",
-    ],
-  },
-  {
-    numero: "03",
     titulo: "Exclusividade",
     resumo: "Estratégia, visibilidade e representação para o seu patrimônio.",
     itens: [
@@ -48,7 +35,7 @@ const servicos = [
     ],
   },
   {
-    numero: "04",
+    numero: "03",
     titulo: "Avaliação de imóveis",
     resumo: "Um número defensável, com metodologia aberta.",
     itens: [
@@ -60,7 +47,7 @@ const servicos = [
     ],
   },
   {
-    numero: "05",
+    numero: "04",
     titulo: "Assessoria jurídica e documental",
     resumo: "A parte que trava a maioria dos negócios, resolvida dentro de casa.",
     itens: [
@@ -72,7 +59,7 @@ const servicos = [
     ],
   },
   {
-    numero: "06",
+    numero: "05",
     titulo: "Consultoria para investidores",
     resumo: "Para quem compra por retorno, não por moradia.",
     itens: [
