@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useDados } from "@/lib/store";
@@ -194,15 +195,28 @@ export function ListagemImoveis({
 
   return (
     <>
-      <header className="border-b border-linha bg-verde-900 py-14 text-areia-100 lg:py-20">
-        <div className="container-paganelli">
+      <section className="relative isolate flex items-end overflow-hidden bg-verde-900 py-14 lg:py-20">
+        <Image
+          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=75"
+          alt="Imóveis à venda"
+          fill
+          priority
+          sizes="100vw"
+          className="-z-10 object-cover"
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-950/88 via-verde-950/62 to-verde-950/20"
+          aria-hidden="true"
+        />
+
+        <header className="container-paganelli w-full text-areia-100">
           <p className="eyebrow text-dourado-400">
             {finalidade === "venda" ? "Comprar" : "Alugar"}
           </p>
           <h1 className="mt-3 font-display text-4xl text-areia-50 lg:text-5xl">{titulo}</h1>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-areia-100/75">{descricao}</p>
-        </div>
-      </header>
+        </header>
+      </section>
 
       <div className="container-paganelli grid gap-10 py-12 lg:grid-cols-[17.5rem_1fr] lg:py-16">
         {/* -------------------------------------------------------- Filtros */}
