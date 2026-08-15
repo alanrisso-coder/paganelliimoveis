@@ -120,50 +120,6 @@ export default function PaginaServicos() {
             </section>
           ))}
         </div>
-
-      {/* ------------------------------------------------- Por que escolher */}
-      <section className="bg-verde-900 py-20 text-areia-100 lg:py-28">
-        <div className="container-paganelli">
-          <p className="eyebrow text-dourado-400">Por que escolher a Paganelli</p>
-          <h2 className="mt-3 font-display text-3xl text-areia-50 lg:text-[2.5rem]">
-            Não vendemos apenas imóveis. Abrimos espaço para novas histórias.
-          </h2>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-areia-100/70">
-            A diferença entre uma boa e uma má experiência imobiliária quase nunca está no imóvel. Está em quem conduz.
-          </p>
-
-          <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                numero: "01",
-                titulo: "Curadoria, não catálogo",
-                texto: "Cada imóvel passa por visita técnica, checagem documental e avaliação de mercado antes de entrar na nossa vitrine. Você vê menos opções — e todas fazem sentido."
-              },
-              {
-                numero: "02",
-                titulo: "Um corretor do início ao fim",
-                texto: "Nada de trocar de interlocutor a cada etapa. Quem atende a sua primeira ligação é quem acompanha a visita, negocia e senta com você na assinatura."
-              },
-              {
-                numero: "03",
-                titulo: "Transparência sobre o valor",
-                texto: "Apresentamos o histórico de preço do imóvel, os custos recorrentes e a comparação com transações reais da região. Sem número inflado para depois negociar."
-              },
-              {
-                numero: "04",
-                titulo: "Jurídico e documentação integrados",
-                texto: "Análise documental e aprovação de financiamento sem custo, no banco da sua preferência. Você recebe um único cronograma, com prazos claros e responsáveis nomeados."
-              }
-            ].map((item) => (
-              <li key={item.numero} className="rounded-sm border border-areia-100/12 p-6">
-                <p className="font-display text-lg text-dourado-400">{item.numero}</p>
-                <h3 className="mt-2 font-display text-lg text-areia-50">{item.titulo}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-areia-100/70">{item.texto}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
       </div>
 
       <section className="bg-areia-50 py-20 lg:py-24">
