@@ -108,19 +108,6 @@ export default function PaginaInicial() {
         </div>
       </section>
 
-      {/* -------------------------------------------------------- Números */}
-      <section className="border-b border-linha bg-areia-50">
-        <div className="container-paganelli grid grid-cols-2 gap-8 py-10 lg:grid-cols-3">
-          {[
-          ].map((item) => (
-            <div key={item.rotulo}>
-              <p className="font-display text-2xl text-verde-800 lg:text-3xl">{item.valor}</p>
-              <p className="mt-1 text-xs leading-relaxed text-grafite-500">{item.rotulo}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* --------------------------------------------- Imóveis em destaque */}
       <section className="container-paganelli py-20 lg:py-28">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
