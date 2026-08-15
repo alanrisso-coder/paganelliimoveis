@@ -6,12 +6,6 @@ import { CONTATO } from "@/lib/contato";
 
 const canais = [
   {
-    titulo: "Telefone",
-    valor: CONTATO.telefone,
-    detalhe: "Atendimento direto com a corretora responsável",
-    href: `tel:+${CONTATO.whatsapp}`,
-  },
-  {
     titulo: "WhatsApp",
     valor: CONTATO.whatsappExibicao,
     detalhe: "O canal mais rápido para tirar dúvidas e agendar visitas",
