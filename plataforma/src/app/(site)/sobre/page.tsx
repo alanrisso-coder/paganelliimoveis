@@ -138,20 +138,22 @@ export default function PaginaSobre() {
         </div>
       </section>
 
-      <section className="container-paganelli py-20 lg:py-28">
-        <p className="eyebrow text-dourado-600">No que acreditamos</p>
-        <h2 className="mt-3 font-display text-3xl text-verde-900 lg:text-[2.5rem]">
-          Três compromissos que não negociamos
-        </h2>
+      <section className="bg-verde-900 py-20 text-areia-100 lg:py-28">
+        <div className="container-paganelli">
+          <p className="eyebrow text-dourado-400">No que acreditamos</p>
+          <h2 className="mt-3 font-display text-3xl text-areia-50 lg:text-[2.5rem]">
+            Três compromissos que não negociamos
+          </h2>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-3">
-          {valores.map((v, i) => (
-            <div key={v.titulo} className="border-t-2 border-dourado-400 pt-6">
-              <p className="eyebrow text-dourado-600">0{i + 1}</p>
-              <h3 className="mt-3 font-display text-xl text-verde-900">{v.titulo}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-grafite-500">{v.texto}</p>
-            </div>
-          ))}
+          <div className="mt-12 grid gap-8 lg:grid-cols-3">
+            {valores.map((v, i) => (
+              <div key={v.titulo} className="border-t-2 border-dourado-400 pt-6">
+                <p className="eyebrow text-dourado-400">0{i + 1}</p>
+                <h3 className="mt-3 font-display text-xl text-areia-50">{v.titulo}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-areia-100/75">{v.texto}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
