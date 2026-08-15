@@ -7,6 +7,7 @@ import { useSessao } from "@/lib/auth";
 import { CabecalhoPagina } from "./Cabecalho";
 import { Botao, EstadoVazio, Painel, Selo } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
+import { UploadMidias, GaleriaFotos } from "./UploadMidias";
 import {
   enderecoCompleto,
   formatarArea,
@@ -113,19 +114,29 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
         }
       />
 
-      {imovel.fotos.length > 0 && (
-        <div className="scroll-fino mb-6 flex gap-2 overflow-x-auto pb-1">
-          {imovel.fotos.map((foto, i) => (
-            <div key={foto + i} className="relative h-32 w-48 shrink-0 overflow-hidden rounded-sm bg-areia-200">
-              <Image src={foto} alt={`${imovel.titulo} — foto ${i + 1}`} fill sizes="192px" className="object-cover" />
-              {i === 0 && (
-                <span className="absolute left-2 top-2 rounded-sm bg-verde-900/90 px-2 py-1 font-mono text-[0.5625rem] uppercase tracking-wide text-areia-50">
-                  capa
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+      <GaleriaFotos
+        fotos={imovel.fotos}
+        onDelete={(url) => {
+          dados.atualizarImovel(
+            imovel.id,
+            { fotos: imovel.fotos.filter((f) => f !== url) },
+            usuario?.id ?? ""
+          );
+        }}
+      />
+
+      {pode("editar_imovel") && (
+        <UploadMidias
+          imovelId={imovel.id}
+          tipo="fotos"
+          onUpload={(url) => {
+            dados.atualizarImovel(
+              imovel.id,
+              { fotos: [...imovel.fotos, url] },
+              usuario?.id ?? ""
+            );
+          }}
+        />
       )}
 
       <div className="grid gap-5 lg:grid-cols-[1.35fr_1fr]">
