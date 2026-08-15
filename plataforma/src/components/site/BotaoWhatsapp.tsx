@@ -20,11 +20,10 @@ export function BotaoWhatsappFlutuante() {
       href={montarLink("Olá! Vim pelo site da Paganelli Imóveis e gostaria de mais informações.")}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 right-5 z-40 flex items-center gap-2.5 rounded-full bg-[#25d366] py-3 pl-3.5 pr-4 text-sm font-extrabold text-white shadow-cartao transition-transform hover:scale-[1.03]"
+      className="fixed bottom-5 right-5 z-40 flex items-center justify-center rounded-full bg-[#25d366] p-4 text-white shadow-cartao transition-transform hover:scale-[1.03]"
+      aria-label="Falar no WhatsApp"
     >
-      <IconeWhatsapp tamanho={20} />
-      <span className="hidden sm:inline">Falar no WhatsApp</span>
-      <span className="sr-only sm:hidden">Falar no WhatsApp</span>
+      <IconeWhatsapp tamanho={24} />
     </a>
   );
 }
