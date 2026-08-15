@@ -197,7 +197,7 @@ export function ListagemImoveis({
     <>
       <section className="relative isolate flex items-end overflow-hidden bg-verde-900 py-14 lg:py-20">
         <Image
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=75"
+          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2000&q=75"
           alt="Imóveis à venda"
           fill
           priority
