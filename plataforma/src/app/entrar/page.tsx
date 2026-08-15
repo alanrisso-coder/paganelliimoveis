@@ -111,52 +111,17 @@ export default function PaginaEntrar() {
         </div>
       </div>
 
-      {/* ------------------------------------------------- Perfis de acesso */}
-      <aside className="bg-verde-900 px-6 py-14 text-areia-100 sm:px-12 lg:px-16 lg:py-20">
-        <div className="mx-auto w-full max-w-md">
-          <p className="eyebrow text-dourado-400">Perfis disponíveis</p>
-          <h2 className="mt-3 font-display text-2xl text-areia-50">
-            Entre como um dos perfis e veja as permissões mudarem
-          </h2>
-          <p className="mt-3 text-sm leading-relaxed text-areia-100/65">
-            Cada perfil enxerga um conjunto diferente de menus e ações no painel.
-          </p>
-
-          <ul className="mt-8 space-y-3">
-            {usuarios.map((u) => (
-              <li key={u.id}>
-                <button
-                  type="button"
-                  onClick={() => acessarComo(u.id)}
-                  className="flex w-full items-start gap-4 rounded-sm border border-areia-100/14 p-4 text-left transition-colors hover:border-dourado-400/60 hover:bg-areia-100/6"
-                >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-dourado-500 text-sm font-extrabold text-verde-950">
-                    {u.avatarIniciais}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="flex flex-wrap items-baseline gap-2">
-                      <span className="text-sm font-extrabold text-areia-50">{u.nome}</span>
-                      <span className="font-mono text-[0.625rem] uppercase tracking-wide text-dourado-300">
-                        {rotuloPerfil[u.perfil]}
-                      </span>
-                    </span>
-                    <span className="mt-1 block text-xs leading-relaxed text-areia-100/60">
-                      {descricaoPerfil[u.perfil]}
-                    </span>
-                    <span className="mt-1.5 block truncate font-mono text-[0.6875rem] text-areia-100/40">
-                      {u.email}
-                    </span>
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-8 text-xs leading-relaxed text-areia-100/45">
-            O visitante do site não precisa de conta: navega, pesquisa imóveis e envia contatos
-            livremente pelas páginas públicas.
-          </p>
-        </div>
+      {/* ------------------------------------------------- Imagem de destaque */}
+      <aside className="relative isolate hidden overflow-hidden lg:block">
+        <Image
+          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=75"
+          alt="Imóvel de luxo"
+          fill
+          priority
+          sizes="50vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-950/60 to-verde-950/20" aria-hidden="true" />
       </aside>
     </div>
   );
