@@ -197,7 +197,7 @@ export function ListagemImoveis({
     <>
       <section className="relative isolate flex items-end overflow-hidden bg-verde-900 py-14 lg:py-20">
         <Image
-          src="/reserva-pedra-2.jpg"
+          src="/reserva-pedra-2.png"
           alt="Imóveis à venda"
           fill
           priority
