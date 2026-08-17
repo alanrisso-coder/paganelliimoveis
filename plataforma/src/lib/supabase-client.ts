@@ -1,13 +1,13 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Variáveis de ambiente Supabase não configuradas");
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+/**
+ * Cliente de acesso ao Supabase.
+ *
+ * Todas as operações de leitura, escrita, atualização e exclusão passam
+ * pelos API routes em /api/sync/*, que usam SUPABASE_SERVICE_ROLE_KEY no
+ * servidor. Isso é necessário porque as tabelas têm RLS (Row Level
+ * Security) ativado e a chave pública (ANON_KEY) não tem permissão de
+ * leitura nem escrita — apenas o servidor, com a service role key, pode
+ * acessar os dados.
+ */
 
 // Tipos para o banco de dados
 export interface DbImovel {
@@ -101,260 +101,168 @@ export interface DbCliente {
   atualizado_em: string;
 }
 
-// Funções de acesso ao banco
-export async function obterImoveis() {
-  const { data, error } = await supabase
-    .from("imoveis")
-    .select("*");
-
-  if (error) {
-    console.error("Erro ao obter imóveis:", error);
-    return [];
-  }
-
-  return (data || []) as DbImovel[];
-}
-
-export async function obterImovelPorId(id: string) {
-  const { data, error } = await supabase
-    .from("imoveis")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error) {
-    console.error("Erro ao obter imóvel:", error);
-    return null;
-  }
-
-  return data as DbImovel;
-}
-
-export async function obterImovelPorSlug(slug: string) {
-  const { data, error } = await supabase
-    .from("imoveis")
-    .select("*")
-    .eq("slug", slug)
-    .single();
-
-  if (error) {
-    console.error("Erro ao obter imóvel:", error);
-    return null;
-  }
-
-  return data as DbImovel;
-}
-
-export async function criarImovel(imovel: Omit<DbImovel, "criado_em" | "atualizado_em">) {
+async function apiGet<T>(url: string): Promise<T | null> {
   try {
-    const response = await fetch("/api/sync/imoveis", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(imovel),
-    });
-
+    const response = await fetch(url);
     if (!response.ok) {
       const error = await response.json();
-      console.error("Erro ao criar imóvel:", error);
+      console.error(`Erro ao buscar ${url}:`, error);
       return null;
     }
-
     const { data } = await response.json();
-    return data as DbImovel;
+    return data as T;
   } catch (error) {
-    console.error("Erro ao criar imóvel:", error);
+    console.error(`Erro ao buscar ${url}:`, error);
     return null;
   }
 }
 
-export async function atualizarImovel(id: string, updates: Partial<DbImovel>) {
-  const { data, error } = await supabase
-    .from("imoveis")
-    .update(updates)
-    .eq("id", id)
-    .select()
-    .single();
-
-  if (error) {
-    console.error("Erro ao atualizar imóvel:", error);
-    return null;
-  }
-
-  return data as DbImovel;
-}
-
-export async function obterAnuncios() {
-  const { data, error } = await supabase
-    .from("anuncios")
-    .select("*");
-
-  if (error) {
-    console.error("Erro ao obter anúncios:", error);
-    return [];
-  }
-
-  return (data || []) as DbAnuncio[];
-}
-
-export async function obterAnunciosPublicos() {
-  const { data, error } = await supabase
-    .from("anuncios")
-    .select("*")
-    .eq("visibilidade", "publico")
-    .eq("status", "publicado");
-
-  if (error) {
-    console.error("Erro ao obter anúncios públicos:", error);
-    return [];
-  }
-
-  return (data || []) as DbAnuncio[];
-}
-
-export async function criarAnuncio(anuncio: Omit<DbAnuncio, "criado_em" | "atualizado_em">) {
+async function apiPost<T>(url: string, body: unknown): Promise<T | null> {
   try {
-    const response = await fetch("/api/sync/anuncios", {
+    const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(anuncio),
+      body: JSON.stringify(body),
     });
-
     if (!response.ok) {
       const error = await response.json();
-      console.error("Erro ao criar anúncio:", error);
+      console.error(`Erro ao enviar para ${url}:`, error);
       return null;
     }
-
     const { data } = await response.json();
-    return data as DbAnuncio;
+    return data as T;
   } catch (error) {
-    console.error("Erro ao criar anúncio:", error);
+    console.error(`Erro ao enviar para ${url}:`, error);
     return null;
   }
 }
 
-export async function atualizarAnuncio(id: string, updates: Partial<DbAnuncio>) {
-  const { data, error } = await supabase
-    .from("anuncios")
-    .update(updates)
-    .eq("id", id)
-    .select()
-    .single();
-
-  if (error) {
-    console.error("Erro ao atualizar anúncio:", error);
-    return null;
-  }
-
-  return data as DbAnuncio;
-}
-
-export async function obterClientes() {
-  const { data, error } = await supabase
-    .from("clientes")
-    .select("*");
-
-  if (error) {
-    console.error("Erro ao obter clientes:", error);
-    return [];
-  }
-
-  return (data || []) as DbCliente[];
-}
-
-export async function obterClientePorId(id: string) {
-  const { data, error } = await supabase
-    .from("clientes")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  if (error) {
-    console.error("Erro ao obter cliente:", error);
-    return null;
-  }
-
-  return data as DbCliente;
-}
-
-export async function criarCliente(cliente: Omit<DbCliente, "criado_em" | "atualizado_em">) {
+async function apiPatch<T>(
+  url: string,
+  id: string,
+  updates: unknown
+): Promise<T | null> {
   try {
-    const response = await fetch("/api/sync/clientes", {
-      method: "POST",
+    const response = await fetch(url, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(cliente),
+      body: JSON.stringify({ id, updates }),
     });
-
     if (!response.ok) {
       const error = await response.json();
-      console.error("Erro ao criar cliente:", error);
+      console.error(`Erro ao atualizar em ${url}:`, error);
       return null;
     }
-
     const { data } = await response.json();
-    return data as DbCliente;
+    return data as T;
   } catch (error) {
-    console.error("Erro ao criar cliente:", error);
+    console.error(`Erro ao atualizar em ${url}:`, error);
     return null;
   }
 }
 
-export async function atualizarCliente(id: string, updates: Partial<DbCliente>) {
-  const { data, error } = await supabase
-    .from("clientes")
-    .update(updates)
-    .eq("id", id)
-    .select()
-    .single();
-
-  if (error) {
-    console.error("Erro ao atualizar cliente:", error);
-    return null;
+async function apiDelete(url: string, id: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${url}?id=${encodeURIComponent(id)}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      console.error(`Erro ao deletar em ${url}:`, error);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error(`Erro ao deletar em ${url}:`, error);
+    return false;
   }
-
-  return data as DbCliente;
 }
 
-// Funções de Delete
+// --------------------------------------------------------------- Imóveis
+
+export async function obterImoveis(): Promise<DbImovel[]> {
+  const data = await apiGet<DbImovel[]>("/api/sync/imoveis");
+  return data ?? [];
+}
+
+export async function obterImovelPorId(id: string): Promise<DbImovel | null> {
+  return apiGet<DbImovel>(`/api/sync/imoveis?id=${encodeURIComponent(id)}`);
+}
+
+export async function obterImovelPorSlug(slug: string): Promise<DbImovel | null> {
+  return apiGet<DbImovel>(`/api/sync/imoveis?slug=${encodeURIComponent(slug)}`);
+}
+
+export async function criarImovel(
+  imovel: Omit<DbImovel, "criado_em" | "atualizado_em">
+): Promise<DbImovel | null> {
+  return apiPost<DbImovel>("/api/sync/imoveis", imovel);
+}
+
+export async function atualizarImovel(
+  id: string,
+  updates: Partial<DbImovel>
+): Promise<DbImovel | null> {
+  return apiPatch<DbImovel>("/api/sync/imoveis", id, updates);
+}
 
 export async function deletarImovel(id: string): Promise<boolean> {
-  const { error } = await supabase
-    .from("imoveis")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-    console.error("Erro ao deletar imóvel:", error);
-    return false;
-  }
-
-  return true;
+  return apiDelete("/api/sync/imoveis", id);
 }
 
-export async function deletarCliente(id: string): Promise<boolean> {
-  const { error } = await supabase
-    .from("clientes")
-    .delete()
-    .eq("id", id);
+// -------------------------------------------------------------- Anúncios
 
-  if (error) {
-    console.error("Erro ao deletar cliente:", error);
-    return false;
-  }
+export async function obterAnuncios(): Promise<DbAnuncio[]> {
+  const data = await apiGet<DbAnuncio[]>("/api/sync/anuncios");
+  return data ?? [];
+}
 
-  return true;
+export async function obterAnunciosPublicos(): Promise<DbAnuncio[]> {
+  const data = await apiGet<DbAnuncio[]>("/api/sync/anuncios?publicos=true");
+  return data ?? [];
+}
+
+export async function criarAnuncio(
+  anuncio: Omit<DbAnuncio, "criado_em" | "atualizado_em">
+): Promise<DbAnuncio | null> {
+  return apiPost<DbAnuncio>("/api/sync/anuncios", anuncio);
+}
+
+export async function atualizarAnuncio(
+  id: string,
+  updates: Partial<DbAnuncio>
+): Promise<DbAnuncio | null> {
+  return apiPatch<DbAnuncio>("/api/sync/anuncios", id, updates);
 }
 
 export async function deletarAnuncio(id: string): Promise<boolean> {
-  const { error } = await supabase
-    .from("anuncios")
-    .delete()
-    .eq("id", id);
+  return apiDelete("/api/sync/anuncios", id);
+}
 
-  if (error) {
-    console.error("Erro ao deletar anúncio:", error);
-    return false;
-  }
+// -------------------------------------------------------------- Clientes
 
-  return true;
+export async function obterClientes(): Promise<DbCliente[]> {
+  const data = await apiGet<DbCliente[]>("/api/sync/clientes");
+  return data ?? [];
+}
+
+export async function obterClientePorId(id: string): Promise<DbCliente | null> {
+  return apiGet<DbCliente>(`/api/sync/clientes?id=${encodeURIComponent(id)}`);
+}
+
+export async function criarCliente(
+  cliente: Omit<DbCliente, "criado_em" | "atualizado_em">
+): Promise<DbCliente | null> {
+  return apiPost<DbCliente>("/api/sync/clientes", cliente);
+}
+
+export async function atualizarCliente(
+  id: string,
+  updates: Partial<DbCliente>
+): Promise<DbCliente | null> {
+  return apiPatch<DbCliente>("/api/sync/clientes", id, updates);
+}
+
+export async function deletarCliente(id: string): Promise<boolean> {
+  return apiDelete("/api/sync/clientes", id);
 }

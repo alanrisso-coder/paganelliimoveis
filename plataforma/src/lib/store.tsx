@@ -33,7 +33,7 @@ import { visitas as visitasSeed } from "./seed/visitas";
 import { contratos as contratosSeed } from "./seed/contratos";
 import { leads as leadsSeed, logs as logsSeed, notificacoes as notificacoesSeed, tarefas as tarefasSeed } from "./seed/leads";
 import { criarImovel as criarImovelSupabase, criarCliente as criarClienteSupabase, criarAnuncio as criarAnuncioSupabase } from "./supabase-client";
-import { converterImovelParaDbImovel } from "./supabase-sync-store";
+import { converterImovelParaDbImovel, carregarTodosDadosSupabase } from "./supabase-sync-store";
 
 /**
  * Fonte de dados da aplicação.
@@ -208,6 +208,32 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
       // Cota excedida ou modo privativo: a demo continua funcionando em memória.
     }
   }, [estado, carregado]);
+
+  // Carregar dados do Supabase após hidratação
+  useEffect(() => {
+    if (!carregado) return;
+
+    async function carregarDoSupabase() {
+      try {
+        const dados = await carregarTodosDadosSupabase();
+        if (dados) {
+          console.log(
+            `📥 Sincronizado com Supabase: ${dados.imoveis.length} imóveis, ${dados.clientes.length} clientes, ${dados.anuncios.length} anúncios`
+          );
+          setEstado((e) => ({
+            ...e,
+            imoveis: dados.imoveis,
+            clientes: dados.clientes,
+            anuncios: dados.anuncios,
+          }));
+        }
+      } catch (erro) {
+        console.error("Erro ao carregar dados do Supabase:", erro);
+      }
+    }
+
+    carregarDoSupabase();
+  }, [carregado]);
 
   /* ------------------------------------------------------------ Auxiliares */
 
