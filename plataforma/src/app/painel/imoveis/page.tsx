@@ -15,7 +15,7 @@ import {
   rotuloStatusImovel,
   rotuloTipoImovel,
 } from "@/lib/format";
-import type { FinalidadeImovel, StatusImovel, TipoImovel } from "@/lib/types";
+import type { FinalidadeImovel, StatusImovel, TipoImovel, Imovel } from "@/lib/types";
 
 const tomStatus: Record<StatusImovel, "verde" | "alerta" | "neutro" | "erro"> = {
   disponivel: "verde",
@@ -100,7 +100,7 @@ export default function PaginaImoveis() {
             <caption className="sr-only">Catálogo de imóveis</caption>
             <thead>
               <tr className="bg-areia-50">
-                {["Código", "Imóvel", "Tipo", "Finalidade", "Valor", "Métricas", "Status", "Corretor", ...(pode("deletar_imovel") ? ["Ações"] : [])].map((h) => (
+                {["Código", "Imóvel", "Tipo", "Finalidade", "Valor", "Métricas", "No site", "Status", "Corretor", ...(pode("deletar_imovel") ? ["Ações"] : [])].map((h) => (
                   <th key={h} scope="col" className="px-4 py-3 text-[0.625rem] font-bold uppercase tracking-wide text-grafite-400">
                     {h}
                   </th>
@@ -135,6 +135,9 @@ export default function PaginaImoveis() {
                       <span className="font-mono text-[0.625rem] text-grafite-400">
                         {anuncio ? `${anuncio.metricas.visualizacoes} views · ${anuncio.metricas.contatos} contatos` : "sem anúncio"}
                       </span>
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <StatusAnuncioImovel imovel={i} />
                     </td>
                     <td className="px-4 py-3.5">
                       <Selo tom={tomStatus[i.status]}>{rotuloStatusImovel[i.status]}</Selo>
@@ -172,6 +175,78 @@ export default function PaginaImoveis() {
 
       <ModalNovoImovel aberto={modalNovo} aoFechar={() => setModalNovo(false)} autorId={usuario?.id ?? ""} />
     </>
+  );
+}
+
+/**
+ * Indicador de "isso vai aparecer em Anúncios?" para cada linha da tabela.
+ *
+ * A publicação do anúncio acontece em segundo plano (o cadastro do imóvel
+ * não espera o Supabase confirmar), então sem isso o usuário só descobria
+ * se funcionou indo conferir a tela de Anúncios manualmente — e, como o
+ * bug relatado mostrou, às vezes nem lá aparecia por falha silenciosa.
+ * Aqui o status muda ao vivo assim que a publicação é confirmada.
+ */
+function StatusAnuncioImovel({ imovel }: { imovel: Imovel }) {
+  const dados = useDados();
+  const { usuario } = useSessao();
+  const [publicando, setPublicando] = useState(false);
+
+  const anuncio = dados.anuncioDoImovel(imovel.id);
+  const status = dados.statusPublicacaoAnuncio[imovel.id];
+
+  async function tentarPublicar() {
+    setPublicando(true);
+    await dados.publicarAnuncioImovel(imovel.id, usuario?.id ?? "");
+    setPublicando(false);
+  }
+
+  if (anuncio) {
+    return (
+      <div className="flex flex-col items-start gap-1">
+        <Selo tom="verde">No site ✓</Selo>
+        <Link href="/painel/anuncios" className="text-[0.625rem] font-bold text-verde-800 hover:text-dourado-600">
+          Ver em Anúncios →
+        </Link>
+      </div>
+    );
+  }
+
+  if (publicando || status === "publicando") {
+    return (
+      <Selo tom="alerta" className="gap-1.5">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-alerta" aria-hidden="true" />
+        Publicando…
+      </Selo>
+    );
+  }
+
+  if (status === "erro") {
+    return (
+      <div className="flex flex-col items-start gap-1">
+        <Selo tom="erro">Falha ao publicar</Selo>
+        <button
+          type="button"
+          onClick={tentarPublicar}
+          className="text-[0.625rem] font-bold text-verde-800 hover:text-dourado-600"
+        >
+          Tentar novamente
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-1">
+      <Selo tom="neutro">Sem anúncio</Selo>
+      <button
+        type="button"
+        onClick={tentarPublicar}
+        className="text-[0.625rem] font-bold text-verde-800 hover:text-dourado-600"
+      >
+        Publicar agora
+      </button>
+    </div>
   );
 }
 
@@ -255,7 +330,9 @@ function ModalNovoImovel({
       },
       autorId,
     );
-    avisar(`Imóvel ${novo.codigo} cadastrado. Adicione fotos para poder anunciá-lo.`);
+    avisar(
+      `Imóvel ${novo.codigo} cadastrado. O anúncio está sendo publicado — acompanhe na coluna "No site".`,
+    );
     aoFechar();
   }
 

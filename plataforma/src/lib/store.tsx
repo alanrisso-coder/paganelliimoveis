@@ -33,7 +33,11 @@ import { visitas as visitasSeed } from "./seed/visitas";
 import { contratos as contratosSeed } from "./seed/contratos";
 import { leads as leadsSeed, logs as logsSeed, notificacoes as notificacoesSeed, tarefas as tarefasSeed } from "./seed/leads";
 import { criarImovel as criarImovelSupabase, criarCliente as criarClienteSupabase, criarAnuncio as criarAnuncioSupabase } from "./supabase-client";
-import { converterImovelParaDbImovel, carregarTodosDadosSupabase } from "./supabase-sync-store";
+import {
+  converterImovelParaDbImovel,
+  converterDbAnuncioParaAnuncio,
+  carregarTodosDadosSupabase,
+} from "./supabase-sync-store";
 
 /**
  * Fonte de dados da aplicação.
@@ -109,6 +113,8 @@ export interface DadosNovaVisita {
   pontoEncontro: string;
 }
 
+export type StatusPublicacaoAnuncio = "publicando" | "publicado" | "erro";
+
 interface ContextoDados extends EstadoDados {
   carregado: boolean;
 
@@ -124,6 +130,15 @@ interface ContextoDados extends EstadoDados {
   visitasDoCliente: (clienteId: string) => Visita[];
   visitasDoImovel: (imovelId: string) => Visita[];
   leadsDoImovel: (imovelId: string) => Lead[];
+
+  /**
+   * Status da publicação automática do anúncio ao lado de cada imóvel, por
+   * imovelId. Alimenta o indicador de "isso vai aparecer em Anúncios?" na
+   * tela de imóveis, já que a sincronização com o Supabase é assíncrona.
+   */
+  statusPublicacaoAnuncio: Record<string, StatusPublicacaoAnuncio>;
+  /** (Re)publica manualmente o anúncio de um imóvel, para quando a publicação automática falhar. */
+  publicarAnuncioImovel: (imovelId: string, autorId: string) => Promise<void>;
 
   /* Mutações — anúncios */
   alterarStatusAnuncio: (anuncioId: string, status: StatusAnuncio, autorId: string) => void;
@@ -182,6 +197,9 @@ function agora(): string {
 export function DadosProvider({ children }: { children: React.ReactNode }) {
   const [estado, setEstado] = useState<EstadoDados>(estadoInicial);
   const [carregado, setCarregado] = useState(false);
+  const [statusPublicacaoAnuncio, setStatusPublicacaoAnuncio] = useState<
+    Record<string, StatusPublicacaoAnuncio>
+  >({});
 
   // Só lemos o localStorage depois da hidratação: o primeiro render precisa
   // bater com o HTML gerado no servidor, que sempre parte do seed. Roda uma
@@ -403,6 +421,63 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     [registrarLog],
   );
 
+  /**
+   * Cria (ou recria) o anúncio público de um imóvel no Supabase e, assim que
+   * confirmado, injeta o resultado em `estado.anuncios` para que a UI (ex.:
+   * a tela de imóveis e o gerenciador de anúncios) reflita a mudança sem
+   * precisar de um reload. `statusPublicacaoAnuncio` é o que alimenta o
+   * indicador visual "isso vai aparecer em Anúncios?".
+   */
+  const publicarAnuncioParaImovel = useCallback(async (imovel: Imovel) => {
+    setStatusPublicacaoAnuncio((s) => ({ ...s, [imovel.id]: "publicando" }));
+    try {
+      const anuncioCriado = await criarAnuncioSupabase({
+        id: id("an"),
+        codigo: `AN-${imovel.codigo}`,
+        imovel_id: imovel.id,
+        titulo: imovel.titulo,
+        subtitulo: imovel.descricaoCurta,
+        descricao_comercial: imovel.descricaoCompleta,
+        status: "publicado",
+        visibilidade: "publico",
+        publicar_em: null,
+        expirar_em: null,
+        destaque_home: false,
+        capa_indice: 0,
+        ordem_galeria: [],
+        selos: [],
+        metricas: { visualizacoes: 0, interesse: 0, contatos: 0 },
+        corretor_id: imovel.corretorId,
+      });
+
+      if (!anuncioCriado) {
+        setStatusPublicacaoAnuncio((s) => ({ ...s, [imovel.id]: "erro" }));
+        return;
+      }
+
+      const anuncioLocal = converterDbAnuncioParaAnuncio(anuncioCriado);
+      setEstado((e) => ({
+        ...e,
+        anuncios: [anuncioLocal, ...e.anuncios.filter((a) => a.imovelId !== imovel.id)],
+      }));
+      setStatusPublicacaoAnuncio((s) => ({ ...s, [imovel.id]: "publicado" }));
+    } catch (erro) {
+      console.error("Erro ao publicar anúncio do imóvel:", erro);
+      setStatusPublicacaoAnuncio((s) => ({ ...s, [imovel.id]: "erro" }));
+    }
+  }, []);
+
+  /** Permite tentar novamente a publicação quando a automática falhou. */
+  const publicarAnuncioImovel = useCallback(
+    async (imovelId: string, autorId: string) => {
+      const imovel = estado.imoveis.find((i) => i.id === imovelId);
+      if (!imovel) return;
+      await publicarAnuncioParaImovel(imovel);
+      registrarLog(autorId, "Publicou anúncio", imovel.codigo, `Anúncio publicado para ${imovel.titulo}.`);
+    },
+    [estado.imoveis, publicarAnuncioParaImovel, registrarLog],
+  );
+
   const criarImovel = useCallback(
     (dados: Partial<Imovel> & { titulo: string }, autorId: string): Imovel => {
       const novoId = id("im");
@@ -452,8 +527,9 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
       };
       setEstado((e) => ({ ...e, imoveis: [novo, ...e.imoveis] }));
       registrarLog(autorId, "Cadastrou imóvel", novo.codigo, novo.titulo);
+      setStatusPublicacaoAnuncio((s) => ({ ...s, [novo.id]: "publicando" }));
 
-      // Sincronizar com Supabase
+      // Sincronizar com Supabase e, na sequência, publicar o anúncio.
       (async () => {
         try {
           const dbImovel = converterImovelParaDbImovel(novo);
@@ -461,39 +537,22 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
           if (!dbImovel.proprietario_id && estado.clientes.length > 0) {
             dbImovel.proprietario_id = estado.clientes[0].id;
           }
-          await criarImovelSupabase(dbImovel);
-
-          // Criar anúncio público automaticamente
-          try {
-            await criarAnuncioSupabase({
-              id: id("an"),
-              codigo: `AN-${novo.codigo}`,
-              imovel_id: novo.id,
-              titulo: novo.titulo,
-              subtitulo: novo.descricaoCurta,
-              descricao_comercial: novo.descricaoCompleta,
-              status: "publicado",
-              visibilidade: "publico",
-              publicar_em: null,
-              expirar_em: null,
-              destaque_home: false,
-              capa_indice: 0,
-              ordem_galeria: [],
-              selos: [],
-              metricas: { visualizacoes: 0, interesse: 0, contatos: 0 },
-              corretor_id: novo.corretorId,
-            });
-          } catch (erro) {
-            console.error("Erro ao criar anúncio automático:", erro);
+          const imovelCriado = await criarImovelSupabase(dbImovel);
+          if (!imovelCriado) {
+            setStatusPublicacaoAnuncio((s) => ({ ...s, [novo.id]: "erro" }));
+            return;
           }
+
+          await publicarAnuncioParaImovel(novo);
         } catch (erro) {
           console.error("Erro ao sincronizar imóvel com Supabase:", erro);
+          setStatusPublicacaoAnuncio((s) => ({ ...s, [novo.id]: "erro" }));
         }
       })();
 
       return novo;
     },
-    [estado.imoveis.length, registrarLog],
+    [estado.imoveis.length, estado.clientes, registrarLog, publicarAnuncioParaImovel],
   );
 
   /* ------------------------------------------------------------------- CRM */
@@ -973,6 +1032,8 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     visitasDoCliente,
     visitasDoImovel,
     leadsDoImovel,
+    statusPublicacaoAnuncio,
+    publicarAnuncioImovel,
     alterarStatusAnuncio,
     atualizarAnuncio,
     atualizarImovel,
