@@ -136,6 +136,25 @@ export type StatusImovel =
   | "alugado"
   | "inativo";
 
+export type PerfilImovel = "residencial" | "comercial" | "misto";
+
+export type SituacaoImovel =
+  | "pronto_morar"
+  | "em_construcao"
+  | "na_planta"
+  | "reformado";
+
+export type TopografiaTerreno = "plano" | "aclive" | "declive" | "irregular";
+
+export type PosicaoSolar =
+  | "manha"
+  | "tarde"
+  | "manha_tarde"
+  | "norte"
+  | "sul"
+  | "nascente"
+  | "poente";
+
 export interface Endereco {
   logradouro: string;
   numero: string;
@@ -200,6 +219,16 @@ export interface Imovel {
   seo: { titulo: string; descricao: string };
   historico: RegistroHistorico[];
   criadoEm: string;
+  /** Ficha do imóvel — atributos complementares mostrados no anúncio público. */
+  aceitaPermuta?: boolean;
+  idadeAnos?: number;
+  perfil?: PerfilImovel;
+  posicaoSolar?: PosicaoSolar;
+  situacao?: SituacaoImovel;
+  escriturado?: boolean;
+  averbado?: boolean;
+  terreno?: TopografiaTerreno;
+  aceitaFinanciamento?: boolean;
 }
 
 /* ---------------------------------------------------------------- Anúncios */

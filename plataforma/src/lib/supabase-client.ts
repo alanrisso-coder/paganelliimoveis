@@ -52,6 +52,15 @@ export interface DbImovel {
   exclusividade_ate: string | null;
   seo_titulo: string | null;
   seo_descricao: string | null;
+  aceita_permuta: boolean | null;
+  idade_anos: number | null;
+  perfil: string | null;
+  posicao_solar: string | null;
+  situacao: string | null;
+  escriturado: boolean | null;
+  averbado: boolean | null;
+  terreno: string | null;
+  aceita_financiamento: boolean | null;
   criado_em: string;
   atualizado_em: string;
 }

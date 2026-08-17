@@ -12,16 +12,22 @@ import {
   enderecoCompleto,
   formatarArea,
   formatarData,
+  formatarIdadeImovel,
   formatarMoeda,
   formatarMoedaCurta,
   formatarPercentual,
   formatarTelefone,
   rotuloFinalidade,
+  rotuloPerfilImovel,
+  rotuloPosicaoSolar,
+  rotuloSituacaoImovel,
   rotuloStatusAnuncio,
   rotuloStatusContrato,
   rotuloStatusImovel,
   rotuloStatusVisita,
+  rotuloTerreno,
   rotuloTipoImovel,
+  simNao,
 } from "@/lib/format";
 import type { StatusImovel } from "@/lib/types";
 
@@ -187,6 +193,27 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
               <p className="text-[0.625rem] font-bold uppercase tracking-wide text-grafite-400">Endereço</p>
               <p className="mt-1 text-sm text-grafite-700">{enderecoCompleto(imovel)}</p>
             </div>
+          </Painel>
+
+          <Painel titulo="Ficha do imóvel">
+            <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {[
+                { r: "Aceita permuta?", v: simNao(imovel.aceitaPermuta) },
+                { r: "Idade do imóvel", v: formatarIdadeImovel(imovel.idadeAnos) },
+                { r: "Perfil", v: imovel.perfil ? rotuloPerfilImovel[imovel.perfil] : "—" },
+                { r: "Posição solar", v: imovel.posicaoSolar ? rotuloPosicaoSolar[imovel.posicaoSolar] : "—" },
+                { r: "Situação", v: imovel.situacao ? rotuloSituacaoImovel[imovel.situacao] : "—" },
+                { r: "Escriturado", v: simNao(imovel.escriturado) },
+                { r: "Averbado", v: simNao(imovel.averbado) },
+                { r: "Terreno", v: imovel.terreno ? rotuloTerreno[imovel.terreno] : "—" },
+                { r: "Aceita financiamento", v: simNao(imovel.aceitaFinanciamento) },
+              ].map((x) => (
+                <div key={x.r}>
+                  <dt className="text-[0.625rem] font-bold uppercase tracking-wide text-grafite-400">{x.r}</dt>
+                  <dd className="mt-0.5 text-sm font-bold text-verde-900">{x.v}</dd>
+                </div>
+              ))}
+            </dl>
           </Painel>
 
           <Painel titulo="Valores">

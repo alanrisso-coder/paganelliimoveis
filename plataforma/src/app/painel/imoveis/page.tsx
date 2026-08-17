@@ -12,10 +12,23 @@ import {
   formatarArea,
   precoFormatado,
   rotuloFinalidade,
+  rotuloPerfilImovel,
+  rotuloPosicaoSolar,
+  rotuloSituacaoImovel,
   rotuloStatusImovel,
+  rotuloTerreno,
   rotuloTipoImovel,
 } from "@/lib/format";
-import type { FinalidadeImovel, StatusImovel, TipoImovel, Imovel } from "@/lib/types";
+import type {
+  FinalidadeImovel,
+  Imovel,
+  PerfilImovel,
+  PosicaoSolar,
+  SituacaoImovel,
+  StatusImovel,
+  TipoImovel,
+  TopografiaTerreno,
+} from "@/lib/types";
 
 const tomStatus: Record<StatusImovel, "verde" | "alerta" | "neutro" | "erro"> = {
   disponivel: "verde",
@@ -285,6 +298,15 @@ function ModalNovoImovel({
     exclusivo: false,
     descricaoCurta: "",
     descricaoCompleta: "",
+    aceitaPermuta: false,
+    idadeAnos: "0",
+    perfil: "residencial" as PerfilImovel,
+    posicaoSolar: "manha_tarde" as PosicaoSolar,
+    situacao: "pronto_morar" as SituacaoImovel,
+    escriturado: true,
+    averbado: true,
+    terreno: "plano" as TopografiaTerreno,
+    aceitaFinanciamento: true,
   });
 
   const proprietarios = dados.clientes.filter((c) => c.tipo === "proprietario");
@@ -327,6 +349,15 @@ function ModalNovoImovel({
         exclusivo: form.exclusivo,
         descricaoCurta: form.descricaoCurta,
         descricaoCompleta: form.descricaoCompleta,
+        aceitaPermuta: form.aceitaPermuta,
+        idadeAnos: Number(form.idadeAnos || 0),
+        perfil: form.perfil,
+        posicaoSolar: form.posicaoSolar,
+        situacao: form.situacao,
+        escriturado: form.escriturado,
+        averbado: form.averbado,
+        terreno: form.terreno,
+        aceitaFinanciamento: form.aceitaFinanciamento,
       },
       autorId,
     );
@@ -501,6 +532,75 @@ function ModalNovoImovel({
               />
               Captado com exclusividade
             </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
+            Ficha do imóvel
+          </legend>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <CampoSelecao
+              rotulo="Perfil"
+              value={form.perfil}
+              onChange={(e) => setForm({ ...form, perfil: e.target.value as PerfilImovel })}
+              opcoes={(Object.keys(rotuloPerfilImovel) as PerfilImovel[]).map((p) => ({
+                valor: p,
+                texto: rotuloPerfilImovel[p],
+              }))}
+            />
+            <CampoSelecao
+              rotulo="Situação"
+              value={form.situacao}
+              onChange={(e) => setForm({ ...form, situacao: e.target.value as SituacaoImovel })}
+              opcoes={(Object.keys(rotuloSituacaoImovel) as SituacaoImovel[]).map((s) => ({
+                valor: s,
+                texto: rotuloSituacaoImovel[s],
+              }))}
+            />
+            <Campo
+              rotulo="Idade do imóvel (anos)"
+              type="number"
+              min={0}
+              value={form.idadeAnos}
+              onChange={(e) => setForm({ ...form, idadeAnos: e.target.value })}
+            />
+            <CampoSelecao
+              rotulo="Posição solar"
+              value={form.posicaoSolar}
+              onChange={(e) => setForm({ ...form, posicaoSolar: e.target.value as PosicaoSolar })}
+              opcoes={(Object.keys(rotuloPosicaoSolar) as PosicaoSolar[]).map((p) => ({
+                valor: p,
+                texto: rotuloPosicaoSolar[p],
+              }))}
+            />
+            <CampoSelecao
+              rotulo="Terreno"
+              value={form.terreno}
+              onChange={(e) => setForm({ ...form, terreno: e.target.value as TopografiaTerreno })}
+              opcoes={(Object.keys(rotuloTerreno) as TopografiaTerreno[]).map((t) => ({
+                valor: t,
+                texto: rotuloTerreno[t],
+              }))}
+            />
+          </div>
+          <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
+            {[
+              { rotulo: "Aceita permuta?", chave: "aceitaPermuta" as const },
+              { rotulo: "Escriturado", chave: "escriturado" as const },
+              { rotulo: "Averbado", chave: "averbado" as const },
+              { rotulo: "Aceita financiamento", chave: "aceitaFinanciamento" as const },
+            ].map((c) => (
+              <label key={c.chave} className="flex items-center gap-2.5 text-sm text-grafite-700">
+                <input
+                  type="checkbox"
+                  checked={form[c.chave]}
+                  onChange={(e) => setForm({ ...form, [c.chave]: e.target.checked })}
+                  className="h-4 w-4 accent-verde-700"
+                />
+                {c.rotulo}
+              </label>
+            ))}
           </div>
         </fieldset>
 

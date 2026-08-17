@@ -14,11 +14,17 @@ import {
   enderecoCompleto,
   enderecoResumido,
   formatarArea,
+  formatarIdadeImovel,
   formatarMoeda,
   formatarMoedaCurta,
   precoFormatado,
   rotuloFinalidade,
+  rotuloPerfilImovel,
+  rotuloPosicaoSolar,
+  rotuloSituacaoImovel,
+  rotuloTerreno,
   rotuloTipoImovel,
+  simNao,
 } from "@/lib/format";
 
 export function DetalheImovel({ slug }: { slug: string }) {
@@ -133,6 +139,21 @@ export function DetalheImovel({ slug }: { slug: string }) {
     ...(m.banheiros ? [{ rotulo: "Banheiros", valor: String(m.banheiros) }] : []),
     ...(m.vagas ? [{ rotulo: "Vagas", valor: String(m.vagas) }] : []),
     ...(m.andar ? [{ rotulo: "Andar", valor: `${m.andar}º` }] : []),
+    ...(imovel.perfil ? [{ rotulo: "Perfil", valor: rotuloPerfilImovel[imovel.perfil] }] : []),
+    ...(imovel.situacao ? [{ rotulo: "Situação", valor: rotuloSituacaoImovel[imovel.situacao] }] : []),
+    ...(imovel.idadeAnos !== undefined
+      ? [{ rotulo: "Idade do imóvel", valor: formatarIdadeImovel(imovel.idadeAnos) }]
+      : []),
+    ...(imovel.posicaoSolar ? [{ rotulo: "Posição solar", valor: rotuloPosicaoSolar[imovel.posicaoSolar] }] : []),
+    ...(imovel.terreno ? [{ rotulo: "Terreno", valor: rotuloTerreno[imovel.terreno] }] : []),
+    ...(imovel.aceitaPermuta !== undefined
+      ? [{ rotulo: "Aceita permuta?", valor: simNao(imovel.aceitaPermuta) }]
+      : []),
+    ...(imovel.aceitaFinanciamento !== undefined
+      ? [{ rotulo: "Aceita financiamento", valor: simNao(imovel.aceitaFinanciamento) }]
+      : []),
+    ...(imovel.escriturado !== undefined ? [{ rotulo: "Escriturado", valor: simNao(imovel.escriturado) }] : []),
+    ...(imovel.averbado !== undefined ? [{ rotulo: "Averbado", valor: simNao(imovel.averbado) }] : []),
   ];
 
   return (
@@ -185,10 +206,10 @@ export function DetalheImovel({ slug }: { slug: string }) {
           </div>
 
           <section className="mt-10" aria-labelledby="ficha">
-            <h2 id="ficha" className="sr-only">
-              Ficha técnica
+            <h2 id="ficha" className="font-display text-2xl text-verde-900">
+              Ficha do imóvel
             </h2>
-            <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-linha bg-linha sm:grid-cols-3 lg:grid-cols-4">
+            <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-linha bg-linha sm:grid-cols-3 lg:grid-cols-4">
               {fichas.map((f) => (
                 <div key={f.rotulo} className="bg-white px-4 py-3.5">
                   <dt className="text-[0.6875rem] font-bold uppercase tracking-wide text-grafite-400">

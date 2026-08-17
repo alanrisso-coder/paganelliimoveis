@@ -72,6 +72,15 @@ export function converterDbImovelParaImovel(db: DbImovel): Imovel {
     },
     historico: [],
     criadoEm: db.criado_em,
+    aceitaPermuta: db.aceita_permuta ?? undefined,
+    idadeAnos: db.idade_anos ?? undefined,
+    perfil: (db.perfil as any) ?? undefined,
+    posicaoSolar: (db.posicao_solar as any) ?? undefined,
+    situacao: (db.situacao as any) ?? undefined,
+    escriturado: db.escriturado ?? undefined,
+    averbado: db.averbado ?? undefined,
+    terreno: (db.terreno as any) ?? undefined,
+    aceitaFinanciamento: db.aceita_financiamento ?? undefined,
   };
 }
 
@@ -209,6 +218,15 @@ export function converterImovelParaDbImovel(
     exclusividade_ate: imovel.exclusividadeAte ?? null,
     seo_titulo: imovel.seo.titulo ?? null,
     seo_descricao: imovel.seo.descricao ?? null,
+    aceita_permuta: imovel.aceitaPermuta ?? null,
+    idade_anos: imovel.idadeAnos ?? null,
+    perfil: imovel.perfil ?? null,
+    posicao_solar: imovel.posicaoSolar ?? null,
+    situacao: imovel.situacao ?? null,
+    escriturado: imovel.escriturado ?? null,
+    averbado: imovel.averbado ?? null,
+    terreno: imovel.terreno ?? null,
+    aceita_financiamento: imovel.aceitaFinanciamento ?? null,
   };
   return result;
 }

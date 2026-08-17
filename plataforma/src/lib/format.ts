@@ -2,11 +2,15 @@ import type {
   EtapaFunil,
   FinalidadeImovel,
   Imovel,
+  PerfilImovel,
+  PosicaoSolar,
+  SituacaoImovel,
   StatusAnuncio,
   StatusContrato,
   StatusImovel,
   StatusVisita,
   TipoImovel,
+  TopografiaTerreno,
 } from "./types";
 
 /* ------------------------------------------------------------- Formatação */
@@ -217,6 +221,45 @@ export const rotuloEtapaFunil: Record<EtapaFunil, string> = {
   fechado: "Fechado",
   perdido: "Perdido",
 };
+
+export const rotuloPerfilImovel: Record<PerfilImovel, string> = {
+  residencial: "Residencial",
+  comercial: "Comercial",
+  misto: "Misto",
+};
+
+export const rotuloSituacaoImovel: Record<SituacaoImovel, string> = {
+  pronto_morar: "Pronto para morar",
+  em_construcao: "Em construção",
+  na_planta: "Na planta",
+  reformado: "Reformado",
+};
+
+export const rotuloTerreno: Record<TopografiaTerreno, string> = {
+  plano: "Plano",
+  aclive: "Aclive",
+  declive: "Declive",
+  irregular: "Irregular",
+};
+
+export const rotuloPosicaoSolar: Record<PosicaoSolar, string> = {
+  manha: "Sol da manhã",
+  tarde: "Sol da tarde",
+  manha_tarde: "Sol da manhã e tarde",
+  norte: "Norte",
+  sul: "Sul",
+  nascente: "Nascente",
+  poente: "Poente",
+};
+
+export function simNao(valor?: boolean): string {
+  return valor ? "Sim" : "Não";
+}
+
+export function formatarIdadeImovel(anos?: number): string {
+  if (anos === undefined) return "—";
+  return `${anos} ${anos <= 1 ? "ano" : "anos"}`;
+}
 
 export const etapasFunil: EtapaFunil[] = [
   "novo",

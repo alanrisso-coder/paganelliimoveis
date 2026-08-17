@@ -552,6 +552,15 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
           { id: id("h"), data: agora().slice(0, 10), autorId, descricao: "Imóvel cadastrado." },
         ],
         criadoEm: agora().slice(0, 10),
+        aceitaPermuta: dados.aceitaPermuta,
+        idadeAnos: dados.idadeAnos,
+        perfil: dados.perfil,
+        posicaoSolar: dados.posicaoSolar,
+        situacao: dados.situacao,
+        escriturado: dados.escriturado,
+        averbado: dados.averbado,
+        terreno: dados.terreno,
+        aceitaFinanciamento: dados.aceitaFinanciamento,
       };
       setEstado((e) => ({ ...e, imoveis: [novo, ...e.imoveis] }));
       registrarLog(autorId, "Cadastrou imóvel", novo.codigo, novo.titulo);
