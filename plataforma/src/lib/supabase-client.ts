@@ -293,3 +293,47 @@ export async function atualizarCliente(id: string, updates: Partial<DbCliente>) 
 
   return data as DbCliente;
 }
+
+// Funções de Delete
+
+export async function deletarImovel(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from("imoveis")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Erro ao deletar imóvel:", error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function deletarCliente(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from("clientes")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Erro ao deletar cliente:", error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function deletarAnuncio(id: string): Promise<boolean> {
+  const { error } = await supabase
+    .from("anuncios")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Erro ao deletar anúncio:", error);
+    return false;
+  }
+
+  return true;
+}

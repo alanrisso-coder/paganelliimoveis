@@ -28,6 +28,7 @@ const tomStatus: Record<StatusImovel, "verde" | "alerta" | "neutro" | "erro"> = 
 export default function PaginaImoveis() {
   const dados = useDados();
   const { usuario, pode } = useSessao();
+  const { avisar } = useAviso();
   const [termo, setTermo] = useState("");
   const [status, setStatus] = useState("todos");
   const [tipo, setTipo] = useState("todos");
@@ -99,7 +100,7 @@ export default function PaginaImoveis() {
             <caption className="sr-only">Catálogo de imóveis</caption>
             <thead>
               <tr className="bg-areia-50">
-                {["Código", "Imóvel", "Tipo", "Finalidade", "Valor", "Métricas", "Status", "Corretor"].map((h) => (
+                {["Código", "Imóvel", "Tipo", "Finalidade", "Valor", "Métricas", "Status", "Corretor", ...(pode("deletar_imovel") ? ["Ações"] : [])].map((h) => (
                   <th key={h} scope="col" className="px-4 py-3 text-[0.625rem] font-bold uppercase tracking-wide text-grafite-400">
                     {h}
                   </th>
@@ -139,6 +140,28 @@ export default function PaginaImoveis() {
                       <Selo tom={tomStatus[i.status]}>{rotuloStatusImovel[i.status]}</Selo>
                     </td>
                     <td className="px-4 py-3.5 text-xs text-grafite-700">{corretor?.nome}</td>
+                    {pode("deletar_imovel") && (
+                      <td className="px-4 py-3.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (confirm(`Tem certeza que deseja deletar "${i.titulo}"? Esta ação não pode ser desfeita.`)) {
+                              dados.deletarImovel(i.id, usuario?.id ?? "");
+                              avisar("Imóvel deletado com sucesso.", "sucesso");
+                            }
+                          }}
+                          title="Deletar imóvel"
+                          className="text-vermelho-800 hover:text-vermelho-900 transition-colors"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
+                          </svg>
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 );
               })}

@@ -110,6 +110,27 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
             >
               Ver no site ↗
             </Link>
+            {pode("deletar_imovel") && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm(`Tem certeza que deseja deletar "${imovel.titulo}"? Esta ação não pode ser desfeita.`)) {
+                    dados.deletarImovel(imovel.id, usuario?.id ?? "");
+                    avisar("Imóvel deletado com sucesso.", "sucesso");
+                    window.location.href = "/painel/imoveis";
+                  }
+                }}
+                title="Deletar imóvel"
+                className="rounded-sm border border-vermelho-800/25 p-2 text-vermelho-800 hover:bg-vermelho-800/6 transition-colors"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                  <line x1="10" y1="11" x2="10" y2="17" />
+                  <line x1="14" y1="11" x2="14" y2="17" />
+                </svg>
+              </button>
+            )}
           </>
         }
       />

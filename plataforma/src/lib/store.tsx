@@ -126,10 +126,12 @@ interface ContextoDados extends EstadoDados {
   /* Mutações — anúncios */
   alterarStatusAnuncio: (anuncioId: string, status: StatusAnuncio, autorId: string) => void;
   atualizarAnuncio: (anuncioId: string, dados: Partial<Anuncio>, autorId: string) => void;
+  deletarAnuncio: (anuncioId: string, autorId: string) => void;
 
   /* Mutações — imóveis */
   atualizarImovel: (imovelId: string, dados: Partial<Imovel>, autorId: string) => void;
   criarImovel: (dados: Partial<Imovel> & { titulo: string }, autorId: string) => Imovel;
+  deletarImovel: (imovelId: string, autorId: string) => void;
 
   /* Mutações — CRM */
   criarLead: (dados: DadosNovoLead) => Lead;
@@ -138,6 +140,7 @@ interface ContextoDados extends EstadoDados {
   descartarLead: (leadId: string) => void;
   moverEtapaCliente: (clienteId: string, etapa: EtapaFunil) => void;
   criarCliente: (dados: Partial<Cliente> & { nome: string }, autorId: string) => Cliente;
+  deletarCliente: (clienteId: string, autorId: string) => void;
   registrarInteracao: (clienteId: string, interacao: Omit<Interacao, "id">) => void;
 
   /* Mutações — visitas */
@@ -814,6 +817,51 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     setEstado(estadoInicial);
   }, []);
 
+  /* --------------------------------------------------------- Delete (Admin) */
+
+  const deletarImovel = useCallback((imovelId: string, autorId: string) => {
+    let imovelTitulo = "";
+    setEstado((e) => {
+      const imovel = e.imoveis.find((i) => i.id === imovelId);
+      if (imovel) imovelTitulo = imovel.titulo;
+      return {
+        ...e,
+        imoveis: e.imoveis.filter((i) => i.id !== imovelId),
+        anuncios: e.anuncios.filter((a) => a.imovelId !== imovelId),
+        visitas: e.visitas.filter((v) => v.imovelId !== imovelId),
+        contratos: e.contratos.filter((c) => c.imovelId !== imovelId),
+      };
+    });
+    registrarLog(autorId, "Deletou imóvel", imovelTitulo, "Imóvel removido do sistema.");
+  }, [registrarLog]);
+
+  const deletarCliente = useCallback((clienteId: string, autorId: string) => {
+    let clienteNome = "";
+    setEstado((e) => {
+      const cliente = e.clientes.find((c) => c.id === clienteId);
+      if (cliente) clienteNome = cliente.nome;
+      return {
+        ...e,
+        clientes: e.clientes.filter((c) => c.id !== clienteId),
+        leads: e.leads.filter((l) => l.clienteId !== clienteId),
+      };
+    });
+    registrarLog(autorId, "Deletou cliente", clienteNome, "Cliente removido do sistema.");
+  }, [registrarLog]);
+
+  const deletarAnuncio = useCallback((anuncioId: string, autorId: string) => {
+    let anuncioCodigo = "";
+    setEstado((e) => {
+      const anuncio = e.anuncios.find((a) => a.id === anuncioId);
+      if (anuncio) anuncioCodigo = anuncio.codigo;
+      return {
+        ...e,
+        anuncios: e.anuncios.filter((a) => a.id !== anuncioId),
+      };
+    });
+    registrarLog(autorId, "Deletou anúncio", anuncioCodigo, "Anúncio removido do sistema.");
+  }, [registrarLog]);
+
   const valor: ContextoDados = {
     ...estado,
     carregado,
@@ -832,12 +880,14 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     atualizarAnuncio,
     atualizarImovel,
     criarImovel,
+    deletarImovel,
     criarLead,
     atribuirLead,
     converterLeadEmCliente,
     descartarLead,
     moverEtapaCliente,
     criarCliente,
+    deletarCliente,
     registrarInteracao,
     criarVisita,
     alterarStatusVisita,
@@ -846,6 +896,7 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     criarContrato,
     atualizarContrato,
     renovarContrato,
+    deletarAnuncio,
     alternarTarefa,
     criarTarefa,
     marcarNotificacaoLida,

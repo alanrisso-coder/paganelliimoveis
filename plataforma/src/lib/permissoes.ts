@@ -12,10 +12,13 @@ export type Permissao =
   | "ver_dashboard"
   | "ver_crm"
   | "editar_cliente"
+  | "deletar_cliente"
   | "ver_imoveis"
   | "editar_imovel"
+  | "deletar_imovel"
   | "ver_anuncios"
   | "publicar_anuncio"
+  | "deletar_anuncio"
   | "ver_visitas"
   | "agendar_visita"
   | "ver_contratos"
@@ -31,10 +34,13 @@ const matriz: Record<PerfilAcesso, Permissao[]> = {
     "ver_dashboard",
     "ver_crm",
     "editar_cliente",
+    "deletar_cliente",
     "ver_imoveis",
     "editar_imovel",
+    "deletar_imovel",
     "ver_anuncios",
     "publicar_anuncio",
+    "deletar_anuncio",
     "ver_visitas",
     "agendar_visita",
     "ver_contratos",
