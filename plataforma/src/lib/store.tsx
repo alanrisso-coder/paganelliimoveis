@@ -32,7 +32,7 @@ import { anuncios as anunciosSeed } from "./seed/anuncios";
 import { visitas as visitasSeed } from "./seed/visitas";
 import { contratos as contratosSeed } from "./seed/contratos";
 import { leads as leadsSeed, logs as logsSeed, notificacoes as notificacoesSeed, tarefas as tarefasSeed } from "./seed/leads";
-import { criarImovel as criarImovelSupabase, criarCliente as criarClienteSupabase } from "./supabase-client";
+import { criarImovel as criarImovelSupabase, criarCliente as criarClienteSupabase, criarAnuncio as criarAnuncioSupabase } from "./supabase-client";
 import { converterImovelParaDbImovel } from "./supabase-sync-store";
 
 /**
@@ -436,6 +436,30 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
             dbImovel.proprietario_id = estado.clientes[0].id;
           }
           await criarImovelSupabase(dbImovel);
+
+          // Criar anúncio público automaticamente
+          try {
+            await criarAnuncioSupabase({
+              id: id("an"),
+              codigo: `AN-${novo.codigo}`,
+              imovel_id: novo.id,
+              titulo: novo.titulo,
+              subtitulo: novo.descricaoCurta,
+              descricao_comercial: novo.descricaoCompleta,
+              status: "publicado",
+              visibilidade: "publico",
+              publicar_em: null,
+              expirar_em: null,
+              destaque_home: false,
+              capa_indice: 0,
+              ordem_galeria: [],
+              selos: [],
+              metricas: { visualizacoes: 0, interesse: 0, contatos: 0 },
+              corretor_id: novo.corretorId,
+            });
+          } catch (erro) {
+            console.error("Erro ao criar anúncio automático:", erro);
+          }
         } catch (erro) {
           console.error("Erro ao sincronizar imóvel com Supabase:", erro);
         }
