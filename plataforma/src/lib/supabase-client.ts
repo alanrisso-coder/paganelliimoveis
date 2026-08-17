@@ -146,18 +146,25 @@ export async function obterImovelPorSlug(slug: string) {
 }
 
 export async function criarImovel(imovel: Omit<DbImovel, "criado_em" | "atualizado_em">) {
-  const { data, error } = await supabase
-    .from("imoveis")
-    .insert([imovel])
-    .select()
-    .single();
+  try {
+    const response = await fetch("/api/sync/imoveis", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(imovel),
+    });
 
-  if (error) {
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Erro ao criar imóvel:", error);
+      return null;
+    }
+
+    const { data } = await response.json();
+    return data as DbImovel;
+  } catch (error) {
     console.error("Erro ao criar imóvel:", error);
     return null;
   }
-
-  return data as DbImovel;
 }
 
 export async function atualizarImovel(id: string, updates: Partial<DbImovel>) {
@@ -205,18 +212,25 @@ export async function obterAnunciosPublicos() {
 }
 
 export async function criarAnuncio(anuncio: Omit<DbAnuncio, "criado_em" | "atualizado_em">) {
-  const { data, error } = await supabase
-    .from("anuncios")
-    .insert([anuncio])
-    .select()
-    .single();
+  try {
+    const response = await fetch("/api/sync/anuncios", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(anuncio),
+    });
 
-  if (error) {
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Erro ao criar anúncio:", error);
+      return null;
+    }
+
+    const { data } = await response.json();
+    return data as DbAnuncio;
+  } catch (error) {
     console.error("Erro ao criar anúncio:", error);
     return null;
   }
-
-  return data as DbAnuncio;
 }
 
 export async function atualizarAnuncio(id: string, updates: Partial<DbAnuncio>) {
@@ -264,18 +278,25 @@ export async function obterClientePorId(id: string) {
 }
 
 export async function criarCliente(cliente: Omit<DbCliente, "criado_em" | "atualizado_em">) {
-  const { data, error } = await supabase
-    .from("clientes")
-    .insert([cliente])
-    .select()
-    .single();
+  try {
+    const response = await fetch("/api/sync/clientes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(cliente),
+    });
 
-  if (error) {
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Erro ao criar cliente:", error);
+      return null;
+    }
+
+    const { data } = await response.json();
+    return data as DbCliente;
+  } catch (error) {
     console.error("Erro ao criar cliente:", error);
     return null;
   }
-
-  return data as DbCliente;
 }
 
 export async function atualizarCliente(id: string, updates: Partial<DbCliente>) {
