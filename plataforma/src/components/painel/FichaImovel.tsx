@@ -51,7 +51,7 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
     );
   }
 
-  const proprietario = dados.clientePorId(imovel.proprietarioId);
+  const proprietario = imovel.proprietarioId ? dados.clientePorId(imovel.proprietarioId) : undefined;
   const corretor = dados.usuarioPorId(imovel.corretorId);
   const contrato = dados.contratoDoImovel(imovel.id);
   const visitas = dados.visitasDoImovel(imovel.id);

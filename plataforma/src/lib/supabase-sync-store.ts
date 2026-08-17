@@ -62,7 +62,7 @@ export function converterDbImovelParaImovel(db: DbImovel): Imovel {
     tourVirtualUrl: db.tour_virtual_url ?? undefined,
     plantas: db.plantas || [],
     documentos: db.documentos || [],
-    proprietarioId: db.proprietario_id,
+    proprietarioId: db.proprietario_id ?? undefined,
     corretorId: db.corretor_id,
     exclusivo: db.exclusivo,
     exclusividadeAte: db.exclusividade_ate ?? undefined,
@@ -133,12 +133,41 @@ export function converterDbAnuncioParaAnuncio(db: DbAnuncio): Anuncio {
 }
 
 /**
+ * Converter Cliente para Supabase (DbCliente)
+ */
+export function converterClienteParaDbCliente(
+  cliente: Cliente
+): Omit<DbCliente, "criado_em" | "atualizado_em"> {
+  return {
+    id: cliente.id,
+    nome: cliente.nome,
+    documento: cliente.documento || null,
+    telefone: cliente.telefone || null,
+    whatsapp: cliente.whatsapp || null,
+    email: cliente.email || null,
+    endereco: cliente.endereco || null,
+    tipo: cliente.tipo,
+    origem: cliente.origem,
+    corretor_id: cliente.corretorId,
+    orcamento_min: cliente.orcamentoMin ?? null,
+    orcamento_max: cliente.orcamentoMax ?? null,
+    interesses: cliente.interesses,
+    preferencias: cliente.preferencias,
+    etapa: cliente.etapa,
+    timeline: cliente.timeline,
+    favoritos: cliente.favoritos,
+    recomendados: cliente.recomendados,
+    observacoes: cliente.observacoes || null,
+  };
+}
+
+/**
  * Converter formato interno (Imovel) para Supabase (DbImovel)
  */
 export function converterImovelParaDbImovel(
   imovel: Imovel
 ): Omit<DbImovel, "criado_em" | "atualizado_em"> {
-  return {
+  const result: any = {
     id: imovel.id,
     codigo: imovel.codigo,
     titulo: imovel.titulo,
@@ -174,13 +203,14 @@ export function converterImovelParaDbImovel(
     tour_virtual_url: imovel.tourVirtualUrl ?? null,
     plantas: imovel.plantas,
     documentos: imovel.documentos,
-    proprietario_id: imovel.proprietarioId,
+    proprietario_id: imovel.proprietarioId || null,
     corretor_id: imovel.corretorId,
     exclusivo: imovel.exclusivo,
     exclusividade_ate: imovel.exclusividadeAte ?? null,
     seo_titulo: imovel.seo.titulo ?? null,
     seo_descricao: imovel.seo.descricao ?? null,
   };
+  return result;
 }
 
 /**

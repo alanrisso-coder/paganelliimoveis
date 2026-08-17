@@ -193,7 +193,7 @@ export interface Imovel {
   tourVirtualUrl?: string;
   plantas: string[];
   documentos: DocumentoAnexo[];
-  proprietarioId: string;
+  proprietarioId?: string;
   corretorId: string;
   exclusivo: boolean;
   exclusividadeAte?: string;

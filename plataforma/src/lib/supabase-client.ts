@@ -46,7 +46,7 @@ export interface DbImovel {
   tour_virtual_url: string | null;
   plantas: string[];
   documentos: any[];
-  proprietario_id: string;
+  proprietario_id: string | null;
   corretor_id: string;
   exclusivo: boolean;
   exclusividade_ate: string | null;
