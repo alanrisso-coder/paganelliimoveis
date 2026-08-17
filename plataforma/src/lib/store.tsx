@@ -32,9 +32,16 @@ import { anuncios as anunciosSeed } from "./seed/anuncios";
 import { visitas as visitasSeed } from "./seed/visitas";
 import { contratos as contratosSeed } from "./seed/contratos";
 import { leads as leadsSeed, logs as logsSeed, notificacoes as notificacoesSeed, tarefas as tarefasSeed } from "./seed/leads";
-import { criarImovel as criarImovelSupabase, criarCliente as criarClienteSupabase, criarAnuncio as criarAnuncioSupabase } from "./supabase-client";
+import {
+  criarImovel as criarImovelSupabase,
+  criarCliente as criarClienteSupabase,
+  criarAnuncio as criarAnuncioSupabase,
+  atualizarImovel as atualizarImovelSupabase,
+  atualizarAnuncio as atualizarAnuncioSupabase,
+} from "./supabase-client";
 import {
   converterImovelParaDbImovel,
+  converterAnuncioParaDbAnuncio,
   converterDbAnuncioParaAnuncio,
   carregarTodosDadosSupabase,
 } from "./supabase-sync-store";
@@ -352,17 +359,19 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
   const alterarStatusAnuncio = useCallback(
     (anuncioId: string, status: StatusAnuncio, autorId: string) => {
       let codigo = "";
+      let atualizado: Anuncio | null = null;
       setEstado((e) => ({
         ...e,
         anuncios: e.anuncios.map((a) => {
           if (a.id !== anuncioId) return a;
           codigo = a.codigo;
-          return {
+          atualizado = {
             ...a,
             status,
             atualizadoEm: agora().slice(0, 10),
             publicarEm: status === "publicado" ? agora().slice(0, 10) : a.publicarEm,
           };
+          return atualizado;
         }),
       }));
       registrarLog(
@@ -371,6 +380,11 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
         codigo,
         `Novo status: ${status}.`,
       );
+      if (atualizado) {
+        atualizarAnuncioSupabase(anuncioId, converterAnuncioParaDbAnuncio(atualizado)).catch((erro) =>
+          console.error("Erro ao sincronizar status do anúncio com Supabase:", erro),
+        );
+      }
     },
     [registrarLog],
   );
@@ -378,15 +392,22 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
   const atualizarAnuncio = useCallback(
     (anuncioId: string, dados: Partial<Anuncio>, autorId: string) => {
       let codigo = "";
+      let atualizado: Anuncio | null = null;
       setEstado((e) => ({
         ...e,
         anuncios: e.anuncios.map((a) => {
           if (a.id !== anuncioId) return a;
           codigo = a.codigo;
-          return { ...a, ...dados, atualizadoEm: agora().slice(0, 10) };
+          atualizado = { ...a, ...dados, atualizadoEm: agora().slice(0, 10) };
+          return atualizado;
         }),
       }));
       registrarLog(autorId, "Atualizou anúncio", codigo, "Dados do anúncio alterados.");
+      if (atualizado) {
+        atualizarAnuncioSupabase(anuncioId, converterAnuncioParaDbAnuncio(atualizado)).catch((erro) =>
+          console.error("Erro ao sincronizar anúncio com Supabase:", erro),
+        );
+      }
     },
     [registrarLog],
   );
@@ -396,12 +417,13 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
   const atualizarImovel = useCallback(
     (imovelId: string, dados: Partial<Imovel>, autorId: string) => {
       let codigo = "";
+      let atualizado: Imovel | null = null;
       setEstado((e) => ({
         ...e,
         imoveis: e.imoveis.map((i) => {
           if (i.id !== imovelId) return i;
           codigo = i.codigo;
-          return {
+          atualizado = {
             ...i,
             ...dados,
             historico: [
@@ -414,9 +436,15 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
               },
             ],
           };
+          return atualizado;
         }),
       }));
       registrarLog(autorId, "Atualizou imóvel", codigo, "Cadastro alterado.");
+      if (atualizado) {
+        atualizarImovelSupabase(imovelId, converterImovelParaDbImovel(atualizado)).catch((erro) =>
+          console.error("Erro ao sincronizar imóvel com Supabase:", erro),
+        );
+      }
     },
     [registrarLog],
   );

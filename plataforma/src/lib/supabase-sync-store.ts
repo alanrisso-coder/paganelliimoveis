@@ -214,6 +214,32 @@ export function converterImovelParaDbImovel(
 }
 
 /**
+ * Converter formato interno (Anuncio) para Supabase (DbAnuncio)
+ */
+export function converterAnuncioParaDbAnuncio(
+  anuncio: Anuncio
+): Omit<DbAnuncio, "criado_em" | "atualizado_em"> {
+  return {
+    id: anuncio.id,
+    codigo: anuncio.codigo,
+    imovel_id: anuncio.imovelId,
+    titulo: anuncio.titulo,
+    subtitulo: anuncio.subtitulo || null,
+    descricao_comercial: anuncio.descricaoComercial || null,
+    status: anuncio.status,
+    visibilidade: anuncio.visibilidade,
+    publicar_em: anuncio.publicarEm ?? null,
+    expirar_em: anuncio.expirarEm ?? null,
+    destaque_home: anuncio.destaqueHome,
+    capa_indice: anuncio.capaIndice,
+    ordem_galeria: anuncio.ordemGaleria,
+    selos: anuncio.selos,
+    metricas: anuncio.metricas,
+    corretor_id: anuncio.corretorId,
+  };
+}
+
+/**
  * Carregar todos os dados do Supabase
  */
 export async function carregarTodosDadosSupabase() {
