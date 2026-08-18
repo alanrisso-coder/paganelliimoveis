@@ -41,6 +41,7 @@ import {
   atualizarCliente as atualizarClienteSupabase,
   deletarCliente as deletarClienteSupabase,
   deletarAnuncio as deletarAnuncioSupabase,
+  deletarImovel as deletarImovelSupabase,
 } from "./supabase-client";
 import {
   converterImovelParaDbImovel,
@@ -1022,6 +1023,9 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
       };
     });
     registrarLog(autorId, "Deletou imóvel", imovelTitulo, "Imóvel removido do sistema.");
+    deletarImovelSupabase(imovelId).catch((erro) =>
+      console.error("Erro ao remover imóvel do Supabase:", erro),
+    );
   }, [registrarLog]);
 
   const deletarCliente = useCallback((clienteId: string, autorId: string) => {
