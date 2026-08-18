@@ -82,7 +82,7 @@ export function Selo({
 
 /* ------------------------------------------------------------------ Campos */
 
-const baseCampo =
+export const baseCampo =
   "w-full rounded-sm border border-linha bg-white px-3 py-2.5 text-sm text-grafite-900 " +
   "placeholder:text-grafite-400 transition-colors focus:border-dourado-500";
 
@@ -164,6 +164,152 @@ export function CampoTexto({
         {rotulo}
       </label>
       <textarea id={id} rows={4} className={classes(baseCampo, "resize-y")} {...props} />
+    </div>
+  );
+}
+
+/* ------------------------------------------------------- Texto formatado */
+
+const MARCADORES_FORMATACAO = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+
+/**
+ * Converte negrito/itálico em formato Markdown leve (**negrito**, *itálico*)
+ * em nós React — nunca em HTML bruto, então não existe risco de injeção.
+ * Cobre só esses dois marcadores de propósito: é o suficiente para dar
+ * ênfase num texto de descrição, sem precisar de um editor rich-text.
+ */
+export function analisarTextoFormatado(texto: string): React.ReactNode[] {
+  const partes: React.ReactNode[] = [];
+  let ultimoIndice = 0;
+  let contador = 0;
+  const regex = new RegExp(MARCADORES_FORMATACAO);
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(texto))) {
+    if (match.index > ultimoIndice) {
+      partes.push(texto.slice(ultimoIndice, match.index));
+    }
+    if (match[1] !== undefined) {
+      partes.push(<strong key={`n${contador++}`}>{match[1]}</strong>);
+    } else if (match[2] !== undefined) {
+      partes.push(<em key={`i${contador++}`}>{match[2]}</em>);
+    }
+    ultimoIndice = regex.lastIndex;
+  }
+  if (ultimoIndice < texto.length) {
+    partes.push(texto.slice(ultimoIndice));
+  }
+  return partes;
+}
+
+export function TextoFormatado({ texto, className }: { texto: string; className?: string }) {
+  return <p className={classes("whitespace-pre-line", className)}>{analisarTextoFormatado(texto)}</p>;
+}
+
+/** Insere (ou remove, se a seleção já estiver envolvida) um marcador ao redor do texto selecionado. */
+function alternarMarcador(textarea: HTMLTextAreaElement, valor: string, marcador: string): string {
+  const inicio = textarea.selectionStart;
+  const fim = textarea.selectionEnd;
+  const selecionado = valor.slice(inicio, fim);
+  const antes = valor.slice(Math.max(0, inicio - marcador.length), inicio);
+  const depois = valor.slice(fim, fim + marcador.length);
+
+  if (selecionado && antes === marcador && depois === marcador) {
+    const novo =
+      valor.slice(0, inicio - marcador.length) + selecionado + valor.slice(fim + marcador.length);
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(inicio - marcador.length, fim - marcador.length);
+    });
+    return novo;
+  }
+
+  const novo = valor.slice(0, inicio) + marcador + selecionado + marcador + valor.slice(fim);
+  requestAnimationFrame(() => {
+    textarea.focus();
+    const cursor = selecionado
+      ? inicio + marcador.length * 2 + selecionado.length
+      : inicio + marcador.length;
+    textarea.setSelectionRange(cursor, cursor);
+  });
+  return novo;
+}
+
+/**
+ * Como CampoTexto, mas com botões de negrito/itálico (Markdown leve:
+ * **negrito**, *itálico*) e uma pré-visualização de como o texto vai
+ * aparecer formatado no anúncio.
+ */
+export function CampoTextoFormatado({
+  rotulo,
+  value,
+  onChange,
+  className,
+  rows = 6,
+  dica,
+}: {
+  rotulo: string;
+  value: string;
+  onChange: (valor: string) => void;
+  className?: string;
+  rows?: number;
+  dica?: string;
+}) {
+  const id = useId();
+  const ref = useRef<HTMLTextAreaElement>(null);
+
+  function aplicar(marcador: string) {
+    const textarea = ref.current;
+    if (!textarea) return;
+    onChange(alternarMarcador(textarea, value, marcador));
+  }
+
+  return (
+    <div className={className}>
+      <div className="mb-1.5 flex items-center justify-between gap-3">
+        <label htmlFor={id} className="text-xs font-bold text-grafite-700">
+          {rotulo}
+        </label>
+        <div className="flex gap-1" role="group" aria-label="Formatação de texto">
+          <button
+            type="button"
+            onClick={() => aplicar("**")}
+            title="Negrito"
+            aria-label="Aplicar negrito à seleção"
+            className="rounded-sm border border-linha px-2.5 py-1 text-xs font-extrabold text-grafite-700 hover:border-verde-800/40 hover:bg-verde-800/6"
+          >
+            N
+          </button>
+          <button
+            type="button"
+            onClick={() => aplicar("*")}
+            title="Itálico"
+            aria-label="Aplicar itálico à seleção"
+            className="rounded-sm border border-linha px-2.5 py-1 text-xs italic text-grafite-700 hover:border-verde-800/40 hover:bg-verde-800/6"
+          >
+            I
+          </button>
+        </div>
+      </div>
+      <textarea
+        ref={ref}
+        id={id}
+        rows={rows}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={classes(baseCampo, "resize-y")}
+      />
+      <p className="mt-1 text-[0.6875rem] text-grafite-400">
+        {dica ?? "Selecione um trecho e clique em N ou I para negrito/itálico."}
+      </p>
+      {value.trim() && (
+        <div className="mt-2 rounded-sm border border-linha bg-areia-50 px-3.5 py-3">
+          <p className="mb-1.5 text-[0.625rem] font-bold uppercase tracking-wide text-grafite-400">
+            Pré-visualização
+          </p>
+          <TextoFormatado texto={value} className="text-sm leading-relaxed text-grafite-700" />
+        </div>
+      )}
     </div>
   );
 }

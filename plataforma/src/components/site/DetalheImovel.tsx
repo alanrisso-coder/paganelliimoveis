@@ -8,7 +8,7 @@ import { GaleriaImovel } from "./GaleriaImovel";
 import { FormularioLead } from "./FormularioLead";
 import { BotaoWhatsapp } from "./BotaoWhatsapp";
 import { CardImovelCompacto } from "./CardImovel";
-import { Botao, EstadoVazio, Modal, Selo } from "@/components/ui";
+import { Botao, EstadoVazio, Modal, Selo, TextoFormatado } from "@/components/ui";
 import {
   enderecoCompleto,
   enderecoResumido,
@@ -220,9 +220,10 @@ export function DetalheImovel({ slug }: { slug: string }) {
             <h2 id="descricao" className="font-display text-2xl text-verde-900">
               Sobre o imóvel
             </h2>
-            <p className="mt-4 whitespace-pre-line text-sm leading-[1.85] text-grafite-700">
-              {imovel.descricaoCompleta}
-            </p>
+            <TextoFormatado
+              texto={imovel.descricaoCompleta}
+              className="mt-4 text-sm leading-[1.85] text-grafite-700"
+            />
           </section>
 
           {imovel.diferenciais.length > 0 && (

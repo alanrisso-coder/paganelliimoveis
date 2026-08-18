@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useDados } from "@/lib/store";
-import { Botao, Campo, CampoSelecao, CampoTexto } from "@/components/ui";
+import { Botao, Campo, CampoSelecao, CampoTexto, CampoTextoFormatado } from "@/components/ui";
 import {
   rotuloPerfilImovel,
   rotuloPosicaoSolar,
@@ -409,11 +409,11 @@ export function FormularioImovel({
             value={form.descricaoCurta}
             onChange={(e) => setForm({ ...form, descricaoCurta: e.target.value })}
           />
-          <CampoTexto
+          <CampoTextoFormatado
             rotulo="Descrição completa"
-            rows={5}
+            rows={8}
             value={form.descricaoCompleta}
-            onChange={(e) => setForm({ ...form, descricaoCompleta: e.target.value })}
+            onChange={(valor) => setForm({ ...form, descricaoCompleta: valor })}
           />
           <label className="flex items-center gap-2.5 text-sm text-grafite-700">
             <input

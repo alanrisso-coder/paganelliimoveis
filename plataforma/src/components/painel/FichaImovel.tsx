@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useDados } from "@/lib/store";
 import { useSessao } from "@/lib/auth";
 import { CabecalhoPagina } from "./Cabecalho";
-import { Botao, EstadoVazio, Modal, Painel, Selo } from "@/components/ui";
+import { Botao, EstadoVazio, Modal, Painel, Selo, TextoFormatado } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
 import { UploadMidias, GaleriaFotos } from "./UploadMidias";
 import { FormularioImovel, formDoImovel } from "./FormularioImovel";
@@ -249,7 +249,10 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
 
           <Painel titulo="Descrição">
             <p className="text-sm font-bold text-verde-900">{imovel.descricaoCurta}</p>
-            <p className="mt-3 text-sm leading-relaxed text-grafite-700">{imovel.descricaoCompleta}</p>
+            <TextoFormatado
+              texto={imovel.descricaoCompleta}
+              className="mt-3 text-sm leading-relaxed text-grafite-700"
+            />
 
             {imovel.caracteristicas.length > 0 && (
               <div className="mt-5 border-t border-linha pt-4">
