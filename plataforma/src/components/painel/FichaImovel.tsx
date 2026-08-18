@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useDados } from "@/lib/store";
 import { useSessao } from "@/lib/auth";
 import { CabecalhoPagina } from "./Cabecalho";
-import { Botao, EstadoVazio, Painel, Selo } from "@/components/ui";
+import { Botao, EstadoVazio, Modal, Painel, Selo } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
 import { UploadMidias, GaleriaFotos } from "./UploadMidias";
+import { FormularioImovel, formDoImovel } from "./FormularioImovel";
 import {
   enderecoCompleto,
   formatarArea,
@@ -35,6 +37,7 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
   const dados = useDados();
   const { usuario, pode } = useSessao();
   const { avisar } = useAviso();
+  const [editando, setEditando] = useState(false);
 
   const imovel = dados.imovelPorId(imovelId);
 
@@ -107,6 +110,15 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
                   ))}
                 </select>
               </>
+            )}
+            {pode("editar_imovel") && (
+              <button
+                type="button"
+                onClick={() => setEditando(true)}
+                className="rounded-sm border border-verde-800/25 px-4 py-2 text-xs font-extrabold text-verde-800 hover:bg-verde-800/6"
+              >
+                Editar
+              </button>
             )}
             <Link
               href={`/imoveis/${imovel.slug}`}
@@ -455,6 +467,24 @@ export function FichaImovel({ imovelId }: { imovelId: string }) {
         </div>
       </div>
 
+      <Modal
+        aberto={editando}
+        aoFechar={() => setEditando(false)}
+        titulo="Editar imóvel"
+        descricao="Atualize os dados do imóvel. As mudanças são sincronizadas com o site."
+        largura="xl"
+      >
+        <FormularioImovel
+          valorInicial={formDoImovel(imovel)}
+          textoSubmit="Salvar alterações"
+          aoCancelar={() => setEditando(false)}
+          aoSalvar={(payload) => {
+            dados.atualizarImovel(imovel.id, payload, usuario?.id ?? "");
+            avisar("Imóvel atualizado com sucesso.");
+            setEditando(false);
+          }}
+        />
+      </Modal>
     </>
   );
 }

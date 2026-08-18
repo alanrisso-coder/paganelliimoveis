@@ -5,30 +5,18 @@ import { useMemo, useState } from "react";
 import { useDados } from "@/lib/store";
 import { useSessao } from "@/lib/auth";
 import { CabecalhoPagina } from "@/components/painel/Cabecalho";
-import { Botao, Campo, CampoSelecao, CampoTexto, EstadoVazio, Modal, Selo } from "@/components/ui";
+import { Botao, EstadoVazio, Modal, Selo } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
+import { FormularioImovel, formVazioImovel } from "@/components/painel/FormularioImovel";
 import {
   enderecoResumido,
   formatarArea,
   precoFormatado,
   rotuloFinalidade,
-  rotuloPerfilImovel,
-  rotuloPosicaoSolar,
-  rotuloSituacaoImovel,
   rotuloStatusImovel,
-  rotuloTerreno,
   rotuloTipoImovel,
 } from "@/lib/format";
-import type {
-  FinalidadeImovel,
-  Imovel,
-  PerfilImovel,
-  PosicaoSolar,
-  SituacaoImovel,
-  StatusImovel,
-  TipoImovel,
-  TopografiaTerreno,
-} from "@/lib/types";
+import type { Imovel, StatusImovel, TipoImovel } from "@/lib/types";
 
 const tomStatus: Record<StatusImovel, "verde" | "alerta" | "neutro" | "erro"> = {
   disponivel: "verde",
@@ -274,98 +262,6 @@ function ModalNovoImovel({
 }) {
   const dados = useDados();
   const { avisar } = useAviso();
-  const [form, setForm] = useState({
-    titulo: "",
-    tipo: "casa" as TipoImovel,
-    finalidade: "venda" as FinalidadeImovel,
-    bairro: "",
-    cidade: "Palhoça",
-    cep: "",
-    logradouro: "",
-    numero: "",
-    valorVenda: "",
-    valorAluguel: "",
-    condominio: "",
-    iptu: "",
-    areaTotal: "",
-    areaConstruida: "",
-    dormitorios: "",
-    suites: "",
-    banheiros: "",
-    vagas: "",
-    proprietarioId: "",
-    corretorId: autorId,
-    exclusivo: false,
-    descricaoCurta: "",
-    descricaoCompleta: "",
-    aceitaPermuta: false,
-    idadeAnos: "0",
-    perfil: "residencial" as PerfilImovel,
-    posicaoSolar: "manha_tarde" as PosicaoSolar,
-    situacao: "pronto_morar" as SituacaoImovel,
-    escriturado: true,
-    averbado: true,
-    terreno: "plano" as TopografiaTerreno,
-    aceitaFinanciamento: true,
-  });
-
-  const proprietarios = dados.clientes.filter((c) => c.tipo === "proprietario");
-  const corretores = dados.usuarios.filter((u) => u.perfil !== "assistente");
-  const num = (v: string) => (v ? Number(v) : undefined);
-
-  function salvar(e: React.FormEvent) {
-    e.preventDefault();
-    const novo = dados.criarImovel(
-      {
-        titulo: form.titulo,
-        tipo: form.tipo,
-        finalidade: form.finalidade,
-        endereco: {
-          logradouro: form.logradouro,
-          numero: form.numero,
-          bairro: form.bairro,
-          cidade: form.cidade,
-          estado: "SP",
-          cep: form.cep,
-          latitude: -23.5505,
-          longitude: -46.6333,
-        },
-        valores: {
-          venda: num(form.valorVenda),
-          aluguel: num(form.valorAluguel),
-          condominio: num(form.condominio),
-          iptu: num(form.iptu),
-        },
-        metragens: {
-          areaTotal: Number(form.areaTotal || 0),
-          areaConstruida: num(form.areaConstruida),
-          dormitorios: Number(form.dormitorios || 0),
-          suites: Number(form.suites || 0),
-          banheiros: Number(form.banheiros || 0),
-          vagas: Number(form.vagas || 0),
-        },
-        proprietarioId: form.proprietarioId,
-        corretorId: form.corretorId,
-        exclusivo: form.exclusivo,
-        descricaoCurta: form.descricaoCurta,
-        descricaoCompleta: form.descricaoCompleta,
-        aceitaPermuta: form.aceitaPermuta,
-        idadeAnos: Number(form.idadeAnos || 0),
-        perfil: form.perfil,
-        posicaoSolar: form.posicaoSolar,
-        situacao: form.situacao,
-        escriturado: form.escriturado,
-        averbado: form.averbado,
-        terreno: form.terreno,
-        aceitaFinanciamento: form.aceitaFinanciamento,
-      },
-      autorId,
-    );
-    avisar(
-      `Imóvel ${novo.codigo} cadastrado. O anúncio está sendo publicado — acompanhe na coluna "No site".`,
-    );
-    aoFechar();
-  }
 
   return (
     <Modal
@@ -375,242 +271,18 @@ function ModalNovoImovel({
       descricao="Cadastro inicial de captação. Fotos, documentos e SEO podem ser completados depois na ficha."
       largura="xl"
     >
-      <form onSubmit={salvar} className="space-y-5">
-        <fieldset>
-          <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
-            Identificação
-          </legend>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Campo
-              rotulo="Título do imóvel"
-              required
-              className="sm:col-span-3"
-              placeholder="Casa Reserva do Lago"
-              value={form.titulo}
-              onChange={(e) => setForm({ ...form, titulo: e.target.value })}
-            />
-            <CampoSelecao
-              rotulo="Tipo"
-              value={form.tipo}
-              onChange={(e) => setForm({ ...form, tipo: e.target.value as TipoImovel })}
-              opcoes={(Object.keys(rotuloTipoImovel) as TipoImovel[]).map((t) => ({
-                valor: t,
-                texto: rotuloTipoImovel[t],
-              }))}
-            />
-            <CampoSelecao
-              rotulo="Finalidade"
-              value={form.finalidade}
-              onChange={(e) => setForm({ ...form, finalidade: e.target.value as FinalidadeImovel })}
-              opcoes={[
-                { valor: "venda", texto: "Venda" },
-                { valor: "aluguel", texto: "Locação" },
-                { valor: "ambos", texto: "Venda e locação" },
-              ]}
-            />
-            <CampoSelecao
-              rotulo="Corretor responsável"
-              value={form.corretorId}
-              onChange={(e) => setForm({ ...form, corretorId: e.target.value })}
-              opcoes={corretores.map((c) => ({ valor: c.id, texto: c.nome }))}
-            />
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
-            Endereço
-          </legend>
-          <div className="grid gap-4 sm:grid-cols-4">
-            <Campo
-              rotulo="Logradouro"
-              className="sm:col-span-2"
-              value={form.logradouro}
-              onChange={(e) => setForm({ ...form, logradouro: e.target.value })}
-            />
-            <Campo rotulo="Número" value={form.numero} onChange={(e) => setForm({ ...form, numero: e.target.value })} />
-            <Campo rotulo="CEP" value={form.cep} onChange={(e) => setForm({ ...form, cep: e.target.value })} />
-            <Campo
-              rotulo="Bairro"
-              required
-              className="sm:col-span-2"
-              value={form.bairro}
-              onChange={(e) => setForm({ ...form, bairro: e.target.value })}
-            />
-            <Campo
-              rotulo="Cidade"
-              required
-              className="sm:col-span-2"
-              value={form.cidade}
-              onChange={(e) => setForm({ ...form, cidade: e.target.value })}
-            />
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
-            Valores
-          </legend>
-          <div className="grid gap-4 sm:grid-cols-4">
-            <Campo
-              rotulo="Venda (R$)"
-              type="number"
-              min={0}
-              value={form.valorVenda}
-              onChange={(e) => setForm({ ...form, valorVenda: e.target.value })}
-            />
-            <Campo
-              rotulo="Aluguel (R$/mês)"
-              type="number"
-              min={0}
-              value={form.valorAluguel}
-              onChange={(e) => setForm({ ...form, valorAluguel: e.target.value })}
-            />
-            <Campo
-              rotulo="Condomínio (R$)"
-              type="number"
-              min={0}
-              value={form.condominio}
-              onChange={(e) => setForm({ ...form, condominio: e.target.value })}
-            />
-            <Campo
-              rotulo="IPTU anual (R$)"
-              type="number"
-              min={0}
-              value={form.iptu}
-              onChange={(e) => setForm({ ...form, iptu: e.target.value })}
-            />
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
-            Metragens
-          </legend>
-          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
-            <Campo rotulo="Área total (m²)" type="number" min={0} required value={form.areaTotal} onChange={(e) => setForm({ ...form, areaTotal: e.target.value })} />
-            <Campo rotulo="Construída (m²)" type="number" min={0} value={form.areaConstruida} onChange={(e) => setForm({ ...form, areaConstruida: e.target.value })} />
-            <Campo rotulo="Dormitórios" type="number" min={0} value={form.dormitorios} onChange={(e) => setForm({ ...form, dormitorios: e.target.value })} />
-            <Campo rotulo="Suítes" type="number" min={0} value={form.suites} onChange={(e) => setForm({ ...form, suites: e.target.value })} />
-            <Campo rotulo="Banheiros" type="number" min={0} value={form.banheiros} onChange={(e) => setForm({ ...form, banheiros: e.target.value })} />
-            <Campo rotulo="Vagas" type="number" min={0} value={form.vagas} onChange={(e) => setForm({ ...form, vagas: e.target.value })} />
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
-            Proprietário e descrição
-          </legend>
-          <div className="space-y-4">
-            <CampoSelecao
-              rotulo="Proprietário vinculado"
-              value={form.proprietarioId}
-              onChange={(e) => setForm({ ...form, proprietarioId: e.target.value })}
-              opcoes={[
-                { valor: "", texto: "Selecione um proprietário" },
-                ...proprietarios.map((p) => ({ valor: p.id, texto: p.nome })),
-              ]}
-            />
-            <CampoTexto
-              rotulo="Descrição curta"
-              rows={2}
-              value={form.descricaoCurta}
-              onChange={(e) => setForm({ ...form, descricaoCurta: e.target.value })}
-            />
-            <CampoTexto
-              rotulo="Descrição completa"
-              rows={5}
-              value={form.descricaoCompleta}
-              onChange={(e) => setForm({ ...form, descricaoCompleta: e.target.value })}
-            />
-            <label className="flex items-center gap-2.5 text-sm text-grafite-700">
-              <input
-                type="checkbox"
-                checked={form.exclusivo}
-                onChange={(e) => setForm({ ...form, exclusivo: e.target.checked })}
-                className="h-4 w-4 accent-verde-700"
-              />
-              Captado com exclusividade
-            </label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
-            Ficha do imóvel
-          </legend>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <CampoSelecao
-              rotulo="Perfil"
-              value={form.perfil}
-              onChange={(e) => setForm({ ...form, perfil: e.target.value as PerfilImovel })}
-              opcoes={(Object.keys(rotuloPerfilImovel) as PerfilImovel[]).map((p) => ({
-                valor: p,
-                texto: rotuloPerfilImovel[p],
-              }))}
-            />
-            <CampoSelecao
-              rotulo="Situação"
-              value={form.situacao}
-              onChange={(e) => setForm({ ...form, situacao: e.target.value as SituacaoImovel })}
-              opcoes={(Object.keys(rotuloSituacaoImovel) as SituacaoImovel[]).map((s) => ({
-                valor: s,
-                texto: rotuloSituacaoImovel[s],
-              }))}
-            />
-            <Campo
-              rotulo="Idade do imóvel (anos)"
-              type="number"
-              min={0}
-              value={form.idadeAnos}
-              onChange={(e) => setForm({ ...form, idadeAnos: e.target.value })}
-            />
-            <CampoSelecao
-              rotulo="Posição solar"
-              value={form.posicaoSolar}
-              onChange={(e) => setForm({ ...form, posicaoSolar: e.target.value as PosicaoSolar })}
-              opcoes={(Object.keys(rotuloPosicaoSolar) as PosicaoSolar[]).map((p) => ({
-                valor: p,
-                texto: rotuloPosicaoSolar[p],
-              }))}
-            />
-            <CampoSelecao
-              rotulo="Terreno"
-              value={form.terreno}
-              onChange={(e) => setForm({ ...form, terreno: e.target.value as TopografiaTerreno })}
-              opcoes={(Object.keys(rotuloTerreno) as TopografiaTerreno[]).map((t) => ({
-                valor: t,
-                texto: rotuloTerreno[t],
-              }))}
-            />
-          </div>
-          <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
-            {[
-              { rotulo: "Aceita permuta?", chave: "aceitaPermuta" as const },
-              { rotulo: "Escriturado", chave: "escriturado" as const },
-              { rotulo: "Averbado", chave: "averbado" as const },
-              { rotulo: "Aceita financiamento", chave: "aceitaFinanciamento" as const },
-            ].map((c) => (
-              <label key={c.chave} className="flex items-center gap-2.5 text-sm text-grafite-700">
-                <input
-                  type="checkbox"
-                  checked={form[c.chave]}
-                  onChange={(e) => setForm({ ...form, [c.chave]: e.target.checked })}
-                  className="h-4 w-4 accent-verde-700"
-                />
-                {c.rotulo}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <div className="flex justify-end gap-2 border-t border-linha pt-4">
-          <Botao type="button" variante="fantasma" onClick={aoFechar}>
-            Cancelar
-          </Botao>
-          <Botao type="submit">Cadastrar imóvel</Botao>
-        </div>
-      </form>
+      <FormularioImovel
+        valorInicial={formVazioImovel(autorId)}
+        textoSubmit="Cadastrar imóvel"
+        aoCancelar={aoFechar}
+        aoSalvar={(payload) => {
+          const novo = dados.criarImovel(payload, autorId);
+          avisar(
+            `Imóvel ${novo.codigo} cadastrado. O anúncio está sendo publicado — acompanhe na coluna "No site".`,
+          );
+          aoFechar();
+        }}
+      />
     </Modal>
   );
 }
