@@ -26,6 +26,7 @@ export interface CamposFormularioImovel {
   finalidade: FinalidadeImovel;
   bairro: string;
   cidade: string;
+  estado: string;
   cep: string;
   logradouro: string;
   numero: string;
@@ -63,6 +64,7 @@ export function formVazioImovel(autorId: string): CamposFormularioImovel {
     finalidade: "venda",
     bairro: "",
     cidade: "Palhoça",
+    estado: "SC",
     cep: "",
     logradouro: "",
     numero: "",
@@ -102,6 +104,7 @@ export function formDoImovel(imovel: Imovel): CamposFormularioImovel {
     finalidade: imovel.finalidade,
     bairro: imovel.endereco.bairro,
     cidade: imovel.endereco.cidade,
+    estado: imovel.endereco.estado || "SC",
     cep: imovel.endereco.cep,
     logradouro: imovel.endereco.logradouro,
     numero: imovel.endereco.numero,
@@ -132,11 +135,16 @@ export function formDoImovel(imovel: Imovel): CamposFormularioImovel {
   };
 }
 
+/** Centro aproximado de Palhoça/SC — usado só quando a geocodificação do endereço falha. */
+const COORDENADAS_PADRAO = { latitude: -27.6386, longitude: -48.6079 };
+
 /** Converte o estado do formulário no payload aceito por criarImovel/atualizarImovel. */
 export function payloadDoFormulario(
   form: CamposFormularioImovel,
+  coordenadas?: { latitude: number; longitude: number },
 ): Partial<Imovel> & { titulo: string } {
   const num = (v: string) => (v ? Number(v) : undefined);
+  const { latitude, longitude } = coordenadas ?? COORDENADAS_PADRAO;
   return {
     titulo: form.titulo,
     tipo: form.tipo,
@@ -146,10 +154,10 @@ export function payloadDoFormulario(
       numero: form.numero,
       bairro: form.bairro,
       cidade: form.cidade,
-      estado: "SP",
+      estado: form.estado,
       cep: form.cep,
-      latitude: -23.5505,
-      longitude: -46.6333,
+      latitude,
+      longitude,
     },
     valores: {
       venda: num(form.valorVenda),
@@ -188,6 +196,43 @@ export function payloadDoFormulario(
  * (ModalEditarImovel) — o pai decide se o payload final vira criarImovel()
  * ou atualizarImovel().
  */
+async function buscarCoordenadas(endereco: string): Promise<{ latitude: number; longitude: number } | null> {
+  try {
+    const resposta = await fetch(`/api/geocode?endereco=${encodeURIComponent(endereco)}`);
+    if (!resposta.ok) return null;
+    const { data } = await resposta.json();
+    return data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Localiza o endereço via Nominatim (OpenStreetMap) para posicionar o
+ * imóvel corretamente no mapa do anúncio. Tenta o endereço completo
+ * primeiro e vai afrouxando (rua+número → bairro → cidade) porque
+ * condomínios e loteamentos novos raramente têm o logradouro exato
+ * mapeado — cair no bairro certo já é bem melhor do que a coordenada
+ * padrão. Se nada resolver, quem chama usa essa coordenada padrão.
+ */
+async function geocodarEndereco(
+  form: CamposFormularioImovel,
+): Promise<{ latitude: number; longitude: number } | null> {
+  if (!form.bairro.trim() || !form.cidade.trim()) return null;
+
+  const tentativas = [
+    [form.logradouro, form.numero, form.bairro, form.cidade, form.estado],
+    [form.bairro, form.cidade, form.estado],
+    [form.cidade, form.estado],
+  ].map((partes) => partes.filter((parte) => parte.trim()).concat("Brasil").join(", "));
+
+  for (const endereco of tentativas) {
+    const coordenadas = await buscarCoordenadas(endereco);
+    if (coordenadas) return coordenadas;
+  }
+  return null;
+}
+
 export function FormularioImovel({
   valorInicial,
   textoSubmit,
@@ -201,13 +246,17 @@ export function FormularioImovel({
 }) {
   const dados = useDados();
   const [form, setForm] = useState<CamposFormularioImovel>(valorInicial);
+  const [localizando, setLocalizando] = useState(false);
 
   const proprietarios = dados.clientes.filter((c) => c.tipo === "proprietario");
   const corretores = dados.usuarios.filter((u) => u.perfil !== "assistente");
 
-  function submeter(e: React.FormEvent) {
+  async function submeter(e: React.FormEvent) {
     e.preventDefault();
-    aoSalvar(payloadDoFormulario(form));
+    setLocalizando(true);
+    const coordenadas = await geocodarEndereco(form);
+    setLocalizando(false);
+    aoSalvar(payloadDoFormulario(form, coordenadas ?? undefined));
   }
 
   return (
@@ -276,9 +325,16 @@ export function FormularioImovel({
           <Campo
             rotulo="Cidade"
             required
-            className="sm:col-span-2"
             value={form.cidade}
             onChange={(e) => setForm({ ...form, cidade: e.target.value })}
+          />
+          <Campo
+            rotulo="Estado (UF)"
+            required
+            maxLength={2}
+            placeholder="SC"
+            value={form.estado}
+            onChange={(e) => setForm({ ...form, estado: e.target.value.toUpperCase() })}
           />
         </div>
       </fieldset>
@@ -441,10 +497,12 @@ export function FormularioImovel({
       </fieldset>
 
       <div className="flex justify-end gap-2 border-t border-linha pt-4">
-        <Botao type="button" variante="fantasma" onClick={aoCancelar}>
+        <Botao type="button" variante="fantasma" onClick={aoCancelar} disabled={localizando}>
           Cancelar
         </Botao>
-        <Botao type="submit">{textoSubmit}</Botao>
+        <Botao type="submit" disabled={localizando}>
+          {localizando ? "Localizando endereço…" : textoSubmit}
+        </Botao>
       </div>
     </form>
   );

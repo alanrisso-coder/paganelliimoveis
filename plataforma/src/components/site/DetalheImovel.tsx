@@ -8,7 +8,6 @@ import { GaleriaImovel } from "./GaleriaImovel";
 import { FormularioLead } from "./FormularioLead";
 import { BotaoWhatsapp } from "./BotaoWhatsapp";
 import { CardImovelCompacto } from "./CardImovel";
-import { AgendarVisita } from "./AgendarVisita";
 import { Botao, EstadoVazio, Modal, Selo } from "@/components/ui";
 import {
   enderecoCompleto,
@@ -42,7 +41,6 @@ export function DetalheImovel({ slug }: { slug: string }) {
   const { avisar } = useAviso();
 
   const [modalInteresse, setModalInteresse] = useState(false);
-  const [modalVisita, setModalVisita] = useState(false);
 
   const imovel = imovelPorSlug(slug);
   const anuncio = imovel ? anuncioDoImovel(imovel.id) : undefined;
@@ -128,7 +126,7 @@ export function DetalheImovel({ slug }: { slug: string }) {
     imovel.endereco.latitude + 0.005,
   ].join(",");
 
-  const fichas: { rotulo: string; valor: string }[] = [
+  const especificacoes: { rotulo: string; valor: string }[] = [
     { rotulo: "Código", valor: imovel.codigo },
     { rotulo: "Tipo", valor: rotuloTipoImovel[imovel.tipo] },
     { rotulo: "Finalidade", valor: rotuloFinalidade[imovel.finalidade] },
@@ -139,6 +137,9 @@ export function DetalheImovel({ slug }: { slug: string }) {
     ...(m.banheiros ? [{ rotulo: "Banheiros", valor: String(m.banheiros) }] : []),
     ...(m.vagas ? [{ rotulo: "Vagas", valor: String(m.vagas) }] : []),
     ...(m.andar ? [{ rotulo: "Andar", valor: `${m.andar}º` }] : []),
+  ];
+
+  const caracteristicasFicha: { rotulo: string; valor: string }[] = [
     ...(imovel.perfil ? [{ rotulo: "Perfil", valor: rotuloPerfilImovel[imovel.perfil] }] : []),
     ...(imovel.situacao ? [{ rotulo: "Situação", valor: rotuloSituacaoImovel[imovel.situacao] }] : []),
     ...(imovel.idadeAnos !== undefined
@@ -209,16 +210,10 @@ export function DetalheImovel({ slug }: { slug: string }) {
             <h2 id="ficha" className="font-display text-2xl text-verde-900">
               Ficha do imóvel
             </h2>
-            <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-linha bg-linha sm:grid-cols-3 lg:grid-cols-4">
-              {fichas.map((f) => (
-                <div key={f.rotulo} className="bg-white px-4 py-3.5">
-                  <dt className="text-[0.6875rem] font-bold uppercase tracking-wide text-grafite-400">
-                    {f.rotulo}
-                  </dt>
-                  <dd className="mt-1 text-sm font-extrabold text-verde-900">{f.valor}</dd>
-                </div>
-              ))}
-            </dl>
+            <div className="mt-5 grid gap-8 sm:grid-cols-2">
+              <ListaFicha titulo="Especificações" itens={especificacoes} />
+              <ListaFicha titulo="Características" itens={caracteristicasFicha} />
+            </div>
           </section>
 
           <section className="mt-12" aria-labelledby="descricao">
@@ -280,8 +275,8 @@ export function DetalheImovel({ slug }: { slug: string }) {
               />
             </div>
             <p className="mt-2 text-xs text-grafite-400">
-              Localização aproximada, exibida por região. O endereço exato é informado no
-              agendamento da visita.
+              Localização aproximada, exibida por região. O endereço exato é informado por um
+              dos nossos corretores.
             </p>
           </section>
 
@@ -344,9 +339,6 @@ export function DetalheImovel({ slug }: { slug: string }) {
             <div className="mt-6 space-y-2.5">
               <Botao tamanho="lg" className="w-full" onClick={() => setModalInteresse(true)}>
                 Tenho interesse
-              </Botao>
-              <Botao variante="contorno" tamanho="lg" className="w-full" onClick={() => setModalVisita(true)}>
-                Agendar visita
               </Botao>
               <BotaoWhatsapp
                 className="w-full"
@@ -426,19 +418,43 @@ export function DetalheImovel({ slug }: { slug: string }) {
           rotuloEnvio="Enviar interesse"
         />
       </Modal>
-
-      <Modal
-        aberto={modalVisita}
-        aoFechar={() => setModalVisita(false)}
-        titulo="Agendar visita"
-        descricao={`${imovel.titulo} — ${enderecoResumido(imovel)}`}
-      >
-        <AgendarVisita
-          imovel={imovel}
-          anuncioId={anuncio.id}
-          aoConcluir={() => setModalVisita(false)}
-        />
-      </Modal>
     </>
+  );
+}
+
+/**
+ * Uma coluna da ficha do imóvel: linhas rótulo/valor com fundo listrado,
+ * em vez de uma grade de caixas — evita a sobra de células vazias quando a
+ * quantidade de atributos não é múltipla do número de colunas, e lê mais
+ * como uma folha de especificações do que como um formulário.
+ */
+function ListaFicha({
+  titulo,
+  itens,
+}: {
+  titulo: string;
+  itens: { rotulo: string; valor: string }[];
+}) {
+  if (itens.length === 0) return null;
+
+  return (
+    <div>
+      <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-dourado-600">
+        {titulo}
+      </p>
+      <dl className="mt-3 overflow-hidden rounded-sm border border-linha">
+        {itens.map((item, i) => (
+          <div
+            key={item.rotulo}
+            className={`flex items-baseline justify-between gap-6 px-4 py-3 ${
+              i % 2 === 1 ? "bg-areia-50" : "bg-white"
+            }`}
+          >
+            <dt className="text-sm text-grafite-500">{item.rotulo}</dt>
+            <dd className="text-right text-sm font-bold text-verde-900">{item.valor}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   );
 }
