@@ -380,8 +380,8 @@ export function FormularioImovel({
           Metragens
         </legend>
         <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          <Campo rotulo="Área total (m²)" type="number" min={0} required value={form.areaTotal} onChange={(e) => setForm({ ...form, areaTotal: e.target.value })} />
-          <Campo rotulo="Construída (m²)" type="number" min={0} value={form.areaConstruida} onChange={(e) => setForm({ ...form, areaConstruida: e.target.value })} />
+          <Campo rotulo="Área total (m²)" type="number" min={0} step={0.01} required value={form.areaTotal} onChange={(e) => setForm({ ...form, areaTotal: e.target.value })} />
+          <Campo rotulo="Construída (m²)" type="number" min={0} step={0.01} value={form.areaConstruida} onChange={(e) => setForm({ ...form, areaConstruida: e.target.value })} />
           <Campo rotulo="Dormitórios" type="number" min={0} value={form.dormitorios} onChange={(e) => setForm({ ...form, dormitorios: e.target.value })} />
           <Campo rotulo="Suítes" type="number" min={0} value={form.suites} onChange={(e) => setForm({ ...form, suites: e.target.value })} />
           <Campo rotulo="Banheiros" type="number" min={0} value={form.banheiros} onChange={(e) => setForm({ ...form, banheiros: e.target.value })} />
