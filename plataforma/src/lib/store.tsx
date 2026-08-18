@@ -38,11 +38,15 @@ import {
   criarAnuncio as criarAnuncioSupabase,
   atualizarImovel as atualizarImovelSupabase,
   atualizarAnuncio as atualizarAnuncioSupabase,
+  atualizarCliente as atualizarClienteSupabase,
+  deletarCliente as deletarClienteSupabase,
+  deletarAnuncio as deletarAnuncioSupabase,
 } from "./supabase-client";
 import {
   converterImovelParaDbImovel,
   converterAnuncioParaDbAnuncio,
   converterDbAnuncioParaAnuncio,
+  converterClienteParaDbCliente,
   carregarTodosDadosSupabase,
 } from "./supabase-sync-store";
 
@@ -359,95 +363,77 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
 
   const alterarStatusAnuncio = useCallback(
     (anuncioId: string, status: StatusAnuncio, autorId: string) => {
-      let codigo = "";
-      let atualizado: Anuncio | null = null;
+      const anuncioAtual = estado.anuncios.find((a) => a.id === anuncioId);
+      if (!anuncioAtual) return;
+      const atualizado: Anuncio = {
+        ...anuncioAtual,
+        status,
+        atualizadoEm: agora().slice(0, 10),
+        publicarEm: status === "publicado" ? agora().slice(0, 10) : anuncioAtual.publicarEm,
+      };
       setEstado((e) => ({
         ...e,
-        anuncios: e.anuncios.map((a) => {
-          if (a.id !== anuncioId) return a;
-          codigo = a.codigo;
-          atualizado = {
-            ...a,
-            status,
-            atualizadoEm: agora().slice(0, 10),
-            publicarEm: status === "publicado" ? agora().slice(0, 10) : a.publicarEm,
-          };
-          return atualizado;
-        }),
+        anuncios: e.anuncios.map((a) => (a.id === anuncioId ? atualizado : a)),
       }));
       registrarLog(
         autorId,
         status === "publicado" ? "Publicou anúncio" : "Alterou status do anúncio",
-        codigo,
+        atualizado.codigo,
         `Novo status: ${status}.`,
       );
-      if (atualizado) {
-        atualizarAnuncioSupabase(anuncioId, converterAnuncioParaDbAnuncio(atualizado)).catch((erro) =>
-          console.error("Erro ao sincronizar status do anúncio com Supabase:", erro),
-        );
-      }
+      atualizarAnuncioSupabase(anuncioId, converterAnuncioParaDbAnuncio(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar status do anúncio com Supabase:", erro),
+      );
     },
-    [registrarLog],
+    [estado.anuncios, registrarLog],
   );
 
   const atualizarAnuncio = useCallback(
     (anuncioId: string, dados: Partial<Anuncio>, autorId: string) => {
-      let codigo = "";
-      let atualizado: Anuncio | null = null;
+      const anuncioAtual = estado.anuncios.find((a) => a.id === anuncioId);
+      if (!anuncioAtual) return;
+      const atualizado: Anuncio = { ...anuncioAtual, ...dados, atualizadoEm: agora().slice(0, 10) };
       setEstado((e) => ({
         ...e,
-        anuncios: e.anuncios.map((a) => {
-          if (a.id !== anuncioId) return a;
-          codigo = a.codigo;
-          atualizado = { ...a, ...dados, atualizadoEm: agora().slice(0, 10) };
-          return atualizado;
-        }),
+        anuncios: e.anuncios.map((a) => (a.id === anuncioId ? atualizado : a)),
       }));
-      registrarLog(autorId, "Atualizou anúncio", codigo, "Dados do anúncio alterados.");
-      if (atualizado) {
-        atualizarAnuncioSupabase(anuncioId, converterAnuncioParaDbAnuncio(atualizado)).catch((erro) =>
-          console.error("Erro ao sincronizar anúncio com Supabase:", erro),
-        );
-      }
+      registrarLog(autorId, "Atualizou anúncio", atualizado.codigo, "Dados do anúncio alterados.");
+      atualizarAnuncioSupabase(anuncioId, converterAnuncioParaDbAnuncio(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar anúncio com Supabase:", erro),
+      );
     },
-    [registrarLog],
+    [estado.anuncios, registrarLog],
   );
 
   /* --------------------------------------------------------------- Imóveis */
 
   const atualizarImovel = useCallback(
     (imovelId: string, dados: Partial<Imovel>, autorId: string) => {
-      let codigo = "";
-      let atualizado: Imovel | null = null;
+      const imovelAtual = estado.imoveis.find((i) => i.id === imovelId);
+      if (!imovelAtual) return;
+      const atualizado: Imovel = {
+        ...imovelAtual,
+        ...dados,
+        historico: [
+          ...imovelAtual.historico,
+          {
+            id: id("h"),
+            data: agora().slice(0, 10),
+            autorId,
+            descricao: "Cadastro atualizado pelo painel.",
+          },
+        ],
+      };
       setEstado((e) => ({
         ...e,
-        imoveis: e.imoveis.map((i) => {
-          if (i.id !== imovelId) return i;
-          codigo = i.codigo;
-          atualizado = {
-            ...i,
-            ...dados,
-            historico: [
-              ...i.historico,
-              {
-                id: id("h"),
-                data: agora().slice(0, 10),
-                autorId,
-                descricao: "Cadastro atualizado pelo painel.",
-              },
-            ],
-          };
-          return atualizado;
-        }),
+        imoveis: e.imoveis.map((i) => (i.id === imovelId ? atualizado : i)),
       }));
-      registrarLog(autorId, "Atualizou imóvel", codigo, "Cadastro alterado.");
-      if (atualizado) {
-        atualizarImovelSupabase(imovelId, converterImovelParaDbImovel(atualizado)).catch((erro) =>
-          console.error("Erro ao sincronizar imóvel com Supabase:", erro),
-        );
-      }
+      registrarLog(autorId, "Atualizou imóvel", atualizado.codigo, "Cadastro alterado.");
+      atualizarImovelSupabase(imovelId, converterImovelParaDbImovel(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar imóvel com Supabase:", erro),
+      );
     },
-    [registrarLog],
+    [estado.imoveis, registrarLog],
   );
 
   /**
@@ -699,14 +685,21 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
-  const moverEtapaCliente = useCallback((clienteId: string, etapa: EtapaFunil) => {
-    setEstado((e) => ({
-      ...e,
-      clientes: e.clientes.map((c) =>
-        c.id === clienteId ? { ...c, etapa, atualizadoEm: agora().slice(0, 10) } : c,
-      ),
-    }));
-  }, []);
+  const moverEtapaCliente = useCallback(
+    (clienteId: string, etapa: EtapaFunil) => {
+      const clienteAtual = estado.clientes.find((c) => c.id === clienteId);
+      if (!clienteAtual) return;
+      const atualizado: Cliente = { ...clienteAtual, etapa, atualizadoEm: agora().slice(0, 10) };
+      setEstado((e) => ({
+        ...e,
+        clientes: e.clientes.map((c) => (c.id === clienteId ? atualizado : c)),
+      }));
+      atualizarClienteSupabase(clienteId, converterClienteParaDbCliente(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar etapa do cliente com Supabase:", erro),
+      );
+    },
+    [estado.clientes],
+  );
 
   const criarCliente = useCallback(
     (dados: Partial<Cliente> & { nome: string }, autorId: string): Cliente => {
@@ -781,20 +774,22 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
 
   const registrarInteracao = useCallback(
     (clienteId: string, interacao: Omit<Interacao, "id">) => {
+      const clienteAtual = estado.clientes.find((c) => c.id === clienteId);
+      if (!clienteAtual) return;
+      const atualizado: Cliente = {
+        ...clienteAtual,
+        timeline: [...clienteAtual.timeline, { ...interacao, id: id("i") }],
+        atualizadoEm: agora().slice(0, 10),
+      };
       setEstado((e) => ({
         ...e,
-        clientes: e.clientes.map((c) =>
-          c.id === clienteId
-            ? {
-                ...c,
-                timeline: [...c.timeline, { ...interacao, id: id("i") }],
-                atualizadoEm: agora().slice(0, 10),
-              }
-            : c,
-        ),
+        clientes: e.clientes.map((c) => (c.id === clienteId ? atualizado : c)),
       }));
+      atualizarClienteSupabase(clienteId, converterClienteParaDbCliente(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar interação do cliente com Supabase:", erro),
+      );
     },
-    [],
+    [estado.clientes],
   );
 
   /* ---------------------------------------------------------------- Visitas */
@@ -1041,6 +1036,9 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
       };
     });
     registrarLog(autorId, "Deletou cliente", clienteNome, "Cliente removido do sistema.");
+    deletarClienteSupabase(clienteId).catch((erro) =>
+      console.error("Erro ao remover cliente do Supabase:", erro),
+    );
   }, [registrarLog]);
 
   const deletarAnuncio = useCallback((anuncioId: string, autorId: string) => {
@@ -1054,6 +1052,9 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
       };
     });
     registrarLog(autorId, "Deletou anúncio", anuncioCodigo, "Anúncio removido do sistema.");
+    deletarAnuncioSupabase(anuncioId).catch((erro) =>
+      console.error("Erro ao remover anúncio do Supabase:", erro),
+    );
   }, [registrarLog]);
 
   const valor: ContextoDados = {
