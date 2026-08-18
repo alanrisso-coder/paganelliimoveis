@@ -1,30 +1,33 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { Usuario } from "./types";
-import { usuarios } from "./seed/usuarios";
 import { podeFazer, type Permissao } from "./permissoes";
+import { converterDbUsuarioParaUsuario } from "./supabase-sync-store";
 
 /**
  * Sessão do painel.
  *
- * ATENÇÃO — esta é uma autenticação DEMONSTRATIVA. A sessão vive no
- * localStorage e a senha é fixa, apenas para permitir navegar pelos perfis.
- * Em produção, substitua por Supabase Auth (ou equivalente): sessão em cookie
- * httpOnly, verificação no servidor e RLS por `perfil` no banco. A função
- * `pode()` continua válida como camada de interface sobre essa base.
+ * Login em dois fatores contra a tabela `usuarios` do Supabase:
+ * 1) e-mail + senha (POST /api/auth/login);
+ * 2) código de verificação (POST /api/auth/verificar-codigo), que revalida
+ *    e-mail + senha junto com o código antes de autorizar de fato.
+ *
+ * A sessão em si continua simples (objeto do usuário em localStorage, sem
+ * cookie httpOnly nem token de servidor) — adequado para o tamanho da
+ * equipe hoje, mas vale trocar por algo com expiração/renovação de sessão
+ * se o número de contas crescer.
  */
 
 const CHAVE_SESSAO = "paganelli:sessao:v1";
 
-/** Senha única dos perfis de demonstração, exibida na própria tela de acesso. */
-export const SENHA_DEMONSTRACAO = "paganelli2026";
-
 interface ContextoSessao {
   usuario: Usuario | null;
   carregado: boolean;
-  entrar: (email: string, senha: string) => { ok: boolean; erro?: string };
-  entrarComoDemonstracao: (usuarioId: string) => void;
+  /** Primeiro fator: valida e-mail e senha. Em caso de sucesso, habilita a etapa do código. */
+  enviarCredenciais: (email: string, senha: string) => Promise<{ ok: boolean; erro?: string }>;
+  /** Segundo fator: valida o código de verificação junto com as credenciais já enviadas. */
+  confirmarCodigo: (codigo: string) => Promise<{ ok: boolean; erro?: string }>;
   sair: () => void;
   pode: (permissao: Permissao) => boolean;
 }
@@ -34,19 +37,20 @@ const Contexto = createContext<ContextoSessao | null>(null);
 export function SessaoProvider({ children }: { children: React.ReactNode }) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [carregado, setCarregado] = useState(false);
+  /** Credenciais do primeiro fator, mantidas só em memória até o código ser confirmado. */
+  const credenciaisPendentes = useRef<{ email: string; senha: string } | null>(null);
 
   // A sessão só pode ser lida depois da montagem: o HTML do servidor não tem
   // acesso ao localStorage e precisa renderizar deslogado para hidratar igual.
-  // Roda uma única vez, então o render em cascata é intencional e limitado.
   useEffect(() => {
     try {
-      const idSalvo = window.localStorage.getItem(CHAVE_SESSAO);
-      if (idSalvo) {
+      const bruto = window.localStorage.getItem(CHAVE_SESSAO);
+      if (bruto) {
         // eslint-disable-next-line react-hooks/set-state-in-effect -- hidratação
-        setUsuario(usuarios.find((u) => u.id === idSalvo) ?? null);
+        setUsuario(JSON.parse(bruto) as Usuario);
       }
     } catch {
-      // Sem armazenamento: começa deslogado.
+      // Sessão inválida ou sem armazenamento: começa deslogado.
     }
     setCarregado(true);
   }, []);
@@ -54,42 +58,58 @@ export function SessaoProvider({ children }: { children: React.ReactNode }) {
   const persistir = useCallback((u: Usuario | null) => {
     setUsuario(u);
     try {
-      if (u) window.localStorage.setItem(CHAVE_SESSAO, u.id);
+      if (u) window.localStorage.setItem(CHAVE_SESSAO, JSON.stringify(u));
       else window.localStorage.removeItem(CHAVE_SESSAO);
     } catch {
       // Ignorado: a sessão continua válida em memória.
     }
   }, []);
 
-  const entrar = useCallback(
-    (email: string, senha: string) => {
-      const encontrado = usuarios.find(
-        (u) => u.email.toLowerCase() === email.trim().toLowerCase(),
-      );
-      if (!encontrado) {
-        return { ok: false, erro: "Não encontramos um acesso com esse e-mail." };
+  const enviarCredenciais = useCallback(async (email: string, senha: string) => {
+    try {
+      const resposta = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      });
+      const corpo = await resposta.json();
+      if (!resposta.ok) {
+        return { ok: false, erro: corpo.error ?? "Não foi possível entrar." };
       }
-      if (!encontrado.ativo) {
-        return { ok: false, erro: "Este acesso está desativado. Fale com o administrador." };
-      }
-      if (senha !== SENHA_DEMONSTRACAO) {
-        return { ok: false, erro: "Senha incorreta." };
-      }
-      persistir(encontrado);
+      credenciaisPendentes.current = { email, senha };
       return { ok: true };
-    },
-    [persistir],
-  );
+    } catch {
+      return { ok: false, erro: "Falha de conexão. Tente novamente." };
+    }
+  }, []);
 
-  const entrarComoDemonstracao = useCallback(
-    (usuarioId: string) => {
-      const encontrado = usuarios.find((u) => u.id === usuarioId);
-      if (encontrado) persistir(encontrado);
-    },
-    [persistir],
-  );
+  const confirmarCodigo = useCallback(async (codigo: string) => {
+    const credenciais = credenciaisPendentes.current;
+    if (!credenciais) {
+      return { ok: false, erro: "Informe e-mail e senha novamente." };
+    }
+    try {
+      const resposta = await fetch("/api/auth/verificar-codigo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...credenciais, codigo }),
+      });
+      const corpo = await resposta.json();
+      if (!resposta.ok) {
+        return { ok: false, erro: corpo.error ?? "Não foi possível confirmar o código." };
+      }
+      credenciaisPendentes.current = null;
+      persistir(converterDbUsuarioParaUsuario(corpo.data));
+      return { ok: true };
+    } catch {
+      return { ok: false, erro: "Falha de conexão. Tente novamente." };
+    }
+  }, [persistir]);
 
-  const sair = useCallback(() => persistir(null), [persistir]);
+  const sair = useCallback(() => {
+    credenciaisPendentes.current = null;
+    persistir(null);
+  }, [persistir]);
 
   const pode = useCallback(
     (permissao: Permissao) => (usuario ? podeFazer(usuario.perfil, permissao) : false),
@@ -97,7 +117,9 @@ export function SessaoProvider({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <Contexto.Provider value={{ usuario, carregado, entrar, entrarComoDemonstracao, sair, pode }}>
+    <Contexto.Provider
+      value={{ usuario, carregado, enviarCredenciais, confirmarCodigo, sair, pode }}
+    >
       {children}
     </Contexto.Provider>
   );

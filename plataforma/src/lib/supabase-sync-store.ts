@@ -3,16 +3,18 @@
  * Carrega dados do banco na inicialização e permite sincronizar mudanças
  */
 
-import type { Imovel, Cliente, Anuncio } from "./types";
+import type { Imovel, Cliente, Anuncio, Usuario } from "./types";
 import {
   obterImoveis,
   obterClientes,
   obterAnunciosPublicos,
+  obterUsuarios,
   atualizarImovel,
   atualizarCliente,
   type DbImovel,
   type DbCliente,
   type DbAnuncio,
+  type DbUsuario,
 } from "./supabase-client";
 
 /**
@@ -87,6 +89,23 @@ export function converterDbImovelParaImovel(db: DbImovel): Imovel {
 /**
  * Converter dados do Supabase (DbCliente) para formato interno (Cliente)
  */
+/**
+ * Converter dados do Supabase (DbUsuario) para formato interno (Usuario)
+ */
+export function converterDbUsuarioParaUsuario(db: DbUsuario): Usuario {
+  return {
+    id: db.id,
+    nome: db.nome,
+    email: db.email,
+    telefone: db.telefone || "",
+    perfil: db.perfil as any,
+    creci: db.creci || undefined,
+    avatarIniciais: db.avatar_iniciais,
+    ativo: db.ativo,
+    criadoEm: db.criado_em,
+  };
+}
+
 export function converterDbClienteParaCliente(db: DbCliente): Cliente {
   return {
     id: db.id,
@@ -262,16 +281,18 @@ export function converterAnuncioParaDbAnuncio(
  */
 export async function carregarTodosDadosSupabase() {
   try {
-    const [imoveisDb, clientesDb, anunciosDb] = await Promise.all([
+    const [imoveisDb, clientesDb, anunciosDb, usuariosDb] = await Promise.all([
       obterImoveis(),
       obterClientes(),
       obterAnunciosPublicos(),
+      obterUsuarios(),
     ]);
 
     return {
       imoveis: imoveisDb.map(converterDbImovelParaImovel),
       clientes: clientesDb.map(converterDbClienteParaCliente),
       anuncios: anunciosDb.map(converterDbAnuncioParaAnuncio),
+      usuarios: usuariosDb.map(converterDbUsuarioParaUsuario),
     };
   } catch (erro) {
     console.error("Erro ao carregar dados do Supabase:", erro);

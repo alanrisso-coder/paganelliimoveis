@@ -243,13 +243,14 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
         const dados = await carregarTodosDadosSupabase();
         if (dados) {
           console.log(
-            `📥 Sincronizado com Supabase: ${dados.imoveis.length} imóveis, ${dados.clientes.length} clientes, ${dados.anuncios.length} anúncios`
+            `📥 Sincronizado com Supabase: ${dados.imoveis.length} imóveis, ${dados.clientes.length} clientes, ${dados.anuncios.length} anúncios, ${dados.usuarios.length} usuários`
           );
           setEstado((e) => ({
             ...e,
             imoveis: dados.imoveis,
             clientes: dados.clientes,
             anuncios: dados.anuncios,
+            usuarios: dados.usuarios.length > 0 ? dados.usuarios : e.usuarios,
           }));
         }
       } catch (erro) {

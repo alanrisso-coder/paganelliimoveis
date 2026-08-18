@@ -86,6 +86,19 @@ export interface DbAnuncio {
   atualizado_em: string;
 }
 
+export interface DbUsuario {
+  id: string;
+  nome: string;
+  email: string;
+  telefone: string | null;
+  perfil: string;
+  creci: string | null;
+  avatar_iniciais: string;
+  ativo: boolean;
+  criado_em: string;
+  atualizado_em: string;
+}
+
 export interface DbCliente {
   id: string;
   nome: string;
@@ -185,6 +198,13 @@ async function apiDelete(url: string, id: string): Promise<boolean> {
     console.error(`Erro ao deletar em ${url}:`, error);
     return false;
   }
+}
+
+// -------------------------------------------------------------- Usuários
+
+export async function obterUsuarios(): Promise<DbUsuario[]> {
+  const data = await apiGet<DbUsuario[]>("/api/sync/usuarios");
+  return data ?? [];
 }
 
 // --------------------------------------------------------------- Imóveis

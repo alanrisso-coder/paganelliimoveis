@@ -4,16 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { SENHA_DEMONSTRACAO, useSessao } from "@/lib/auth";
-import { usuarios } from "@/lib/seed/usuarios";
-import { descricaoPerfil, rotuloPerfil } from "@/lib/permissoes";
+import { useSessao } from "@/lib/auth";
 import { Botao, Campo } from "@/components/ui";
 
 export default function PaginaEntrar() {
   const router = useRouter();
-  const { usuario, carregado, entrar, entrarComoDemonstracao } = useSessao();
+  const { usuario, carregado, enviarCredenciais, confirmarCodigo } = useSessao();
+  const [etapa, setEtapa] = useState<"credenciais" | "codigo">("credenciais");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [codigo, setCodigo] = useState("");
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
@@ -21,20 +21,36 @@ export default function PaginaEntrar() {
     if (carregado && usuario) router.replace("/painel");
   }, [carregado, usuario, router]);
 
-  async function submeter(e: React.FormEvent) {
+  async function submeterCredenciais(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
     setEnviando(true);
-    await new Promise((r) => setTimeout(r, 450));
-    const resultado = entrar(email, senha);
+    const resultado = await enviarCredenciais(email, senha);
     setEnviando(false);
-    if (resultado.ok) router.push("/painel");
-    else setErro(resultado.erro ?? "Não foi possível entrar.");
+    if (resultado.ok) {
+      setEtapa("codigo");
+    } else {
+      setErro(resultado.erro ?? "Não foi possível entrar.");
+    }
   }
 
-  function acessarComo(id: string) {
-    entrarComoDemonstracao(id);
-    router.push("/painel");
+  async function submeterCodigo(e: React.FormEvent) {
+    e.preventDefault();
+    setErro("");
+    setEnviando(true);
+    const resultado = await confirmarCodigo(codigo);
+    setEnviando(false);
+    if (resultado.ok) {
+      router.push("/painel");
+    } else {
+      setErro(resultado.erro ?? "Não foi possível confirmar o código.");
+    }
+  }
+
+  function voltarParaCredenciais() {
+    setEtapa("credenciais");
+    setCodigo("");
+    setErro("");
   }
 
   return (
@@ -55,52 +71,73 @@ export default function PaginaEntrar() {
 
           <h1 className="mt-10 font-display text-3xl text-verde-900">Acesso da equipe</h1>
           <p className="mt-2 text-sm leading-relaxed text-grafite-500">
-            Entre para gerenciar clientes, imóveis, anúncios, visitas e contratos.
+            {etapa === "credenciais"
+              ? "Entre para gerenciar clientes, imóveis, anúncios, visitas e contratos."
+              : "Confirme seu código de verificação para concluir o acesso."}
           </p>
 
-          <form onSubmit={submeter} className="mt-8 space-y-4">
-            <Campo
-              rotulo="E-mail corporativo"
-              type="email"
-              required
-              autoComplete="username"
-              placeholder="nome@paganelliimoveis.com.br"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Campo
-              rotulo="Senha"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-            />
+          {etapa === "credenciais" ? (
+            <form onSubmit={submeterCredenciais} className="mt-8 space-y-4">
+              <Campo
+                rotulo="E-mail corporativo"
+                type="email"
+                required
+                autoComplete="username"
+                placeholder="nome@paganelliimoveis.com.br"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Campo
+                rotulo="Senha"
+                type="password"
+                required
+                autoComplete="current-password"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
 
-            {erro && (
-              <p role="alert" className="rounded-sm border border-erro/30 bg-[#f7e6e4] px-3 py-2.5 text-sm text-erro">
-                {erro}
-              </p>
-            )}
+              {erro && (
+                <p role="alert" className="rounded-sm border border-erro/30 bg-[#f7e6e4] px-3 py-2.5 text-sm text-erro">
+                  {erro}
+                </p>
+              )}
 
-            <Botao type="submit" tamanho="lg" disabled={enviando} className="w-full">
-              {enviando ? "Entrando…" : "Entrar no painel"}
-            </Botao>
-          </form>
+              <Botao type="submit" tamanho="lg" disabled={enviando} className="w-full">
+                {enviando ? "Verificando…" : "Continuar"}
+              </Botao>
+            </form>
+          ) : (
+            <form onSubmit={submeterCodigo} className="mt-8 space-y-4">
+              <Campo
+                rotulo="Código de verificação"
+                type="text"
+                inputMode="numeric"
+                required
+                autoFocus
+                placeholder="0000000"
+                value={codigo}
+                onChange={(e) => setCodigo(e.target.value)}
+              />
 
-          <div className="mt-8 rounded-sm border border-dourado-300 bg-dourado-100/45 p-5">
-            <p className="text-xs font-extrabold uppercase tracking-wide text-dourado-700">
-              Ambiente de demonstração
-            </p>
-            <p className="mt-2 text-xs leading-relaxed text-grafite-600">
-              A autenticação desta versão é simulada e roda no navegador. Use qualquer e-mail da
-              lista ao lado com a senha{" "}
-              <code className="rounded bg-white px-1.5 py-0.5 font-mono text-[0.6875rem] text-verde-800">
-                {SENHA_DEMONSTRACAO}
-              </code>
-              , ou entre direto por um dos perfis.
-            </p>
-          </div>
+              {erro && (
+                <p role="alert" className="rounded-sm border border-erro/30 bg-[#f7e6e4] px-3 py-2.5 text-sm text-erro">
+                  {erro}
+                </p>
+              )}
+
+              <Botao type="submit" tamanho="lg" disabled={enviando} className="w-full">
+                {enviando ? "Entrando…" : "Entrar no painel"}
+              </Botao>
+
+              <button
+                type="button"
+                onClick={voltarParaCredenciais}
+                className="w-full text-center text-sm font-bold text-grafite-500 hover:text-verde-800"
+              >
+                ← Usar outro e-mail
+              </button>
+            </form>
+          )}
 
           <Link
             href="/"
