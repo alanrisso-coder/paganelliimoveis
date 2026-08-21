@@ -41,27 +41,6 @@ const diferenciais = [
   },
 ];
 
-const depoimentos = [
-  {
-    texto:
-      "Visitamos onze casas com outras imobiliárias e nenhuma tinha entendido o que a gente procurava. A Paganelli mostrou três e a segunda era a nossa.",
-    autor: "Renata e Marcos Ferraz",
-    contexto: "Compra de casa em condomínio, Palhoça",
-  },
-  {
-    texto:
-      "O que me convenceu foi a franqueza sobre o preço. Me mostraram por que o valor que eu pedia não se sustentava e vendemos em cinco semanas pelo número certo.",
-    autor: "Roberto Moraes",
-    contexto: "Venda com exclusividade na Pedra Branca",
-  },
-  {
-    texto:
-      "Sou investidor e trabalho com prazo curto. Recebo as oportunidades antes de irem ao ar e a documentação sempre chega revisada. É raro.",
-    autor: "Paulo Teles",
-    contexto: "Terceira operação com a Paganelli",
-  },
-];
-
 export default function PaginaInicial() {
   const { imoveisPublicos, anunciosPublicos, anuncioDoImovel, carregado } = useDados();
 
@@ -69,9 +48,9 @@ export default function PaginaInicial() {
     .filter((a) => a.destaqueHome)
     .map((a) => imoveisPublicos.find((i) => i.id === a.imovelId))
     .filter((i): i is NonNullable<typeof i> => Boolean(i))
-    .slice(0, 6);
+    .slice(0, 9);
 
-  const vitrine = destaques.length > 0 ? destaques : imoveisPublicos.slice(0, 6);
+  const vitrine = destaques.length > 0 ? destaques : imoveisPublicos.slice(0, 9);
 
   return (
     <>
@@ -130,7 +109,7 @@ export default function PaginaInicial() {
         </div>
 
         {!carregado ? (
-          <CarregandoCards quantidade={6} />
+          <CarregandoCards quantidade={9} />
         ) : vitrine.length === 0 ? (
           <EstadoVazio
             icone="casa"
@@ -157,42 +136,6 @@ export default function PaginaInicial() {
             ))}
           </div>
         )}
-      </section>
-
-      {/* ------------------------------------------------------ Depoimentos */}
-      <section className="bg-areia-50 py-20 lg:py-28">
-        <div className="container-paganelli">
-          <div className="mb-12 max-w-xl">
-            <p className="eyebrow text-dourado-600">Quem já passou por aqui</p>
-            <h2 className="mt-3 font-display text-3xl text-verde-900 lg:text-[2.5rem]">
-              Histórias que começaram com uma boa escolha
-            </h2>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-3">
-            {depoimentos.map((d) => (
-              <figure key={d.autor} className="flex flex-col rounded-sm border border-linha bg-white p-7">
-                <svg width="26" height="20" viewBox="0 0 26 20" className="mb-5 text-dourado-300" aria-hidden="true">
-                  <path
-                    d="M11 20V10.7C11 4.8 14.5 1 20.4 0l.9 2.6c-3.3.9-5 3-5.1 6.2H20V20h-9zm-11 0V10.7C0 4.8 3.5 1 9.4 0l.9 2.6C7 3.5 5.3 5.6 5.2 8.8H9V20H0z"
-                    fill="currentColor"
-                  />
-                </svg>
-                <blockquote className="flex-1 text-sm leading-relaxed text-grafite-700">
-                  {d.texto}
-                </blockquote>
-                <figcaption className="mt-6 border-t border-linha pt-4">
-                  <p className="text-sm font-extrabold text-verde-900">{d.autor}</p>
-                  <p className="mt-0.5 text-xs text-grafite-400">{d.contexto}</p>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-
-          <p className="mt-8 text-xs text-grafite-400">
-            Depoimentos demonstrativos, elaborados para esta versão da plataforma.
-          </p>
-        </div>
       </section>
 
       {/* ---------------------------------------------------------- Contato */}
