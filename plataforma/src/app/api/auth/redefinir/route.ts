@@ -5,6 +5,7 @@ import { erroDeSenha } from "@/lib/senha-regras";
 import { hashToken } from "@/lib/tokens";
 import { revogarSessoesDoUsuario } from "@/lib/sessao-servidor";
 import { ACAO, ipDaRequisicao, registrarLog } from "@/lib/auditoria";
+import { lerCorpoJson } from "@/lib/http";
 
 /**
  * Define a nova senha a partir de um token de convite ou recuperação.
@@ -62,7 +63,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { token, novaSenha, confirmacao } = await request.json();
+    const leitura = await lerCorpoJson<{
+      token?: string;
+      novaSenha?: string;
+      confirmacao?: string;
+    }>(request);
+    if (!leitura.ok) return leitura.resposta;
+    const { token, novaSenha, confirmacao } = leitura.corpo;
 
     if (!token || !novaSenha) {
       return NextResponse.json({ error: "Informe a nova senha." }, { status: 400 });

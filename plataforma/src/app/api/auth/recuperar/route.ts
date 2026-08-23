@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { expiraEmMinutos, gerarToken, MINUTOS_VALIDADE_TOKEN_SENHA } from "@/lib/tokens";
 import { ACAO, ipDaRequisicao, registrarLog } from "@/lib/auditoria";
+import { lerCorpoJson } from "@/lib/http";
 
 /**
  * "Esqueci minha senha": registra a solicitação e cria o token de uso único.
@@ -26,7 +27,12 @@ export async function POST(request: Request) {
   );
 
   try {
-    const { email } = await request.json();
+    // Corpo inválido também devolve a resposta genérica: qualquer variação de
+    // status aqui viraria um jeito de sondar o cadastro.
+    const leitura = await lerCorpoJson<{ email?: string }>(request);
+    if (!leitura.ok) return respostaGenerica;
+
+    const { email } = leitura.corpo;
     if (!email) return respostaGenerica;
 
     const emailNormalizado = String(email).trim();

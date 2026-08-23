@@ -7,6 +7,7 @@ import { expiraEmMinutos, gerarToken, MINUTOS_VALIDADE_TOKEN_SENHA } from "@/lib
 import { exigirPermissao } from "@/lib/sessao-servidor";
 import { bloqueioPromoverAdministrador, ehPerfilValido } from "@/lib/permissoes";
 import { ACAO, ipDaRequisicao, registrarLog } from "@/lib/auditoria";
+import { lerCorpoJson } from "@/lib/http";
 
 /**
  * Listagem e criação de usuários.
@@ -67,7 +68,10 @@ export async function POST(request: Request) {
     const auth = await exigirPermissao("gerenciar_usuarios", request);
     if (!auth.ok) return auth.resposta;
 
-    const corpo = await request.json();
+    const leitura = await lerCorpoJson<Record<string, unknown>>(request);
+    if (!leitura.ok) return leitura.resposta;
+
+    const corpo = leitura.corpo;
     const nome = String(corpo.nome ?? "").trim();
     const email = String(corpo.email ?? "").trim();
     const perfil = corpo.perfil;

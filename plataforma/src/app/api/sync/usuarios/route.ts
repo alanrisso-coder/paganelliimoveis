@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { COLUNAS_USUARIO, getSupabaseAdmin } from "@/lib/supabase-admin";
 import { autenticar } from "@/lib/sessao-servidor";
 import { podeFazer } from "@/lib/permissoes";
+import { lerCorpoJson } from "@/lib/http";
 
 /**
  * Sincronização da equipe para o painel.
@@ -49,7 +50,10 @@ export async function PATCH(request: Request) {
     const auth = await autenticar();
     if (!auth.ok) return auth.resposta;
 
-    const { id, updates } = await request.json();
+    const leitura = await lerCorpoJson<{ id?: string; updates?: Record<string, unknown> }>(request);
+    if (!leitura.ok) return leitura.resposta;
+
+    const { id, updates } = leitura.corpo;
     if (!id) return NextResponse.json({ error: "ID obrigatório" }, { status: 400 });
 
     const ehOProprio = id === auth.usuario.id;

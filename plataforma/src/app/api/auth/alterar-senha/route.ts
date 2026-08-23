@@ -4,6 +4,7 @@ import { hashSenha, verificarSenha } from "@/lib/senha";
 import { erroDeSenha } from "@/lib/senha-regras";
 import { autenticar, criarSessao, revogarSessoesDoUsuario } from "@/lib/sessao-servidor";
 import { ACAO, ipDaRequisicao, registrarLog } from "@/lib/auditoria";
+import { lerCorpoJson } from "@/lib/http";
 
 /**
  * Troca de senha do usuário logado (Minha conta → Alterar senha).
@@ -21,7 +22,13 @@ export async function POST(request: Request) {
     const auth = await autenticar();
     if (!auth.ok) return auth.resposta;
 
-    const { senhaAtual, novaSenha, confirmacao } = await request.json();
+    const leitura = await lerCorpoJson<{
+      senhaAtual?: string;
+      novaSenha?: string;
+      confirmacao?: string;
+    }>(request);
+    if (!leitura.ok) return leitura.resposta;
+    const { senhaAtual, novaSenha, confirmacao } = leitura.corpo;
 
     if (!senhaAtual || !novaSenha) {
       return NextResponse.json(

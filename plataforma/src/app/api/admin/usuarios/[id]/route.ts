@@ -15,6 +15,7 @@ import {
   ehPerfilValido,
 } from "@/lib/permissoes";
 import { ACAO, ipDaRequisicao, registrarLog } from "@/lib/auditoria";
+import { lerCorpoJson } from "@/lib/http";
 import type { PerfilAcesso } from "@/lib/types";
 
 /**
@@ -79,7 +80,10 @@ export async function PATCH(request: Request, { params }: Contexto) {
     if (!auth.ok) return auth.resposta;
 
     const { id } = await params;
-    const corpo = await request.json();
+
+    const leitura = await lerCorpoJson<Record<string, unknown>>(request);
+    if (!leitura.ok) return leitura.resposta;
+    const corpo = leitura.corpo;
 
     const supabase = getSupabaseAdmin();
     const { data: alvo } = await supabase

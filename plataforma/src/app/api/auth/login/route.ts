@@ -3,6 +3,7 @@ import { COLUNAS_USUARIO, getSupabaseAdmin } from "@/lib/supabase-admin";
 import { verificarSenha } from "@/lib/senha";
 import { criarSessao } from "@/lib/sessao-servidor";
 import { ACAO, ipDaRequisicao, registrarLog } from "@/lib/auditoria";
+import { lerCorpoJson } from "@/lib/http";
 
 /**
  * Login: e-mail + senha. Em caso de sucesso abre a sessão de servidor e grava
@@ -17,7 +18,9 @@ export async function POST(request: Request) {
   const ip = ipDaRequisicao(request);
 
   try {
-    const { email, senha } = await request.json();
+    const leitura = await lerCorpoJson<{ email?: string; senha?: string }>(request);
+    if (!leitura.ok) return leitura.resposta;
+    const { email, senha } = leitura.corpo;
 
     if (!email || !senha) {
       return NextResponse.json({ error: "Informe e-mail e senha." }, { status: 400 });
