@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
+import sharp from "sharp";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -13,6 +14,25 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 });
 
 const BUCKET_NAME = "paganelli-imoveis";
+const TIPOS_IMAGEM = ["image/jpeg", "image/png", "image/webp"];
+
+// Recomprime a imagem mantendo a mesma resolução (largura/altura),
+// apenas reduzindo o tamanho do arquivo através de uma codificação mais eficiente.
+async function otimizarImagem(buffer: Buffer, mimeType: string) {
+  const imagem = sharp(buffer).rotate();
+
+  if (mimeType === "image/png") {
+    return {
+      buffer: await imagem.png({ compressionLevel: 9, palette: true }).toBuffer(),
+      mimeType: "image/png",
+    };
+  }
+
+  return {
+    buffer: await imagem.jpeg({ quality: 82, mozjpeg: true }).toBuffer(),
+    mimeType: "image/jpeg",
+  };
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,20 +48,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const timestamp = Date.now();
-    const nomeOriginal = arquivo.name
+    const arrayBuffer = await arquivo.arrayBuffer();
+    let buffer = Buffer.from(arrayBuffer);
+    let nomeOriginal = arquivo.name
       .replace(/[^a-z0-9.-]/gi, "_")
       .toLowerCase();
-    const caminho = `${pasta}/${imovelId}/${timestamp}_${nomeOriginal}`;
+    let contentType = arquivo.type;
 
-    const arrayBuffer = await arquivo.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    if ((pasta === "fotos" || pasta === "avatares") && TIPOS_IMAGEM.includes(arquivo.type)) {
+      try {
+        const otimizada = await otimizarImagem(buffer, arquivo.type);
+        buffer = otimizada.buffer;
+        contentType = otimizada.mimeType;
+        nomeOriginal = nomeOriginal.replace(
+          /\.(jpe?g|png|webp)$/i,
+          otimizada.mimeType === "image/png" ? ".png" : ".jpg"
+        );
+      } catch {
+        // Se a otimização falhar, envia o arquivo original sem compressão.
+      }
+    }
+
+    const timestamp = Date.now();
+    const caminho = `${pasta}/${imovelId}/${timestamp}_${nomeOriginal}`;
 
     const { data, error } = await supabase.storage
       .from(BUCKET_NAME)
       .upload(caminho, buffer, {
         cacheControl: "3600",
         upsert: false,
+        contentType,
       });
 
     if (error) {

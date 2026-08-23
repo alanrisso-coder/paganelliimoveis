@@ -1,0 +1,983 @@
+[
+  {
+    "lote_id": "LOTE-001",
+    "lote_num": 1,
+    "filebase": "paganelli-terreno-001",
+    "titulo": "Terreno de 330 m² no Reserva da Pedra",
+    "slug": "terreno-330m2-lote-001-reserva-da-pedra",
+    "valor": 795000,
+    "metragem": 330,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 330 m², o terreno possui fundo voltado para um lote residencial, classificado no cadastro do loteamento como \"Fundo casa PB\", oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 795.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 330 m² no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 330 m² no Reserva da Pedra (Pedra Branca, Palhoça/SC). R$ 795.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para lote residencial (cadastro: “Fundo casa PB”)"
+    ],
+    "fundo_raw": "Fundo casa PB",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-002",
+    "lote_num": 2,
+    "filebase": "paganelli-terreno-002",
+    "titulo": "Terreno de 312 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-312m2-lote-002-reserva-da-pedra",
+    "valor": 800000,
+    "metragem": 312,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 312 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 800.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 312 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 312 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 800.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-003",
+    "lote_num": 3,
+    "filebase": "paganelli-terreno-003",
+    "titulo": "Terreno exclusivo de 303,98 m² em Palhoça",
+    "slug": "terreno-303-98m2-lote-003-reserva-da-pedra",
+    "valor": 810000,
+    "metragem": 303.98,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 303,98 m², o terreno possui fundo voltado para um lote residencial, classificado no cadastro do loteamento como \"Fundo casa PB\", oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 810.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 303,98 m² em Palhoça | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 303,98 m² no Reserva da Pedra (Pedra Branca, Palhoça/SC). R$ 810.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para lote residencial (cadastro: “Fundo casa PB”)"
+    ],
+    "fundo_raw": "Fundo casa PB",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-004",
+    "lote_num": 4,
+    "filebase": "paganelli-terreno-004",
+    "titulo": "Terreno com fundo para área de preservação no Reserva da Pedra",
+    "slug": "terreno-312m2-lote-004-reserva-da-pedra",
+    "valor": 870000,
+    "metragem": 312,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 312 m², o terreno tem fundo voltado para a Área de Preservação Permanente (APP) do empreendimento, mantendo vegetação nativa preservada nos fundos do lote, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 870.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno com fundo para área de preservação no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 312 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para Área de Preservação Permanente (APP). R$ 870.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para Área de Preservação Permanente (APP)"
+    ],
+    "fundo_raw": "App",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-005",
+    "lote_num": 5,
+    "filebase": "paganelli-terreno-005",
+    "titulo": "Oportunidade no Reserva da Pedra: 300 m²",
+    "slug": "terreno-300m2-lote-005-reserva-da-pedra",
+    "valor": 875000,
+    "metragem": 300,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno está localizado no meio da quadra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 875.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Oportunidade no Reserva da Pedra: 300 m² | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Lote de meio de quadra. R$ 875.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Lote de meio de quadra"
+    ],
+    "fundo_raw": "meio",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-006",
+    "lote_num": 6,
+    "filebase": "paganelli-terreno-006",
+    "titulo": "Terreno de esquina de 376,57 m² no Reserva da Pedra",
+    "slug": "terreno-376-57m2-lote-006-reserva-da-pedra",
+    "valor": 880000,
+    "metragem": 376.57,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 376,57 m², o terreno está localizado no meio da quadra e é um terreno de esquina, o que pode proporcionar maior flexibilidade para o projeto arquitetônico, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 880.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de esquina de 376,57 m² no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 376,57 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Lote de meio de quadra. R$ 880.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Lote de meio de quadra",
+      "Esquina"
+    ],
+    "fundo_raw": "meio",
+    "esquina_raw": "sim"
+  },
+  {
+    "lote_id": "LOTE-007",
+    "lote_num": 7,
+    "filebase": "paganelli-terreno-007",
+    "titulo": "Oportunidade no Reserva da Pedra: 330 m²",
+    "slug": "terreno-330m2-lote-007-reserva-da-pedra",
+    "valor": 890000,
+    "metragem": 330,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 330 m², o terreno possui fundo voltado para um lote residencial, classificado no cadastro do loteamento como \"Fundo casa PB\", oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 890.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Oportunidade no Reserva da Pedra: 330 m² | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 330 m² no Reserva da Pedra (Pedra Branca, Palhoça/SC). R$ 890.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para lote residencial (cadastro: “Fundo casa PB”)"
+    ],
+    "fundo_raw": "Fundo casa PB",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-008",
+    "lote_num": 8,
+    "filebase": "paganelli-terreno-008",
+    "titulo": "Terreno de 300 m² junto à área verde do Reserva da Pedra",
+    "slug": "terreno-300m2-lote-008-reserva-da-pedra",
+    "valor": 900000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 300 m², o terreno tem fundo voltado para a Área de Preservação Permanente (APP) do empreendimento, mantendo vegetação nativa preservada nos fundos do lote, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 900.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 300 m² junto à área verde do Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para Área de Preservação Permanente (APP). R$ 900.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para Área de Preservação Permanente (APP)"
+    ],
+    "fundo_raw": "App",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-009",
+    "lote_num": 9,
+    "filebase": "paganelli-terreno-009",
+    "titulo": "Terreno exclusivo de 300 m² em Palhoça",
+    "slug": "terreno-300m2-lote-009-reserva-da-pedra",
+    "valor": 900000,
+    "metragem": 300,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno está localizado no meio da quadra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 900.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 300 m² em Palhoça | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Lote de meio de quadra. R$ 900.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Lote de meio de quadra"
+    ],
+    "fundo_raw": "meio",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-010",
+    "lote_num": 10,
+    "filebase": "paganelli-terreno-010",
+    "titulo": "Seu projeto à beira do Lago começa aqui",
+    "slug": "terreno-320m2-lote-010-reserva-da-pedra",
+    "valor": 900000,
+    "metragem": 320,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 320 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 900.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Seu projeto à beira do Lago começa aqui | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 320 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 900.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-011",
+    "lote_num": 11,
+    "filebase": "paganelli-terreno-011",
+    "titulo": "Terreno com fundo para o Lago no Reserva da Pedra",
+    "slug": "terreno-300m2-lote-011-reserva-da-pedra",
+    "valor": 920000,
+    "metragem": 300,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 920.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno com fundo para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 920.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-012",
+    "lote_num": 12,
+    "filebase": "paganelli-terreno-012",
+    "titulo": "Terreno de 306 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-306m2-lote-012-reserva-da-pedra",
+    "valor": 930000,
+    "metragem": 306,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 306 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 930.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 306 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 306 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 930.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-013",
+    "lote_num": 13,
+    "filebase": "paganelli-terreno-013",
+    "titulo": "Terreno de esquina no Reserva da Pedra",
+    "slug": "terreno-375m2-lote-013-reserva-da-pedra",
+    "valor": 949000,
+    "metragem": 375,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 375 m², o terreno possui fundo classificado no cadastro do loteamento como \"quadra\" e é um terreno de esquina, o que pode proporcionar maior flexibilidade para o projeto arquitetônico, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 949.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de esquina no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 375 m² no Reserva da Pedra (Pedra Branca, Palhoça/SC). R$ 949.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo classificado como “quadra” no cadastro do loteamento",
+      "Esquina"
+    ],
+    "fundo_raw": "quadra",
+    "esquina_raw": "sim"
+  },
+  {
+    "lote_id": "LOTE-014",
+    "lote_num": 14,
+    "filebase": "paganelli-terreno-014",
+    "titulo": "Terreno de 300 m² no Reserva da Pedra",
+    "slug": "terreno-300m2-lote-014-reserva-da-pedra",
+    "valor": 950000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 300 m², o terreno está localizado no meio da quadra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 950.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 300 m² no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Lote de meio de quadra. R$ 950.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Lote de meio de quadra"
+    ],
+    "fundo_raw": "meio",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-015",
+    "lote_num": 15,
+    "filebase": "paganelli-terreno-015",
+    "titulo": "Terreno com fundo para a extrema do Reserva da Pedra",
+    "slug": "terreno-321-26m2-lote-015-reserva-da-pedra",
+    "valor": 960000,
+    "metragem": 321.26,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 321,26 m², o terreno tem fundo voltado para a extrema (limite/perímetro) do loteamento, sem outro lote na parte posterior, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 960.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno com fundo para a extrema do Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 321,26 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para a extrema do loteamento. R$ 960.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para a extrema do loteamento"
+    ],
+    "fundo_raw": "Extrema",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-016",
+    "lote_num": 16,
+    "filebase": "paganelli-terreno-016",
+    "titulo": "Terreno de 300 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-300m2-lote-016-reserva-da-pedra",
+    "valor": 980000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 980.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 300 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 980.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-017",
+    "lote_num": 17,
+    "filebase": "paganelli-terreno-017",
+    "titulo": "Oportunidade no Reserva da Pedra: 315 m²",
+    "slug": "terreno-315m2-lote-017-reserva-da-pedra",
+    "valor": 985000,
+    "metragem": 315,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 315 m², o terreno está localizado no meio da quadra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 985.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Oportunidade no Reserva da Pedra: 315 m² | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 315 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Lote de meio de quadra. R$ 985.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Lote de meio de quadra"
+    ],
+    "fundo_raw": "meio",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-018",
+    "lote_num": 18,
+    "filebase": "paganelli-terreno-018",
+    "titulo": "Privacidade e natureza no Reserva da Pedra",
+    "slug": "terreno-302m2-lote-018-reserva-da-pedra",
+    "valor": 990000,
+    "metragem": 302,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 302 m², o terreno tem fundo voltado para a Área de Preservação Permanente (APP) do empreendimento, mantendo vegetação nativa preservada nos fundos do lote, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 990.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Privacidade e natureza no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 302 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para Área de Preservação Permanente (APP). R$ 990.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para Área de Preservação Permanente (APP)"
+    ],
+    "fundo_raw": "App",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-019",
+    "lote_num": 19,
+    "filebase": "paganelli-terreno-019",
+    "titulo": "Terreno exclusivo de 352 m² à beira do Lago",
+    "slug": "terreno-352m2-lote-019-reserva-da-pedra",
+    "valor": 1000000,
+    "metragem": 352,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 352 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.000.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 352 m² à beira do Lago | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 352 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.000.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-020",
+    "lote_num": 20,
+    "filebase": "paganelli-terreno-020",
+    "titulo": "Viva à beira do Lago no Reserva da Pedra",
+    "slug": "terreno-312m2-lote-020-reserva-da-pedra",
+    "valor": 1000000,
+    "metragem": 312,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 312 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.000.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Viva à beira do Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 312 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.000.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-021",
+    "lote_num": 21,
+    "filebase": "paganelli-terreno-021",
+    "titulo": "Terreno de 313,02 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-313-02m2-lote-021-reserva-da-pedra",
+    "valor": 1000000,
+    "metragem": 313.02,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 313,02 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.000.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 313,02 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 313,02 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.000.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-022",
+    "lote_num": 22,
+    "filebase": "paganelli-terreno-022",
+    "titulo": "Terreno de 316,52 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-316-52m2-lote-022-reserva-da-pedra",
+    "valor": 1000000,
+    "metragem": 316.52,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 316,52 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.000.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 316,52 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 316,52 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.000.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-023",
+    "lote_num": 23,
+    "filebase": "paganelli-terreno-023",
+    "titulo": "Terreno exclusivo de 314,42 m² à beira do Lago",
+    "slug": "terreno-314-42m2-lote-023-reserva-da-pedra",
+    "valor": 1000000,
+    "metragem": 314.42,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 314,42 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.000.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 314,42 m² à beira do Lago | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 314,42 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.000.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-024",
+    "lote_num": 24,
+    "filebase": "paganelli-terreno-024",
+    "titulo": "Terreno exclusivo de 303 m² à beira do Lago",
+    "slug": "terreno-303m2-lote-024-reserva-da-pedra",
+    "valor": 1000000,
+    "metragem": 303,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 303 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.000.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 303 m² à beira do Lago | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 303 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.000.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-025",
+    "lote_num": 25,
+    "filebase": "paganelli-terreno-025",
+    "titulo": "Terreno de 311,99 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-311-99m2-lote-025-reserva-da-pedra",
+    "valor": 1020000,
+    "metragem": 311.99,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 311,99 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.020.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 311,99 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 311,99 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.020.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-026",
+    "lote_num": 26,
+    "filebase": "paganelli-terreno-026",
+    "titulo": "Oportunidade no Reserva da Pedra: 301 m²",
+    "slug": "terreno-301m2-lote-026-reserva-da-pedra",
+    "valor": 1050000,
+    "metragem": 301,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 301 m², o terreno está localizado no meio da quadra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.050.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Oportunidade no Reserva da Pedra: 301 m² | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 301 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Lote de meio de quadra. R$ 1.050.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Lote de meio de quadra"
+    ],
+    "fundo_raw": "meio",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-027",
+    "lote_num": 27,
+    "filebase": "paganelli-terreno-027",
+    "titulo": "Terreno de 301 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-301m2-lote-027-reserva-da-pedra",
+    "valor": 1050000,
+    "metragem": 301,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 301 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.050.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 301 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 301 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.050.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-028",
+    "lote_num": 28,
+    "filebase": "paganelli-terreno-028",
+    "titulo": "Terreno exclusivo de 300 m² à beira do Lago",
+    "slug": "terreno-300m2-lote-028-reserva-da-pedra",
+    "valor": 1060000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.060.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 300 m² à beira do Lago | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.060.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-029",
+    "lote_num": 29,
+    "filebase": "paganelli-terreno-029",
+    "titulo": "Terreno exclusivo de 300 m² à beira do Lago – R$ 1.060.000",
+    "slug": "terreno-300m2-lote-029-reserva-da-pedra",
+    "valor": 1060000,
+    "metragem": 300,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.060.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 300 m² à beira do Lago – R$ 1.060.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.060.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-030",
+    "lote_num": 30,
+    "filebase": "paganelli-terreno-030",
+    "titulo": "Terreno exclusivo de 310,64 m² em Palhoça",
+    "slug": "terreno-310-64m2-lote-030-reserva-da-pedra",
+    "valor": 1065000,
+    "metragem": 310.64,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 310,64 m², o terreno está localizado no meio da quadra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.065.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 310,64 m² em Palhoça | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 310,64 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Lote de meio de quadra. R$ 1.065.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Lote de meio de quadra"
+    ],
+    "fundo_raw": "meio",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-031",
+    "lote_num": 31,
+    "filebase": "paganelli-terreno-031",
+    "titulo": "Terreno de 303 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-303m2-lote-031-reserva-da-pedra",
+    "valor": 1090000,
+    "metragem": 303,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 303 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.090.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 303 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 303 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.090.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-032",
+    "lote_num": 32,
+    "filebase": "paganelli-terreno-032",
+    "titulo": "Terreno de 303 m² com vista para o Lago no Reserva da Pedra – R$ 1.100.000",
+    "slug": "terreno-303m2-lote-032-reserva-da-pedra",
+    "valor": 1100000,
+    "metragem": 303,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 303 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.100.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 303 m² com vista para o Lago no Reserva da Pedra – R$ 1.100.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 303 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.100.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-033",
+    "lote_num": 33,
+    "filebase": "paganelli-terreno-033",
+    "titulo": "Viva à beira do Lago no Reserva da Pedra – R$ 1.115.000",
+    "slug": "terreno-300m2-lote-033-reserva-da-pedra",
+    "valor": 1115000,
+    "metragem": 300,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.115.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Viva à beira do Lago no Reserva da Pedra – R$ 1.115.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.115.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-034",
+    "lote_num": 34,
+    "filebase": "paganelli-terreno-034",
+    "titulo": "Terreno exclusivo de 365,93 m² à beira do Lago",
+    "slug": "terreno-365-93m2-lote-034-reserva-da-pedra",
+    "valor": 1115000,
+    "metragem": 365.93,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 365,93 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.115.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 365,93 m² à beira do Lago | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 365,93 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.115.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-035",
+    "lote_num": 35,
+    "filebase": "paganelli-terreno-035",
+    "titulo": "Seu projeto à beira do Lago começa aqui – R$ 1.150.000",
+    "slug": "terreno-300m2-lote-035-reserva-da-pedra",
+    "valor": 1150000,
+    "metragem": 300,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.150.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Seu projeto à beira do Lago começa aqui – R$ 1.150.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.150.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-036",
+    "lote_num": 36,
+    "filebase": "paganelli-terreno-036",
+    "titulo": "Terreno com fundo para o Lago no Reserva da Pedra – R$ 1.150.000",
+    "slug": "terreno-300m2-lote-036-reserva-da-pedra",
+    "valor": 1150000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.150.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno com fundo para o Lago no Reserva da Pedra – R$ 1.150.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.150.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-037",
+    "lote_num": 37,
+    "filebase": "paganelli-terreno-037",
+    "titulo": "Terreno de 300 m² com vista para o Lago no Reserva da Pedra – R$ 1.150.000",
+    "slug": "terreno-300m2-lote-037-reserva-da-pedra",
+    "valor": 1150000,
+    "metragem": 300,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.150.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 300 m² com vista para o Lago no Reserva da Pedra – R$ 1.150.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.150.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-038",
+    "lote_num": 38,
+    "filebase": "paganelli-terreno-038",
+    "titulo": "Terreno exclusivo de 309,05 m² à beira do Lago",
+    "slug": "terreno-309-05m2-lote-038-reserva-da-pedra",
+    "valor": 1150000,
+    "metragem": 309.05,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 309,05 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.150.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 309,05 m² à beira do Lago | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 309,05 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.150.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-039",
+    "lote_num": 39,
+    "filebase": "paganelli-terreno-039",
+    "titulo": "Terreno de 352 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-352m2-lote-039-reserva-da-pedra",
+    "valor": 1200000,
+    "metragem": 352,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 352 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.200.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 352 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 352 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.200.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-040",
+    "lote_num": 40,
+    "filebase": "paganelli-terreno-040",
+    "titulo": "Seu projeto à beira do Lago começa aqui – R$ 1.200.000",
+    "slug": "terreno-300m2-lote-040-reserva-da-pedra",
+    "valor": 1200000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.200.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Seu projeto à beira do Lago começa aqui – R$ 1.200.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.200.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-041",
+    "lote_num": 41,
+    "filebase": "paganelli-terreno-041",
+    "titulo": "Terreno com fundo para o Lago no Reserva da Pedra – R$ 1.200.000",
+    "slug": "terreno-300m2-lote-041-reserva-da-pedra",
+    "valor": 1200000,
+    "metragem": 300,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.200.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno com fundo para o Lago no Reserva da Pedra – R$ 1.200.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.200.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-042",
+    "lote_num": 42,
+    "filebase": "paganelli-terreno-042",
+    "titulo": "Terreno de 366 m² junto à área verde do Reserva da Pedra",
+    "slug": "terreno-366m2-lote-042-reserva-da-pedra",
+    "valor": 1250000,
+    "metragem": 366,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 366 m², o terreno tem fundo voltado para a Área de Preservação Permanente (APP) do empreendimento, mantendo vegetação nativa preservada nos fundos do lote, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.250.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 366 m² junto à área verde do Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 366 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para Área de Preservação Permanente (APP). R$ 1.250.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para Área de Preservação Permanente (APP)"
+    ],
+    "fundo_raw": "App",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-043",
+    "lote_num": 43,
+    "filebase": "paganelli-terreno-043",
+    "titulo": "Terreno em posição de ilha no Reserva da Pedra",
+    "slug": "terreno-300m2-lote-043-reserva-da-pedra",
+    "valor": 1250000,
+    "metragem": 300,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O lote está classificado no cadastro do loteamento como \"ilha\", em posição cercada pelo lago, um diferencial pouco comum dentro do loteamento. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.250.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno em posição de ilha no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.250.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Formato ilha"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "ilha"
+  },
+  {
+    "lote_id": "LOTE-044",
+    "lote_num": 44,
+    "filebase": "paganelli-terreno-044",
+    "titulo": "Terreno cercado pelo Lago no Reserva da Pedra",
+    "slug": "terreno-300m2-lote-044-reserva-da-pedra",
+    "valor": 1250000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O lote está classificado no cadastro do loteamento como \"ilha\", em posição cercada pelo lago, um diferencial pouco comum dentro do loteamento. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.250.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno cercado pelo Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.250.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Formato ilha"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "ILHA"
+  },
+  {
+    "lote_id": "LOTE-045",
+    "lote_num": 45,
+    "filebase": "paganelli-terreno-045",
+    "titulo": "Terreno em posição de ilha no Reserva da Pedra – R$ 1.250.000",
+    "slug": "terreno-300m2-lote-045-reserva-da-pedra",
+    "valor": 1250000,
+    "metragem": 300,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O lote está classificado no cadastro do loteamento como \"ilha\", em posição cercada pelo lago, um diferencial pouco comum dentro do loteamento. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.250.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno em posição de ilha no Reserva da Pedra – R$ 1.250.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.250.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Formato ilha"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "ilha"
+  },
+  {
+    "lote_id": "LOTE-046",
+    "lote_num": 46,
+    "filebase": "paganelli-terreno-046",
+    "titulo": "Terreno cercado pelo Lago no Reserva da Pedra – R$ 1.250.000",
+    "slug": "terreno-300m2-lote-046-reserva-da-pedra",
+    "valor": 1250000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O lote está classificado no cadastro do loteamento como \"ilha\", em posição cercada pelo lago, um diferencial pouco comum dentro do loteamento. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.250.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno cercado pelo Lago no Reserva da Pedra – R$ 1.250.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.250.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Formato ilha"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "ilha"
+  },
+  {
+    "lote_id": "LOTE-047",
+    "lote_num": 47,
+    "filebase": "paganelli-terreno-047",
+    "titulo": "Terreno em posição de ilha no Reserva da Pedra – R$ 1.250.000 (2)",
+    "slug": "terreno-300m2-lote-047-reserva-da-pedra",
+    "valor": 1250000,
+    "metragem": 300,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O lote está classificado no cadastro do loteamento como \"ilha\", em posição cercada pelo lago, um diferencial pouco comum dentro do loteamento. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.250.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno em posição de ilha no Reserva da Pedra – R$ 1.250.000 (2) | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.250.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Formato ilha"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "ilha"
+  },
+  {
+    "lote_id": "LOTE-048",
+    "lote_num": 48,
+    "filebase": "paganelli-terreno-048",
+    "titulo": "Viva à beira do Lago no Reserva da Pedra – R$ 1.250.000",
+    "slug": "terreno-300m2-lote-048-reserva-da-pedra",
+    "valor": 1250000,
+    "metragem": 300,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 300 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.250.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Viva à beira do Lago no Reserva da Pedra – R$ 1.250.000 | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 300 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.250.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-049",
+    "lote_num": 49,
+    "filebase": "paganelli-terreno-049",
+    "titulo": "Terreno de 390,58 m² junto à área verde do Reserva da Pedra",
+    "slug": "terreno-390-58m2-lote-049-reserva-da-pedra",
+    "valor": 1270000,
+    "metragem": 390.58,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 390,58 m², o terreno tem fundo voltado para a Área de Preservação Permanente (APP) do empreendimento, mantendo vegetação nativa preservada nos fundos do lote, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.270.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 390,58 m² junto à área verde do Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 390,58 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para Área de Preservação Permanente (APP). R$ 1.270.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para Área de Preservação Permanente (APP)"
+    ],
+    "fundo_raw": "App",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-050",
+    "lote_num": 50,
+    "filebase": "paganelli-terreno-050",
+    "titulo": "Terreno de esquina de 380,52 m² no Reserva da Pedra",
+    "slug": "terreno-380-52m2-lote-050-reserva-da-pedra",
+    "valor": 1270000,
+    "metragem": 380.52,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 380,52 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra e é um terreno de esquina, o que pode proporcionar maior flexibilidade para o projeto arquitetônico, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.270.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de esquina de 380,52 m² no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 380,52 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.270.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Esquina"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "sim"
+  },
+  {
+    "lote_id": "LOTE-051",
+    "lote_num": 51,
+    "filebase": "paganelli-terreno-051",
+    "titulo": "Terreno de 312,08 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-312-08m2-lote-051-reserva-da-pedra",
+    "valor": 1270000,
+    "metragem": 312.08,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 312,08 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.270.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 312,08 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 312,08 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.270.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-052",
+    "lote_num": 52,
+    "filebase": "paganelli-terreno-052",
+    "titulo": "Terreno de esquina de 375,6 m² no Reserva da Pedra",
+    "slug": "terreno-375-6m2-lote-052-reserva-da-pedra",
+    "valor": 1290000,
+    "metragem": 375.6,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 375,6 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra e é um terreno de esquina, o que pode proporcionar maior flexibilidade para o projeto arquitetônico, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.290.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de esquina de 375,6 m² no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 375,6 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.290.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Esquina"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "sim"
+  },
+  {
+    "lote_id": "LOTE-053",
+    "lote_num": 53,
+    "filebase": "paganelli-terreno-053",
+    "titulo": "Terreno de esquina de 390 m² no Reserva da Pedra",
+    "slug": "terreno-390m2-lote-053-reserva-da-pedra",
+    "valor": 1350000,
+    "metragem": 390,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 390 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra e é um terreno de esquina, o que pode proporcionar maior flexibilidade para o projeto arquitetônico, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.350.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de esquina de 390 m² no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 390 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.350.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Esquina"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "sim"
+  },
+  {
+    "lote_id": "LOTE-054",
+    "lote_num": 54,
+    "filebase": "paganelli-terreno-054",
+    "titulo": "Terreno exclusivo de 312 m² à beira do Lago",
+    "slug": "terreno-312m2-lote-054-reserva-da-pedra",
+    "valor": 1550000,
+    "metragem": 312,
+    "descricao_completa": "Uma oportunidade especial para quem busca qualidade de vida e valorização patrimonial no Reserva da Pedra, na Pedra Branca (Palhoça/SC). Com 312 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra e está classificado no cadastro do loteamento com referência a \"área verde\", em posição próxima às áreas verdes do empreendimento, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.550.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno exclusivo de 312 m² à beira do Lago | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 312 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.550.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Área verde"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "area verde"
+  },
+  {
+    "lote_id": "LOTE-055",
+    "lote_num": 55,
+    "filebase": "paganelli-terreno-055",
+    "titulo": "Terreno de 423,67 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-423-67m2-lote-055-reserva-da-pedra",
+    "valor": 1596000,
+    "metragem": 423.67,
+    "descricao_completa": "Uma chance exclusiva de construir no Reserva da Pedra, empreendimento consolidado na Pedra Branca, em Palhoça/SC. Com 423,67 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.596.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 423,67 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 423,67 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.596.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  },
+  {
+    "lote_id": "LOTE-056",
+    "lote_num": 56,
+    "filebase": "paganelli-terreno-056",
+    "titulo": "Terreno de 375 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-375m2-lote-056-reserva-da-pedra",
+    "valor": 1600000,
+    "metragem": 375,
+    "descricao_completa": "Uma oportunidade diferenciada para quem deseja morar ou investir no Reserva da Pedra, na região da Pedra Branca, em Palhoça/SC. Com 375 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra e está classificado no cadastro do loteamento com referência a \"área verde\", em posição próxima às áreas verdes do empreendimento, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.600.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 375 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 375 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.600.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago",
+      "Área verde"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "area verde"
+  },
+  {
+    "lote_id": "LOTE-057",
+    "lote_num": 57,
+    "filebase": "paganelli-terreno-057",
+    "titulo": "Terreno de 323 m² com vista para o Lago no Reserva da Pedra",
+    "slug": "terreno-323m2-lote-057-reserva-da-pedra",
+    "valor": 1650000,
+    "metragem": 323,
+    "descricao_completa": "Uma excelente oportunidade para construir seu projeto no Reserva da Pedra, condomínio de alto padrão na Pedra Branca, em Palhoça/SC. Com 323 m², o terreno conta com fundo voltado para o lago do Reserva da Pedra, oferecendo uma configuração interessante para diferentes projetos arquitetônicos. O Reserva da Pedra integra a Cidade Criativa Pedra Branca e reúne lagos artificiais, praia, áreas verdes e infraestrutura de lazer, com boa parte dos lotes de frente para a água. Valor: R$ 1.650.000. Entre em contato com a Paganelli Imóveis e conheça esta oportunidade no Reserva da Pedra.",
+    "seo_titulo": "Terreno de 323 m² com vista para o Lago no Reserva da Pedra | Paganelli Imóveis",
+    "seo_descricao": "Terreno de 323 m² no Reserva da Pedra, Pedra Branca, Palhoça/SC. Fundo para o Lago. R$ 1.650.000. Fale com a Paganelli Imóveis.",
+    "destaques": [
+      "Fundo para o Lago"
+    ],
+    "fundo_raw": "lago",
+    "esquina_raw": "não"
+  }
+]

@@ -8,7 +8,12 @@
 
 /* ---------------------------------------------------------------- Usuários */
 
-export type PerfilAcesso = "administrador" | "corretor" | "assistente";
+export type PerfilAcesso =
+  | "administrador"
+  | "gestor"
+  | "corretor"
+  | "assistente"
+  | "usuario";
 
 export interface Usuario {
   id: string;
@@ -18,7 +23,25 @@ export interface Usuario {
   perfil: PerfilAcesso;
   creci?: string;
   avatarIniciais: string;
+  avatarUrl?: string;
   ativo: boolean;
+  criadoEm: string;
+  /** Preenchido no login. Ausente enquanto a conta nunca foi usada. */
+  ultimoAcessoEm?: string;
+  /** Conta criada com senha temporária: o painel exige a troca antes de seguir. */
+  precisaTrocarSenha?: boolean;
+}
+
+/** Registro da trilha de auditoria (tabela `logs_auditoria`). */
+export interface LogAuditoria {
+  id: string;
+  usuarioId: string | null;
+  acao: string;
+  entidade: string;
+  entidadeId: string | null;
+  usuarioAfetadoId: string | null;
+  detalhe: string;
+  resultado: "sucesso" | "negado" | "erro";
   criadoEm: string;
 }
 
@@ -256,6 +279,33 @@ export interface MetricasAnuncio {
   conversoes: number;
 }
 
+/**
+ * Estado da publicação do anúncio no Instagram.
+ *
+ * `NOT_REQUESTED` é o estado inicial de todo anúncio: cadastrar um anúncio
+ * não o coloca na fila do Instagram. `READY` significa que alguém marcou
+ * "Publicar no Instagram", mas a publicação ainda não foi confirmada.
+ */
+export type InstagramStatus =
+  | "NOT_REQUESTED"
+  | "READY"
+  | "PUBLISHING"
+  | "PUBLISHED"
+  | "FAILED";
+
+export interface InstagramAnuncio {
+  /** Marcação explícita do usuário — nunca ligada automaticamente. */
+  habilitado: boolean;
+  status: InstagramStatus;
+  /** Legenda revisada pelo usuário; persiste entre aberturas do modal. */
+  legenda?: string;
+  publicadoEm?: string;
+  postId?: string;
+  postUrl?: string;
+  /** Mensagem amigável do último erro; o detalhe técnico fica no log. */
+  erro?: string;
+}
+
 export interface Anuncio {
   id: string;
   codigo: string;
@@ -273,6 +323,7 @@ export interface Anuncio {
   expirarEm?: string;
   destaqueHome: boolean;
   metricas: MetricasAnuncio;
+  instagram: InstagramAnuncio;
   corretorId: string;
   criadoEm: string;
   atualizadoEm: string;

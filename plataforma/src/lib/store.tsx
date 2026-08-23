@@ -14,6 +14,7 @@ import type {
   Contrato,
   EtapaFunil,
   Imovel,
+  InstagramAnuncio,
   Interacao,
   Lead,
   LogAcao,
@@ -36,9 +37,15 @@ import {
   criarImovel as criarImovelSupabase,
   criarCliente as criarClienteSupabase,
   criarAnuncio as criarAnuncioSupabase,
+  criarVisita as criarVisitaSupabase,
+  criarContrato as criarContratoSupabase,
+  criarLead as criarLeadSupabase,
   atualizarImovel as atualizarImovelSupabase,
   atualizarAnuncio as atualizarAnuncioSupabase,
   atualizarCliente as atualizarClienteSupabase,
+  atualizarVisita as atualizarVisitaSupabase,
+  atualizarContrato as atualizarContratoSupabase,
+  atualizarLead as atualizarLeadSupabase,
   deletarCliente as deletarClienteSupabase,
   deletarAnuncio as deletarAnuncioSupabase,
   deletarImovel as deletarImovelSupabase,
@@ -48,6 +55,9 @@ import {
   converterAnuncioParaDbAnuncio,
   converterDbAnuncioParaAnuncio,
   converterClienteParaDbCliente,
+  converterVisitaParaDbVisita,
+  converterContratoParaDbContrato,
+  converterLeadParaDbLead,
   carregarTodosDadosSupabase,
 } from "./supabase-sync-store";
 
@@ -156,6 +166,14 @@ interface ContextoDados extends EstadoDados {
   alterarStatusAnuncio: (anuncioId: string, status: StatusAnuncio, autorId: string) => void;
   atualizarAnuncio: (anuncioId: string, dados: Partial<Anuncio>, autorId: string) => void;
   deletarAnuncio: (anuncioId: string, autorId: string) => void;
+  /**
+   * Reflete no estado local o resultado de uma operação do Instagram.
+   *
+   * Só espelha — quem grava esses campos no banco são as rotas
+   * `/api/instagram/*`, para que uma edição comum do anúncio não sobrescreva
+   * o estado de publicação.
+   */
+  aplicarInstagramAnuncio: (anuncioId: string, instagram: Partial<InstagramAnuncio>) => void;
 
   /* Mutações — imóveis */
   atualizarImovel: (imovelId: string, dados: Partial<Imovel>, autorId: string) => void;
@@ -248,7 +266,7 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
         const dados = await carregarTodosDadosSupabase();
         if (dados) {
           console.log(
-            `📥 Sincronizado com Supabase: ${dados.imoveis.length} imóveis, ${dados.clientes.length} clientes, ${dados.anuncios.length} anúncios, ${dados.usuarios.length} usuários`
+            `📥 Sincronizado com Supabase: ${dados.imoveis.length} imóveis, ${dados.clientes.length} clientes, ${dados.anuncios.length} anúncios, ${dados.usuarios.length} usuários, ${dados.visitas.length} visitas, ${dados.contratos.length} contratos, ${dados.leads.length} leads`
           );
           setEstado((e) => ({
             ...e,
@@ -256,6 +274,9 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
             clientes: dados.clientes,
             anuncios: dados.anuncios,
             usuarios: dados.usuarios.length > 0 ? dados.usuarios : e.usuarios,
+            visitas: dados.visitas,
+            contratos: dados.contratos,
+            leads: dados.leads,
           }));
         }
       } catch (erro) {
@@ -462,7 +483,7 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
         capa_indice: 0,
         ordem_galeria: [],
         selos: [],
-        metricas: { visualizacoes: 0, interesse: 0, contatos: 0 },
+        metricas: { visualizacoes: 0, conversoes: 0, contatos: 0 },
         corretor_id: imovel.corretorId,
       });
 
@@ -617,19 +638,29 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
         descricao: `${dados.nome} — ${dados.mensagem.slice(0, 80)}`,
         href: "/painel/leads",
       });
+      criarLeadSupabase(converterLeadParaDbLead(novo)).catch((erro) =>
+        console.error("Erro ao sincronizar lead com Supabase:", erro),
+      );
       return novo;
     },
     [notificar],
   );
 
-  const atribuirLead = useCallback((leadId: string, corretorId: string) => {
-    setEstado((e) => ({
-      ...e,
-      leads: e.leads.map((l) =>
-        l.id === leadId ? { ...l, corretorId, status: "atribuido" } : l,
-      ),
-    }));
-  }, []);
+  const atribuirLead = useCallback(
+    (leadId: string, corretorId: string) => {
+      const leadAtual = estado.leads.find((l) => l.id === leadId);
+      if (!leadAtual) return;
+      const atualizado: Lead = { ...leadAtual, corretorId, status: "atribuido" };
+      setEstado((e) => ({
+        ...e,
+        leads: e.leads.map((l) => (l.id === leadId ? atualizado : l)),
+      }));
+      atualizarLeadSupabase(leadId, converterLeadParaDbLead(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar atribuição do lead com Supabase:", erro),
+      );
+    },
+    [estado.leads],
+  );
 
   /** Promove o lead a cliente do CRM, preservando a mensagem original na timeline. */
   const converterLeadEmCliente = useCallback(
@@ -667,24 +698,50 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
         atualizadoEm: agora().slice(0, 10),
       };
 
+      const leadAtualizado: Lead = {
+        ...lead,
+        status: "convertido",
+        clienteId: novo.id,
+        corretorId: novo.corretorId,
+      };
+
       setEstado((e) => ({
         ...e,
         clientes: [novo, ...e.clientes],
-        leads: e.leads.map((l) =>
-          l.id === leadId ? { ...l, status: "convertido", clienteId: novo.id, corretorId: novo.corretorId } : l,
-        ),
+        leads: e.leads.map((l) => (l.id === leadId ? leadAtualizado : l)),
       }));
+
+      // A FK de leads.cliente_id só é satisfeita depois que o cliente existe
+      // no banco, então a atualização do lead precisa esperar a criação do
+      // cliente terminar — não pode disparar em paralelo.
+      (async () => {
+        try {
+          await criarClienteSupabase(converterClienteParaDbCliente(novo));
+          await atualizarLeadSupabase(leadId, converterLeadParaDbLead(leadAtualizado));
+        } catch (erro) {
+          console.error("Erro ao sincronizar conversão do lead em cliente com Supabase:", erro);
+        }
+      })();
       return novo;
     },
     [estado.leads],
   );
 
-  const descartarLead = useCallback((leadId: string) => {
-    setEstado((e) => ({
-      ...e,
-      leads: e.leads.map((l) => (l.id === leadId ? { ...l, status: "descartado" } : l)),
-    }));
-  }, []);
+  const descartarLead = useCallback(
+    (leadId: string) => {
+      const leadAtual = estado.leads.find((l) => l.id === leadId);
+      if (!leadAtual) return;
+      const atualizado: Lead = { ...leadAtual, status: "descartado" };
+      setEstado((e) => ({
+        ...e,
+        leads: e.leads.map((l) => (l.id === leadId ? atualizado : l)),
+      }));
+      atualizarLeadSupabase(leadId, converterLeadParaDbLead(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar descarte do lead com Supabase:", erro),
+      );
+    },
+    [estado.leads],
+  );
 
   const moverEtapaCliente = useCallback(
     (clienteId: string, etapa: EtapaFunil) => {
@@ -816,48 +873,71 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
           href: "/painel/visitas",
         });
       }
+      criarVisitaSupabase(converterVisitaParaDbVisita(nova)).catch((erro) =>
+        console.error("Erro ao sincronizar visita com Supabase:", erro),
+      );
       return nova;
     },
     [notificar],
   );
 
-  const alterarStatusVisita = useCallback((visitaId: string, status: StatusVisita) => {
-    setEstado((e) => ({
-      ...e,
-      visitas: e.visitas.map((v) =>
-        v.id === visitaId
-          ? { ...v, status, confirmadaPeloCliente: status === "confirmada" ? true : v.confirmadaPeloCliente }
-          : v,
-      ),
-    }));
-  }, []);
+  const alterarStatusVisita = useCallback(
+    (visitaId: string, status: StatusVisita) => {
+      const visitaAtual = estado.visitas.find((v) => v.id === visitaId);
+      if (!visitaAtual) return;
+      const atualizada: Visita = {
+        ...visitaAtual,
+        status,
+        confirmadaPeloCliente: status === "confirmada" ? true : visitaAtual.confirmadaPeloCliente,
+      };
+      setEstado((e) => ({
+        ...e,
+        visitas: e.visitas.map((v) => (v.id === visitaId ? atualizada : v)),
+      }));
+      atualizarVisitaSupabase(visitaId, converterVisitaParaDbVisita(atualizada)).catch((erro) =>
+        console.error("Erro ao sincronizar status da visita com Supabase:", erro),
+      );
+    },
+    [estado.visitas],
+  );
 
   const registrarFeedbackVisita = useCallback(
     (visitaId: string, feedback: string, observacoes: string, proximaAcao: string) => {
+      const visitaAtual = estado.visitas.find((v) => v.id === visitaId);
+      if (!visitaAtual) return;
+      const atualizada: Visita = {
+        ...visitaAtual,
+        status: "realizada",
+        feedbackCliente: feedback,
+        observacoesCorretor: observacoes,
+        proximaAcao,
+      };
       setEstado((e) => ({
         ...e,
-        visitas: e.visitas.map((v) =>
-          v.id === visitaId
-            ? {
-                ...v,
-                status: "realizada",
-                feedbackCliente: feedback,
-                observacoesCorretor: observacoes,
-                proximaAcao,
-              }
-            : v,
-        ),
+        visitas: e.visitas.map((v) => (v.id === visitaId ? atualizada : v)),
       }));
+      atualizarVisitaSupabase(visitaId, converterVisitaParaDbVisita(atualizada)).catch((erro) =>
+        console.error("Erro ao sincronizar feedback da visita com Supabase:", erro),
+      );
     },
-    [],
+    [estado.visitas],
   );
 
-  const enviarLembreteVisita = useCallback((visitaId: string) => {
-    setEstado((e) => ({
-      ...e,
-      visitas: e.visitas.map((v) => (v.id === visitaId ? { ...v, lembreteEnviado: true } : v)),
-    }));
-  }, []);
+  const enviarLembreteVisita = useCallback(
+    (visitaId: string) => {
+      const visitaAtual = estado.visitas.find((v) => v.id === visitaId);
+      if (!visitaAtual) return;
+      const atualizada: Visita = { ...visitaAtual, lembreteEnviado: true };
+      setEstado((e) => ({
+        ...e,
+        visitas: e.visitas.map((v) => (v.id === visitaId ? atualizada : v)),
+      }));
+      atualizarVisitaSupabase(visitaId, converterVisitaParaDbVisita(atualizada)).catch((erro) =>
+        console.error("Erro ao sincronizar lembrete da visita com Supabase:", erro),
+      );
+    },
+    [estado.visitas],
+  );
 
   /* -------------------------------------------------------------- Contratos */
 
@@ -901,6 +981,9 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
       }));
 
       registrarLog(autorId, "Criou contrato", numero, "Contrato de exclusividade cadastrado.");
+      criarContratoSupabase(converterContratoParaDbContrato(novo)).catch((erro) =>
+        console.error("Erro ao sincronizar contrato com Supabase:", erro),
+      );
       return novo;
     },
     [estado.contratos.length, registrarLog],
@@ -908,46 +991,48 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
 
   const atualizarContrato = useCallback(
     (contratoId: string, dados: Partial<Contrato>, autorId: string) => {
-      let numero = "";
+      const contratoAtual = estado.contratos.find((c) => c.id === contratoId);
+      if (!contratoAtual) return;
+      const atualizado: Contrato = { ...contratoAtual, ...dados };
       setEstado((e) => ({
         ...e,
-        contratos: e.contratos.map((c) => {
-          if (c.id !== contratoId) return c;
-          numero = c.numero;
-          return { ...c, ...dados };
-        }),
+        contratos: e.contratos.map((c) => (c.id === contratoId ? atualizado : c)),
       }));
-      registrarLog(autorId, "Atualizou contrato", numero, "Dados do contrato alterados.");
+      registrarLog(autorId, "Atualizou contrato", atualizado.numero, "Dados do contrato alterados.");
+      atualizarContratoSupabase(contratoId, converterContratoParaDbContrato(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar contrato com Supabase:", erro),
+      );
     },
-    [registrarLog],
+    [estado.contratos, registrarLog],
   );
 
   /** Duplica o contrato vigente com novo período, mantendo o histórico. */
   const renovarContrato = useCallback(
     (contratoId: string, prazoMeses: number, observacao: string, autorId: string) => {
-      let numero = "";
+      const contratoAtual = estado.contratos.find((c) => c.id === contratoId);
+      if (!contratoAtual) return;
+      const novoInicio = contratoAtual.dataTermino;
+      const atualizado: Contrato = {
+        ...contratoAtual,
+        status: "ativo",
+        dataInicio: novoInicio,
+        dataTermino: adicionarMeses(novoInicio, prazoMeses),
+        prazoMeses,
+        renovacoes: [
+          ...contratoAtual.renovacoes,
+          { id: id("r"), data: agora().slice(0, 10), prazoMeses, observacao },
+        ],
+      };
       setEstado((e) => ({
         ...e,
-        contratos: e.contratos.map((c) => {
-          if (c.id !== contratoId) return c;
-          numero = c.numero;
-          const novoInicio = c.dataTermino;
-          return {
-            ...c,
-            status: "ativo",
-            dataInicio: novoInicio,
-            dataTermino: adicionarMeses(novoInicio, prazoMeses),
-            prazoMeses,
-            renovacoes: [
-              ...c.renovacoes,
-              { id: id("r"), data: agora().slice(0, 10), prazoMeses, observacao },
-            ],
-          };
-        }),
+        contratos: e.contratos.map((c) => (c.id === contratoId ? atualizado : c)),
       }));
-      registrarLog(autorId, "Renovou contrato", numero, `Novo prazo de ${prazoMeses} meses.`);
+      registrarLog(autorId, "Renovou contrato", atualizado.numero, `Novo prazo de ${prazoMeses} meses.`);
+      atualizarContratoSupabase(contratoId, converterContratoParaDbContrato(atualizado)).catch((erro) =>
+        console.error("Erro ao sincronizar renovação do contrato com Supabase:", erro),
+      );
     },
-    [registrarLog],
+    [estado.contratos, registrarLog],
   );
 
   /* ------------------------------------------------- Tarefas e notificações */
@@ -991,16 +1076,33 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  const aplicarInstagramAnuncio = useCallback(
+    (anuncioId: string, instagram: Partial<InstagramAnuncio>) => {
+      setEstado((e) => ({
+        ...e,
+        anuncios: e.anuncios.map((a) =>
+          a.id === anuncioId ? { ...a, instagram: { ...a.instagram, ...instagram } } : a,
+        ),
+      }));
+    },
+    [],
+  );
+
   const registrarVisualizacaoAnuncio = useCallback((anuncioId: string) => {
+    const anuncio = estado.anuncios.find((a) => a.id === anuncioId);
+    if (!anuncio) return;
+    const anuncioAtualizado = {
+      ...anuncio,
+      metricas: { ...anuncio.metricas, visualizacoes: anuncio.metricas.visualizacoes + 1 },
+    };
     setEstado((e) => ({
       ...e,
-      anuncios: e.anuncios.map((a) =>
-        a.id === anuncioId
-          ? { ...a, metricas: { ...a.metricas, visualizacoes: a.metricas.visualizacoes + 1 } }
-          : a,
-      ),
+      anuncios: e.anuncios.map((a) => (a.id === anuncioId ? anuncioAtualizado : a)),
     }));
-  }, []);
+    atualizarAnuncioSupabase(anuncioId, converterAnuncioParaDbAnuncio(anuncioAtualizado)).catch((erro) =>
+      console.error("Erro ao registrar visualização:", erro),
+    );
+  }, [estado.anuncios]);
 
   const reiniciarDemonstracao = useCallback(() => {
     window.localStorage.removeItem(CHAVE_ARMAZENAMENTO);
@@ -1079,6 +1181,7 @@ export function DadosProvider({ children }: { children: React.ReactNode }) {
     publicarAnuncioImovel,
     alterarStatusAnuncio,
     atualizarAnuncio,
+    aplicarInstagramAnuncio,
     atualizarImovel,
     criarImovel,
     deletarImovel,

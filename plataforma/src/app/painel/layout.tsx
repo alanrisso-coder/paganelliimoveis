@@ -6,6 +6,7 @@ import { useSessao } from "@/lib/auth";
 import { Navegacao } from "@/components/painel/Navegacao";
 import { BarraTopo } from "@/components/painel/Cabecalho";
 import { AvisoProvider } from "@/components/ui/Toast";
+import { TrocaSenhaObrigatoria } from "@/components/painel/TrocaSenhaObrigatoria";
 
 /**
  * Guarda de acesso do painel.
@@ -58,6 +59,9 @@ export default function LayoutPainel({ children }: { children: React.ReactNode }
           </main>
         </div>
       </div>
+
+      {/* Sobrepõe o painel enquanto a senha for provisória. */}
+      {usuario.precisaTrocarSenha && <TrocaSenhaObrigatoria />}
     </AvisoProvider>
   );
 }

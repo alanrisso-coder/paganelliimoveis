@@ -37,6 +37,38 @@ formulário, use qualquer e-mail da equipe com a senha `paganelli2026`:
 > produção, substitua por Supabase Auth (ou equivalente) com sessão em cookie `httpOnly`,
 > verificação no servidor e RLS por perfil. Ver `src/lib/auth.tsx`.
 
+## Publicação no Instagram
+
+Anúncios podem ser publicados no perfil `@paganelliimoveis` pelo gerenciador de anúncios.
+**Cadastrar um anúncio não o publica no Instagram**: todo anúncio nasce em `NOT_REQUESTED` e só
+vai ao ar quando um administrador marca *Publicar no Instagram*, revisa a prévia e confirma.
+
+Só o perfil **administrador** tem a permissão `publicar_instagram`, e ela é revalidada no
+servidor a cada publicação — a checagem de interface não é a fronteira de segurança.
+
+### Variáveis de ambiente
+
+| Variável | Para que serve |
+| --- | --- |
+| `INSTAGRAM_ACCESS_TOKEN` | Token de longa duração da Meta com acesso à conta |
+| `INSTAGRAM_BUSINESS_ACCOUNT_ID` | ID da conta Instagram Business |
+| `INSTAGRAM_API_VERSION` | Versão da Graph API (opcional, padrão `v21.0`) |
+| `NEXT_PUBLIC_SITE_URL` | Domínio público, para montar o link do anúncio na legenda — `https://www.paganelliimoveis.com.br` |
+| `ANTHROPIC_API_KEY` | Geração da legenda por IA (opcional — sem ela, a legenda padrão é usada) |
+
+### Configuração na Meta
+
+1. A conta Instagram precisa ser **Business** ou **Creator** e estar vinculada a uma Página do Facebook.
+2. No App da Meta (pode ser o mesmo já usado no WhatsApp), adicionar o produto **Instagram Graph API**.
+3. Conceder as permissões `instagram_basic`, `instagram_content_publish`, `pages_show_list` e `pages_read_engagement`.
+4. Gerar um token de longa duração e colocá-lo em `INSTAGRAM_ACCESS_TOKEN`.
+
+O Instagram limita **50 publicações por conta a cada 24 horas**.
+
+### Migration
+
+Antes do primeiro uso, aplicar `migrations/006_instagram_publicacao.sql` no Supabase.
+
 ## Dados da empresa
 
 As informações institucionais são **reais**, extraídas do site da empresa
@@ -172,9 +204,10 @@ mutação de servidor. Para ligar o backend:
 ## O que ainda não está implementado
 
 - Upload real de fotos, plantas, vídeos e documentos (os botões avisam disso na interface)
-- Envio real de WhatsApp e e-mail — os lembretes são simulados
+- Envio real de e-mail e de lembrete de visita por WhatsApp — continuam simulados. A notificação de
+  WhatsApp na conversão de lead em cliente é real (WhatsApp Business Cloud API da Meta) — ver
+  `src/lib/whatsapp.ts` e `src/lib/whatsapp-conversao.ts`
 - Publicação em portais imobiliários e assinatura digital
-- Persistência em banco de dados
 
 ## Dados demonstrativos
 

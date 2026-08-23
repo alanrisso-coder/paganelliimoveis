@@ -8,6 +8,7 @@ import { CabecalhoPagina } from "./Cabecalho";
 import { Botao, CampoSelecao, CampoTexto, EstadoVazio, Modal, Painel, Selo } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
 import { CardImovelCompacto } from "@/components/site/CardImovel";
+import { WhatsAppStatus } from "./WhatsAppStatus";
 import {
   etapasFunil,
   formatarData,
@@ -137,6 +138,7 @@ export function FichaCliente({ clienteId }: { clienteId: string }) {
                   <dd className="mt-0.5 text-grafite-900">{linha.valor}</dd>
                 </div>
               ))}
+              <WhatsAppStatus clienteId={cliente.id} />
             </dl>
           </Painel>
 

@@ -1,12 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useDados } from "@/lib/store";
 import { useSessao } from "@/lib/auth";
+import { descreverAcao, tomResultado } from "@/lib/auditoria-rotulos";
+import type { LogAuditoria } from "@/lib/types";
 import { CabecalhoPagina } from "@/components/painel/Cabecalho";
 import { Botao, Painel, Selo } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
-import { descricaoPerfil, rotuloPerfil } from "@/lib/permissoes";
+import { descricaoPerfil, PERFIS, rotuloPerfil } from "@/lib/permissoes";
 import { formatarData, formatarDataHora, formatarTelefone } from "@/lib/format";
 import { CONTATO } from "@/lib/contato";
 import type { Permissao } from "@/lib/permissoes";
@@ -26,7 +29,7 @@ const permissoesExibidas: { chave: Permissao; texto: string }[] = [
   { chave: "gerenciar_usuarios", texto: "Gerenciar usuários" },
 ];
 
-const perfis: PerfilAcesso[] = ["administrador", "corretor", "assistente"];
+const perfis: PerfilAcesso[] = PERFIS;
 
 const integracoes = [
   {
@@ -63,9 +66,53 @@ const integracoes = [
 
 export default function PaginaConfiguracoes() {
   const dados = useDados();
-  const { usuario } = useSessao();
+  const { usuario, pode } = useSessao();
   const { avisar } = useAviso();
   const [confirmandoReinicio, setConfirmandoReinicio] = useState(false);
+
+  // Trilha de auditoria persistida no banco (tabela `logs_auditoria`).
+  const podeVerLogs = pode("ver_logs");
+  const [logs, setLogs] = useState<LogAuditoria[]>([]);
+  // Quem não pode ver a trilha não tem o que carregar: já começa resolvido.
+  const [carregandoLogs, setCarregandoLogs] = useState(podeVerLogs);
+
+  useEffect(() => {
+    if (!podeVerLogs) return;
+
+    let cancelado = false;
+
+    (async () => {
+      try {
+        const resposta = await fetch("/api/admin/logs?limite=200", { cache: "no-store" });
+        const corpo = await resposta.json();
+        if (cancelado || !resposta.ok) return;
+
+        setLogs(
+          (corpo.data ?? []).map(
+            (l: Record<string, unknown>): LogAuditoria => ({
+              id: l.id as string,
+              usuarioId: (l.usuario_id as string) ?? null,
+              acao: l.acao as string,
+              entidade: l.entidade as string,
+              entidadeId: (l.entidade_id as string) ?? null,
+              usuarioAfetadoId: (l.usuario_afetado_id as string) ?? null,
+              detalhe: (l.detalhe as string) ?? "",
+              resultado: l.resultado as LogAuditoria["resultado"],
+              criadoEm: l.criado_em as string,
+            })
+          )
+        );
+      } catch {
+        // Sem trilha carregada: o painel mostra o estado vazio abaixo.
+      } finally {
+        if (!cancelado) setCarregandoLogs(false);
+      }
+    })();
+
+    return () => {
+      cancelado = true;
+    };
+  }, [podeVerLogs]);
 
   return (
     <>
@@ -103,10 +150,15 @@ export default function PaginaConfiguracoes() {
               </li>
             ))}
           </ul>
-          <p className="mt-4 border-t border-linha pt-4 text-xs leading-relaxed text-grafite-400">
-            A criação e a desativação de usuários passam a ser possíveis quando o provedor de
-            autenticação for conectado — hoje a equipe vem do seed.
-          </p>
+          {pode("ver_usuarios") && (
+            <p className="mt-4 border-t border-linha pt-4 text-xs leading-relaxed text-grafite-400">
+              Criar contas, alterar perfis e ativar/desativar acessos em{" "}
+              <Link href="/painel/usuarios" className="font-bold text-verde-800 hover:underline">
+                Administração → Usuários
+              </Link>
+              .
+            </p>
+          )}
         </Painel>
 
         <Painel titulo="Matriz de permissões">
@@ -209,38 +261,61 @@ export default function PaginaConfiguracoes() {
         </Painel>
       </div>
 
-      <Painel titulo={`Registro de ações (${dados.logs.length})`} className="mt-5">
-        <div className="scroll-fino max-h-96 overflow-y-auto">
-          <table className="w-full text-left text-sm">
-            <caption className="sr-only">Trilha de auditoria das ações do painel</caption>
-            <thead className="sticky top-0 bg-white">
-              <tr>
-                {["Data", "Usuário", "Ação", "Entidade", "Detalhe"].map((h) => (
-                  <th key={h} scope="col" className="pb-2 text-[0.625rem] font-bold uppercase tracking-wide text-grafite-400">
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {dados.logs.map((log) => {
-                const autor = dados.usuarioPorId(log.usuarioId);
-                return (
-                  <tr key={log.id} className="border-t border-linha">
-                    <td className="py-2.5 pr-3 font-mono text-[0.6875rem] text-grafite-400">
-                      {formatarDataHora(log.data)}
-                    </td>
-                    <td className="py-2.5 pr-3 text-xs text-grafite-700">{autor?.nome ?? "Sistema"}</td>
-                    <td className="py-2.5 pr-3 text-xs font-bold text-verde-900">{log.acao}</td>
-                    <td className="py-2.5 pr-3 font-mono text-[0.6875rem] text-verde-800">{log.entidade}</td>
-                    <td className="py-2.5 text-xs text-grafite-500">{log.detalhe}</td>
+      {podeVerLogs && (
+        <Painel titulo={`Registro de ações (${logs.length})`} className="mt-5">
+          {carregandoLogs ? (
+            <p className="text-sm text-grafite-400">Carregando registro…</p>
+          ) : logs.length === 0 ? (
+            <p className="text-sm leading-relaxed text-grafite-500">
+              Nenhuma ação registrada ainda. A trilha passa a receber logins, alterações de senha e
+              operações administrativas a partir de agora.
+            </p>
+          ) : (
+            <div className="scroll-fino max-h-96 overflow-x-auto overflow-y-auto">
+              <table className="w-full text-left text-sm">
+                <caption className="sr-only">Trilha de auditoria das ações do painel</caption>
+                <thead className="sticky top-0 bg-white">
+                  <tr>
+                    {["Data", "Autor", "Ação", "Resultado", "Detalhe"].map((h) => (
+                      <th
+                        key={h}
+                        scope="col"
+                        className="whitespace-nowrap pb-2 text-[0.625rem] font-bold uppercase tracking-wide text-grafite-400"
+                      >
+                        {h}
+                      </th>
+                    ))}
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </Painel>
+                </thead>
+                <tbody>
+                  {logs.map((log) => {
+                    // Autor excluído do sistema: a referência vira nula, mas o
+                    // texto do log preserva quem era.
+                    const autor = log.usuarioId ? dados.usuarioPorId(log.usuarioId) : null;
+                    return (
+                      <tr key={log.id} className="border-t border-linha align-top">
+                        <td className="whitespace-nowrap py-2.5 pr-3 font-mono text-[0.6875rem] text-grafite-400">
+                          {formatarDataHora(log.criadoEm)}
+                        </td>
+                        <td className="py-2.5 pr-3 text-xs text-grafite-700">
+                          {autor?.nome ?? "Sistema"}
+                        </td>
+                        <td className="py-2.5 pr-3 text-xs font-bold text-verde-900">
+                          {descreverAcao(log.acao)}
+                        </td>
+                        <td className="py-2.5 pr-3">
+                          <Selo tom={tomResultado[log.resultado] ?? "neutro"}>{log.resultado}</Selo>
+                        </td>
+                        <td className="py-2.5 text-xs text-grafite-500">{log.detalhe}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </Painel>
+      )}
 
       <Painel titulo="Ambiente de demonstração" className="mt-5">
         <p className="text-sm leading-relaxed text-grafite-700">

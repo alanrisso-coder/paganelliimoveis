@@ -8,16 +8,23 @@ import { useSessao } from "@/lib/auth";
 import { CabecalhoPagina } from "@/components/painel/Cabecalho";
 import { Botao, CampoSelecao, EstadoVazio, Modal, Painel, Selo } from "@/components/ui";
 import { useAviso } from "@/components/ui/Toast";
+import { ModalInstagram } from "@/components/painel/ModalInstagram";
 import {
   classes,
   enderecoResumido,
   formatarData,
+  formatarDataHora,
   formatarNumero,
   precoFormatado,
   rotuloStatusAnuncio,
   rotuloTipoImovel,
 } from "@/lib/format";
-import type { Anuncio, StatusAnuncio, VisibilidadeAnuncio } from "@/lib/types";
+import type {
+  Anuncio,
+  InstagramStatus,
+  StatusAnuncio,
+  VisibilidadeAnuncio,
+} from "@/lib/types";
 
 const tomStatus: Record<StatusAnuncio, "verde" | "alerta" | "neutro" | "erro"> = {
   publicado: "verde",
@@ -34,6 +41,34 @@ const rotuloVisibilidade: Record<VisibilidadeAnuncio, string> = {
   privado: "Privado",
 };
 
+/* ------------------------------------------------------------- Instagram */
+
+const rotuloInstagram: Record<InstagramStatus, string> = {
+  NOT_REQUESTED: "Não publicado",
+  READY: "Pronto para publicar",
+  PUBLISHING: "Publicando",
+  PUBLISHED: "Publicado",
+  FAILED: "Erro",
+};
+
+const tomInstagram: Record<InstagramStatus, "neutro" | "dourado" | "alerta" | "verde" | "erro"> = {
+  NOT_REQUESTED: "neutro",
+  READY: "dourado",
+  PUBLISHING: "alerta",
+  PUBLISHED: "verde",
+  FAILED: "erro",
+};
+
+/** Opções do filtro por situação no Instagram. */
+const filtrosInstagram = [
+  { valor: "todos", texto: "Instagram: todos" },
+  { valor: "nao_publicados", texto: "Não publicados" },
+  { valor: "publicados", texto: "Publicados" },
+  { valor: "erro", texto: "Com erro" },
+] as const;
+
+type FiltroInstagram = (typeof filtrosInstagram)[number]["valor"];
+
 export default function PaginaAnuncios() {
   const dados = useDados();
   const { usuario, pode } = useSessao();
@@ -43,7 +78,9 @@ export default function PaginaAnuncios() {
   const [status, setStatus] = useState("todos");
   const [corretor, setCorretor] = useState("todos");
   const [tipo, setTipo] = useState("todos");
+  const [instagram, setInstagram] = useState<FiltroInstagram>("todos");
   const [previa, setPrevia] = useState<Anuncio | null>(null);
+  const [publicacaoInstagram, setPublicacaoInstagram] = useState<Anuncio | null>(null);
 
   const corretores = dados.usuarios.filter((u) => u.perfil !== "assistente");
 
@@ -55,9 +92,16 @@ export default function PaginaAnuncios() {
       if (status !== "todos" && a.status !== status) return false;
       if (corretor !== "todos" && a.corretorId !== corretor) return false;
       if (tipo !== "todos" && imovel?.tipo !== tipo) return false;
+
+      if (instagram === "publicados" && a.instagram.status !== "PUBLISHED") return false;
+      if (instagram === "erro" && a.instagram.status !== "FAILED") return false;
+      // "Não publicados" agrupa tudo que ainda não foi ao ar, inclusive o que
+      // está marcado para publicar mas ainda não foi confirmado.
+      if (instagram === "nao_publicados" && a.instagram.status === "PUBLISHED") return false;
+
       return true;
     });
-  }, [dados, termo, status, corretor, tipo]);
+  }, [dados, termo, status, corretor, tipo, instagram]);
 
   const publicados = dados.anuncios.filter((a) => a.status === "publicado").length;
   const totalViews = dados.anuncios.reduce((s, a) => s + a.metricas.visualizacoes, 0);
@@ -78,6 +122,44 @@ export default function PaginaAnuncios() {
         ? "Anúncio publicado — já está visível no site institucional."
         : "Anúncio pausado e removido da vitrine pública.",
     );
+  }
+
+  /**
+   * Liga/desliga a marcação de publicação. Passa pelo servidor porque os
+   * campos do Instagram não são escritos pelo store — só pelas rotas
+   * `/api/instagram/*`, que revalidam a permissão.
+   */
+  async function marcarInstagram(anuncio: Anuncio, habilitado: boolean) {
+    // Otimista: o checkbox responde na hora e é revertido se o servidor recusar.
+    dados.aplicarInstagramAnuncio(anuncio.id, {
+      habilitado,
+      status: habilitado ? "READY" : "NOT_REQUESTED",
+    });
+
+    try {
+      const resposta = await fetch("/api/instagram/publicar", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ anuncioId: anuncio.id, usuarioId: usuario?.id, habilitado }),
+      });
+      const corpo = await resposta.json();
+
+      if (!resposta.ok) {
+        dados.aplicarInstagramAnuncio(anuncio.id, {
+          habilitado: anuncio.instagram.habilitado,
+          status: anuncio.instagram.status,
+        });
+        avisar(corpo.error ?? "Não foi possível alterar a marcação.");
+        return;
+      }
+      avisar(corpo.mensagem);
+    } catch {
+      dados.aplicarInstagramAnuncio(anuncio.id, {
+        habilitado: anuncio.instagram.habilitado,
+        status: anuncio.instagram.status,
+      });
+      avisar("Falha de conexão ao alterar a marcação.");
+    }
   }
 
   return (
@@ -144,6 +226,18 @@ export default function PaginaAnuncios() {
             </option>
           ))}
         </select>
+        <select
+          value={instagram}
+          onChange={(e) => setInstagram(e.target.value as FiltroInstagram)}
+          aria-label="Filtrar por situação no Instagram"
+          className={seletor}
+        >
+          {filtrosInstagram.map((f) => (
+            <option key={f.valor} value={f.valor}>
+              {f.texto}
+            </option>
+          ))}
+        </select>
       </div>
 
       {lista.length === 0 ? (
@@ -179,6 +273,9 @@ export default function PaginaAnuncios() {
                         {rotuloVisibilidade[anuncio.visibilidade]}
                       </Selo>
                       {anuncio.destaqueHome && <Selo tom="dourado">Destaque na home</Selo>}
+                      <Selo tom={tomInstagram[anuncio.instagram.status]}>
+                        Instagram: {rotuloInstagram[anuncio.instagram.status]}
+                      </Selo>
                       {anuncio.selos.map((s) => (
                         <Selo key={s} tom="dourado">
                           {s}
@@ -202,6 +299,30 @@ export default function PaginaAnuncios() {
                       {anuncio.publicarEm && <span>publicado em {formatarData(anuncio.publicarEm)}</span>}
                       {anuncio.expirarEm && <span>expira em {formatarData(anuncio.expirarEm)}</span>}
                     </div>
+
+                    {anuncio.instagram.status === "PUBLISHED" && anuncio.instagram.publicadoEm && (
+                      <p className="mt-2 text-xs text-verde-700">
+                        Publicado no Instagram em {formatarDataHora(anuncio.instagram.publicadoEm)}
+                        {anuncio.instagram.postUrl && (
+                          <>
+                            {" · "}
+                            <a
+                              href={anuncio.instagram.postUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-bold underline underline-offset-4 hover:text-dourado-600"
+                            >
+                              ver publicação ↗
+                            </a>
+                          </>
+                        )}
+                      </p>
+                    )}
+                    {anuncio.instagram.status === "FAILED" && anuncio.instagram.erro && (
+                      <p className="mt-2 text-xs text-erro">
+                        Falha na publicação — {anuncio.instagram.erro}
+                      </p>
+                    )}
                   </div>
 
                   <div className="flex shrink-0 flex-wrap items-start gap-2">
@@ -276,6 +397,35 @@ export default function PaginaAnuncios() {
                     </div>
                   </div>
                 )}
+
+                {pode("publicar_instagram") && (
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-linha pt-4">
+                    <label className="flex items-center gap-2.5 text-sm text-grafite-700">
+                      <input
+                        type="checkbox"
+                        checked={anuncio.instagram.habilitado}
+                        disabled={
+                          anuncio.instagram.status === "PUBLISHED" ||
+                          anuncio.instagram.status === "PUBLISHING"
+                        }
+                        onChange={(e) => marcarInstagram(anuncio, e.target.checked)}
+                        className="h-4 w-4 accent-verde-700"
+                      />
+                      Publicar no Instagram
+                    </label>
+
+                    <Botao
+                      variante={anuncio.instagram.status === "PUBLISHED" ? "contorno" : "dourado"}
+                      tamanho="sm"
+                      onClick={() => setPublicacaoInstagram(anuncio)}
+                      disabled={anuncio.instagram.status === "PUBLISHING"}
+                    >
+                      {anuncio.instagram.status === "PUBLISHED"
+                        ? "Republicar no Instagram"
+                        : "Publicar no Instagram"}
+                    </Botao>
+                  </div>
+                )}
               </article>
             );
           })}
@@ -283,6 +433,10 @@ export default function PaginaAnuncios() {
       )}
 
       <ModalPrevia anuncio={previa} aoFechar={() => setPrevia(null)} />
+      <ModalInstagram
+        anuncio={publicacaoInstagram}
+        aoFechar={() => setPublicacaoInstagram(null)}
+      />
     </>
   );
 }

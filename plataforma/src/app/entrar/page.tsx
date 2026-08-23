@@ -7,13 +7,18 @@ import { useEffect, useState } from "react";
 import { useSessao } from "@/lib/auth";
 import { Botao, Campo } from "@/components/ui";
 
+/**
+ * Login da equipe: e-mail + senha.
+ *
+ * A etapa de "código de verificação" saiu — eram os 7 primeiros dígitos do
+ * telefone do próprio usuário, visíveis na ficha dele dentro do painel, então
+ * não constituíam um segundo fator de verdade.
+ */
 export default function PaginaEntrar() {
   const router = useRouter();
-  const { usuario, carregado, enviarCredenciais, confirmarCodigo } = useSessao();
-  const [etapa, setEtapa] = useState<"credenciais" | "codigo">("credenciais");
+  const { usuario, carregado, entrar } = useSessao();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [codigo, setCodigo] = useState("");
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
@@ -21,36 +26,15 @@ export default function PaginaEntrar() {
     if (carregado && usuario) router.replace("/painel");
   }, [carregado, usuario, router]);
 
-  async function submeterCredenciais(e: React.FormEvent) {
+  async function submeter(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
     setEnviando(true);
-    const resultado = await enviarCredenciais(email, senha);
+    const resultado = await entrar(email, senha);
     setEnviando(false);
-    if (resultado.ok) {
-      setEtapa("codigo");
-    } else {
-      setErro(resultado.erro ?? "Não foi possível entrar.");
-    }
-  }
 
-  async function submeterCodigo(e: React.FormEvent) {
-    e.preventDefault();
-    setErro("");
-    setEnviando(true);
-    const resultado = await confirmarCodigo(codigo);
-    setEnviando(false);
-    if (resultado.ok) {
-      router.push("/painel");
-    } else {
-      setErro(resultado.erro ?? "Não foi possível confirmar o código.");
-    }
-  }
-
-  function voltarParaCredenciais() {
-    setEtapa("credenciais");
-    setCodigo("");
-    setErro("");
+    if (resultado.ok) router.push("/painel");
+    else setErro(resultado.erro ?? "Não foi possível entrar.");
   }
 
   return (
@@ -71,73 +55,48 @@ export default function PaginaEntrar() {
 
           <h1 className="mt-10 font-display text-3xl text-verde-900">Acesso da equipe</h1>
           <p className="mt-2 text-sm leading-relaxed text-grafite-500">
-            {etapa === "credenciais"
-              ? "Entre para gerenciar clientes, imóveis, anúncios, visitas e contratos."
-              : "Confirme seu código de verificação para concluir o acesso."}
+            Entre para gerenciar clientes, imóveis, anúncios, visitas e contratos.
           </p>
 
-          {etapa === "credenciais" ? (
-            <form onSubmit={submeterCredenciais} className="mt-8 space-y-4">
-              <Campo
-                rotulo="E-mail corporativo"
-                type="email"
-                required
-                autoComplete="username"
-                placeholder="nome@paganelliimoveis.com.br"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Campo
-                rotulo="Senha"
-                type="password"
-                required
-                autoComplete="current-password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-              />
+          <form onSubmit={submeter} className="mt-8 space-y-4">
+            <Campo
+              rotulo="E-mail corporativo"
+              type="email"
+              required
+              autoComplete="username"
+              placeholder="nome@paganelliimoveis.com.br"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Campo
+              rotulo="Senha"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+            />
 
-              {erro && (
-                <p role="alert" className="rounded-sm border border-erro/30 bg-[#f7e6e4] px-3 py-2.5 text-sm text-erro">
-                  {erro}
-                </p>
-              )}
-
-              <Botao type="submit" tamanho="lg" disabled={enviando} className="w-full">
-                {enviando ? "Verificando…" : "Continuar"}
-              </Botao>
-            </form>
-          ) : (
-            <form onSubmit={submeterCodigo} className="mt-8 space-y-4">
-              <Campo
-                rotulo="Código de verificação"
-                type="text"
-                inputMode="numeric"
-                required
-                autoFocus
-                placeholder="0000000"
-                value={codigo}
-                onChange={(e) => setCodigo(e.target.value)}
-              />
-
-              {erro && (
-                <p role="alert" className="rounded-sm border border-erro/30 bg-[#f7e6e4] px-3 py-2.5 text-sm text-erro">
-                  {erro}
-                </p>
-              )}
-
-              <Botao type="submit" tamanho="lg" disabled={enviando} className="w-full">
-                {enviando ? "Entrando…" : "Entrar no painel"}
-              </Botao>
-
-              <button
-                type="button"
-                onClick={voltarParaCredenciais}
-                className="w-full text-center text-sm font-bold text-grafite-500 hover:text-verde-800"
+            {erro && (
+              <p
+                role="alert"
+                className="rounded-sm border border-erro/30 bg-[#f7e6e4] px-3 py-2.5 text-sm text-erro"
               >
-                ← Usar outro e-mail
-              </button>
-            </form>
-          )}
+                {erro}
+              </p>
+            )}
+
+            <Botao type="submit" tamanho="lg" disabled={enviando} className="w-full">
+              {enviando ? "Entrando…" : "Entrar no painel"}
+            </Botao>
+
+            <Link
+              href="/recuperar-senha"
+              className="block w-full text-center text-sm font-bold text-grafite-500 hover:text-verde-800"
+            >
+              Esqueci minha senha
+            </Link>
+          </form>
 
           <Link
             href="/"
@@ -158,7 +117,10 @@ export default function PaginaEntrar() {
           sizes="50vw"
           className="object-cover"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-950/60 to-verde-950/20" aria-hidden="true" />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-verde-950/60 to-verde-950/20"
+          aria-hidden="true"
+        />
       </aside>
     </div>
   );

@@ -11,12 +11,6 @@ const canais = [
     detalhe: "O canal mais rápido para tirar dúvidas e agendar visitas",
     href: `https://wa.me/${CONTATO.whatsapp}`,
   },
-  {
-    titulo: "E-mail",
-    valor: CONTATO.email,
-    detalhe: "Para documentos e propostas formais",
-    href: `mailto:${CONTATO.email}`,
-  },
 ];
 
 export default function PaginaContato() {
