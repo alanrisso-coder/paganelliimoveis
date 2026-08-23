@@ -6,6 +6,8 @@ import {
   converterDbAnuncioParaAnuncio,
   converterDbImovelParaImovel,
 } from "@/lib/supabase-sync-store";
+import { exigirPermissao } from "@/lib/sessao-servidor";
+import { lerCorpoJson } from "@/lib/http";
 
 /**
  * Gera uma sugestão de legenda para o anúncio.
@@ -26,7 +28,15 @@ function getSupabase() {
 
 export async function POST(request: Request) {
   try {
-    const { anuncioId } = await request.json();
+    // Exige sessão porque cada chamada consome crédito da API de IA: aberta,
+    // a rota seria um gerador de texto pago por conta da imobiliária.
+    const auth = await exigirPermissao("publicar_anuncio", request);
+    if (!auth.ok) return auth.resposta;
+
+    const leitura = await lerCorpoJson<{ anuncioId?: string }>(request);
+    if (!leitura.ok) return leitura.resposta;
+
+    const { anuncioId } = leitura.corpo;
 
     if (!anuncioId) {
       return NextResponse.json({ error: "anuncioId obrigatório" }, { status: 400 });

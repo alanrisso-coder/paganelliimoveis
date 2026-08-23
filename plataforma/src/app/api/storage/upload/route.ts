@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
+import { autenticar } from "@/lib/sessao-servidor";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -36,6 +37,12 @@ async function otimizarImagem(buffer: Buffer, mimeType: string) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Qualquer pessoa logada envia arquivo (a foto de perfil é o caso comum),
+    // mas ninguém de fora: aberta, esta rota era hospedagem de arquivos
+    // gratuita no bucket da imobiliária, servida pelo domínio dela.
+    const auth = await autenticar();
+    if (!auth.ok) return auth.resposta;
+
     const formData = await request.formData();
     const arquivo = formData.get("arquivo") as File;
     const pasta = formData.get("pasta") as string;

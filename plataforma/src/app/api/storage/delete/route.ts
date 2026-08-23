@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
+import { exigirPermissao } from "@/lib/sessao-servidor";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -16,6 +17,11 @@ const BUCKET_NAME = "paganelli-imoveis";
 
 export async function POST(request: NextRequest) {
   try {
+    // Apagar arquivo do bucket é destrutivo e sem desfazer: exige a mesma
+    // permissão de quem edita o imóvel a que a mídia pertence.
+    const auth = await exigirPermissao("editar_imovel", request);
+    if (!auth.ok) return auth.resposta;
+
     const body = await request.json();
     const { caminho } = body;
 

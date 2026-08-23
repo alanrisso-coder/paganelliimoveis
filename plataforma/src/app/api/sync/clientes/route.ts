@@ -1,131 +1,47 @@
-import { createClient } from "@supabase/supabase-js";
-import { NextResponse } from "next/server";
+import { criarRotaCrud } from "@/lib/rota-crud";
 
-function getSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-}
+/**
+ * Carteira de clientes — o dado mais sensível do sistema (nome, CPF, telefone,
+ * e-mail, endereço, orçamento e histórico de negociação).
+ *
+ * Até aqui esta rota respondia a qualquer requisição da internet: um GET sem
+ * credencial devolvia a base inteira, e um DELETE apagava qualquer ficha.
+ *
+ * A criação continua aberta porque o agendamento de visita do site converte o
+ * visitante em cliente antes de marcar a visita. Só que agora o corpo passa
+ * por uma lista fechada de campos: um visitante informa os próprios dados de
+ * contato, e nada além disso. Orçamento, observações internas e o restante da
+ * ficha ficam fora do alcance de quem não tem sessão.
+ */
+const rota = criarRotaCrud({
+  tabela: "clientes",
+  rotulo: "os clientes",
+  ler: "ver_crm",
+  criar: "editar_cliente",
+  editar: "editar_cliente",
+  excluir: "deletar_cliente",
+  criacaoPublica: {
+    campos: [
+      "id",
+      "nome",
+      "documento",
+      "telefone",
+      "whatsapp",
+      "email",
+      "tipo",
+      "origem",
+      // Vem do imóvel que o visitante estava vendo, não é escolha dele — mas é
+      // coluna obrigatória, então precisa entrar no insert.
+      "corretor_id",
+      "interesses",
+      "preferencias",
+      "etapa",
+      "timeline",
+    ],
+  },
+});
 
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-
-    const supabase = getSupabase();
-
-    if (id) {
-      const { data, error } = await supabase
-        .from("clientes")
-        .select("*")
-        .eq("id", id)
-        .single();
-
-      if (error) {
-        console.error("Erro ao obter cliente:", error);
-        return NextResponse.json({ error: error.message }, { status: 404 });
-      }
-
-      return NextResponse.json({ data }, { status: 200 });
-    }
-
-    const { data, error } = await supabase
-      .from("clientes")
-      .select("*")
-      .order("criado_em", { ascending: false });
-
-    if (error) {
-      console.error("Erro ao listar clientes:", error);
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (error) {
-    console.error("Erro no API route de clientes:", error);
-    return NextResponse.json(
-      { error: "Erro interno do servidor" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    const cliente = await request.json();
-    const supabase = getSupabase();
-
-    const { data, error } = await supabase
-      .from("clientes")
-      .insert([cliente])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Erro ao sincronizar cliente:", error);
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (error) {
-    console.error("Erro no API route de clientes:", error);
-    return NextResponse.json(
-      { error: "Erro interno do servidor" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PATCH(request: Request) {
-  try {
-    const { id, updates } = await request.json();
-    const supabase = getSupabase();
-
-    const { data, error } = await supabase
-      .from("clientes")
-      .update(updates)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Erro ao atualizar cliente:", error);
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-
-    return NextResponse.json({ data }, { status: 200 });
-  } catch (error) {
-    console.error("Erro no API route de clientes:", error);
-    return NextResponse.json(
-      { error: "Erro interno do servidor" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json({ error: "ID obrigatório" }, { status: 400 });
-    }
-
-    const supabase = getSupabase();
-    const { error } = await supabase.from("clientes").delete().eq("id", id);
-
-    if (error) {
-      console.error("Erro ao deletar cliente:", error);
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-
-    return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error) {
-    console.error("Erro no API route de clientes:", error);
-    return NextResponse.json(
-      { error: "Erro interno do servidor" },
-      { status: 500 }
-    );
-  }
-}
+export const GET = rota.GET;
+export const POST = rota.POST;
+export const PATCH = rota.PATCH;
+export const DELETE = rota.DELETE;

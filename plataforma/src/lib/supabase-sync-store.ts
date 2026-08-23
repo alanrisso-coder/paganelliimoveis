@@ -452,20 +452,46 @@ export function converterLeadParaDbLead(
 }
 
 /**
- * Carregar todos os dados do Supabase
+ * Carregar dados do Supabase.
+ *
+ * O store atende o painel e o site público com o mesmo código, mas as duas
+ * situações precisam de coisas diferentes: a vitrine mostra imóveis e
+ * anúncios, e nada mais. Clientes, contratos, leads, visitas e a equipe são
+ * dados internos e as rotas correspondentes exigem sessão.
+ *
+ * Por isso a sessão é consultada uma vez, antes: sem ela, nem se tenta buscar
+ * o que seria recusado. Antes desta checagem o visitante disparava cinco
+ * requisições que voltavam 401 em toda página do site.
  */
+async function temSessao(): Promise<boolean> {
+  try {
+    const resposta = await fetch("/api/auth/sessao", { cache: "no-store" });
+    if (!resposta.ok) return false;
+    const corpo = await resposta.json();
+    return Boolean(corpo.data);
+  } catch {
+    return false;
+  }
+}
+
 export async function carregarTodosDadosSupabase() {
   try {
-    const [imoveisDb, clientesDb, anunciosDb, usuariosDb, visitasDb, contratosDb, leadsDb] =
-      await Promise.all([
-        obterImoveis(),
-        obterClientes(),
-        obterAnunciosPublicos(),
-        obterUsuarios(),
-        obterVisitas(),
-        obterContratos(),
-        obterLeads(),
-      ]);
+    const autenticado = await temSessao();
+
+    const [imoveisDb, anunciosDb] = await Promise.all([
+      obterImoveis(),
+      obterAnunciosPublicos(),
+    ]);
+
+    const [clientesDb, usuariosDb, visitasDb, contratosDb, leadsDb] = autenticado
+      ? await Promise.all([
+          obterClientes(),
+          obterUsuarios(),
+          obterVisitas(),
+          obterContratos(),
+          obterLeads(),
+        ])
+      : [[], [], [], [], []];
 
     return {
       imoveis: imoveisDb.map(converterDbImovelParaImovel),
