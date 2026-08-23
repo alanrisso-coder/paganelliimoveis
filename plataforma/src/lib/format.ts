@@ -252,6 +252,18 @@ export const rotuloPosicaoSolar: Record<PosicaoSolar, string> = {
   poente: "Poente",
 };
 
+/** Opções de características usadas no filtro de busca do site e no cadastro do imóvel. */
+export const caracteristicasImovel = [
+  "Piscina",
+  "Espaço gourmet",
+  "Varanda",
+  "Armários planejados",
+  "Sauna",
+  "Lareira",
+  "Academia no condomínio",
+  "Automação residencial",
+];
+
 export function simNao(valor?: boolean): string {
   return valor ? "Sim" : "Não";
 }

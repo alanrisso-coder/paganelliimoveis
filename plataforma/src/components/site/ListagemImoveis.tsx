@@ -6,6 +6,7 @@ import { useDados } from "@/lib/store";
 import { CardImovel } from "./CardImovel";
 import { Botao, CarregandoCards, EstadoVazio, Selo } from "@/components/ui";
 import {
+  caracteristicasImovel,
   classes,
   formatarMoedaCurta,
   precoPrincipal,
@@ -24,16 +25,7 @@ const tiposDisponiveis: TipoImovel[] = [
   "fazenda",
 ];
 
-const caracteristicasFiltro = [
-  "Piscina",
-  "Espaço gourmet",
-  "Varanda",
-  "Armários planejados",
-  "Sauna",
-  "Lareira",
-  "Academia no condomínio",
-  "Automação residencial",
-];
+const caracteristicasFiltro = caracteristicasImovel;
 
 const ordenacoes: { valor: OrdenacaoBusca; texto: string }[] = [
   { valor: "relevancia", texto: "Mais relevantes" },

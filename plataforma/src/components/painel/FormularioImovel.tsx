@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useDados } from "@/lib/store";
 import { Botao, Campo, CampoSelecao, CampoTexto, CampoTextoFormatado } from "@/components/ui";
 import {
+  caracteristicasImovel,
   rotuloPerfilImovel,
   rotuloPosicaoSolar,
   rotuloSituacaoImovel,
@@ -54,6 +55,7 @@ export interface CamposFormularioImovel {
   averbado: boolean;
   terreno: TopografiaTerreno;
   aceitaFinanciamento: boolean;
+  caracteristicas: string[];
 }
 
 /** Estado inicial do formulário de um imóvel novo. */
@@ -92,6 +94,7 @@ export function formVazioImovel(autorId: string): CamposFormularioImovel {
     averbado: true,
     terreno: "plano",
     aceitaFinanciamento: true,
+    caracteristicas: [],
   };
 }
 
@@ -132,6 +135,7 @@ export function formDoImovel(imovel: Imovel): CamposFormularioImovel {
     averbado: imovel.averbado ?? true,
     terreno: imovel.terreno ?? "plano",
     aceitaFinanciamento: imovel.aceitaFinanciamento ?? true,
+    caracteristicas: imovel.caracteristicas ?? [],
   };
 }
 
@@ -187,6 +191,7 @@ export function payloadDoFormulario(
     averbado: form.averbado,
     terreno: form.terreno,
     aceitaFinanciamento: form.aceitaFinanciamento,
+    caracteristicas: form.caracteristicas,
   };
 }
 
@@ -491,6 +496,32 @@ export function FormularioImovel({
                 className="h-4 w-4 accent-verde-700"
               />
               {c.rotulo}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend className="mb-3 text-xs font-extrabold uppercase tracking-wide text-dourado-600">
+          Características
+        </legend>
+        <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          {caracteristicasImovel.map((c) => (
+            <label key={c} className="flex items-center gap-2.5 text-sm text-grafite-700">
+              <input
+                type="checkbox"
+                checked={form.caracteristicas.includes(c)}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    caracteristicas: e.target.checked
+                      ? [...form.caracteristicas, c]
+                      : form.caracteristicas.filter((x) => x !== c),
+                  })
+                }
+                className="h-4 w-4 accent-verde-700"
+              />
+              {c}
             </label>
           ))}
         </div>
