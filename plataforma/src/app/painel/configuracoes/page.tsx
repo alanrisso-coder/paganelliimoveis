@@ -227,7 +227,8 @@ export default function PaginaConfiguracoes() {
               { r: "Responsável técnica", v: CONTATO.responsavel },
               { r: "CRECI", v: CONTATO.creci },
               { r: "Endereço", v: CONTATO.endereco },
-              { r: "Telefone / WhatsApp", v: CONTATO.telefone },
+              { r: "Telefone", v: CONTATO.telefone },
+              { r: "WhatsApp", v: CONTATO.whatsappExibicao },
               { r: "E-mail", v: CONTATO.email },
               { r: "Região de atuação", v: CONTATO.regiaoAtuacao },
             ].map((x) => (

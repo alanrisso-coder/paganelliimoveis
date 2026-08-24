@@ -79,7 +79,8 @@ As informações institucionais são **reais**, extraídas do site da empresa
 | Nome | Paganelli Imóveis |
 | Responsável técnica | Leomara Paganelli |
 | CRECI | 9578J |
-| Telefone / WhatsApp | (48) 98412-8000 |
+| Telefone | (48) 98412-8000 |
+| WhatsApp | (48) 99201-8882 |
 | E-mail | leomaracorretora@hotmail.com |
 | Endereço | Av. Atílio Pedro Pagani, 115 · Duetto Office, Sala 1304 — Pagani, Palhoça/SC · 88132-149 |
 | Atuação | Palhoça e Grande Florianópolis |

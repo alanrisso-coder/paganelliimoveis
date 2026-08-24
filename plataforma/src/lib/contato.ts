@@ -7,9 +7,11 @@ export const CONTATO = {
   responsavel: "Leomara Paganelli",
   creci: "CRECI 9578J",
   telefone: "(48) 98412-8000",
+  /** Formato internacional, sem máscara — usado no link tel:. */
+  telefoneLink: "5548984128000",
   /** Formato internacional, sem máscara — usado nos links wa.me. */
-  whatsapp: "5548984128000",
-  whatsappExibicao: "(48) 98412-8000",
+  whatsapp: "5548992018882",
+  whatsappExibicao: "(48) 99201-8882",
   email: "",
   endereco:
     "Av Atílio Pedro Pagani, 115, Sala 1304 — Pagani, Palhoça/SC · CEP 88132-149",

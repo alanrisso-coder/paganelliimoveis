@@ -69,7 +69,7 @@ export function Rodape() {
             <p className="font-bold text-areia-100">Atendimento</p>
             <p>{CONTATO.endereco}</p>
             <p>
-              <a href={`tel:+${CONTATO.whatsapp}`} className="hover:text-dourado-300">
+              <a href={`tel:+${CONTATO.telefoneLink}`} className="hover:text-dourado-300">
                 {CONTATO.telefone}
               </a>{" "}
               · WhatsApp {CONTATO.whatsappExibicao}
