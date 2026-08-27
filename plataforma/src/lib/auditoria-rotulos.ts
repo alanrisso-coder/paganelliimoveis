@@ -20,6 +20,12 @@ export const rotuloAcao: Record<string, string> = {
   senha_alterada: "Senha alterada",
   link_senha_gerado: "Link de senha gerado",
   acesso_negado: "Acesso negado",
+  gasto_criado: "Gasto lançado",
+  gasto_editado: "Gasto editado",
+  gasto_excluido: "Gasto excluído",
+  gasto_reembolsado: "Gasto reembolsado",
+  categoria_gasto_criada: "Categoria de gasto criada",
+  categoria_gasto_editada: "Categoria de gasto editada",
 };
 
 export function descreverAcao(acao: string): string {

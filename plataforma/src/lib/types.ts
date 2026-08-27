@@ -464,3 +464,45 @@ export type OrdenacaoBusca =
   | "maior_preco"
   | "maior_area"
   | "recentes";
+
+/* ------------------------------------------------------ Controle financeiro */
+
+export interface CategoriaGasto {
+  id: string;
+  nome: string;
+  ativa: boolean;
+  criadoEm: string;
+}
+
+export type StatusReembolso = "nao_se_aplica" | "pendente" | "reembolsado";
+
+/**
+ * Lançamento de gasto (tabela `gastos`).
+ *
+ * `valor` chega do banco como NUMERIC(12,2) e é convertido para number na
+ * borda — o total do dashboard é uma soma, e string não soma.
+ */
+export interface Gasto {
+  id: string;
+  descricao: string;
+  categoriaId?: string;
+  dataGasto: string;
+  valor: number;
+  responsavelId?: string;
+  observacao?: string;
+  comprovanteUrl?: string;
+  comprovanteCaminho?: string;
+
+  reembolsoNecessario: boolean;
+  reembolsoStatus: StatusReembolso;
+  reembolsoData?: string;
+  reembolsoObservacao?: string;
+  /** Quem marcou como reembolsado. */
+  reembolsoPor?: string;
+  reembolsoEm?: string;
+
+  criadoPor?: string;
+  criadoEm: string;
+  atualizadoPor?: string;
+  atualizadoEm: string;
+}

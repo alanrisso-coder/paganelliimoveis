@@ -151,7 +151,35 @@ largura mínima em telas é de **140px**, respeitada em todas as aplicações.
 - `/painel/contratos` — exclusividade, alertas de vencimento (30/15/7 dias) e renovação
 - `/painel/leads` — leads do site, atribuição manual ou automática, conversão em cliente
 - `/painel/relatorios` — VGV, comissão potencial, desempenho por corretor, exportação CSV
+- `/painel/financeiro` — gastos mensais, controle de reembolso, relatórios e exportação CSV
 - `/painel/configuracoes` — usuários, matriz de permissões, integrações e registro de ações
+
+## Controle financeiro
+
+**Financeiro → Gastos Mensais** (`/painel/financeiro`) registra as despesas da imobiliária com
+categoria, responsável, comprovante e ciclo de reembolso.
+
+O que cada perfil enxerga é decidido no servidor, não na tela:
+
+| Perfil | Alcance |
+| --- | --- |
+| Administrador | Tudo, mais excluir lançamento e administrar categorias |
+| Gestor | Gastos de toda a equipe, lança em nome de outros e dá baixa em reembolso |
+| Corretor · Assistente · Usuário | Só os próprios lançamentos; reembolso entra como pendente |
+
+Quem não tem `ver_todos_gastos` recebe da API apenas os gastos em que é responsável ou autor — o
+recorte está na consulta, não na resposta, então chamar `/api/financeiro/gastos` direto não
+devolve nada além disso. Marcar como reembolsado carimba data e autor no servidor.
+
+Exclusão é **soft delete** (`excluido_em`): o lançamento some das listas, dos totais e dos
+relatórios, e a linha continua no banco para a auditoria. Criar, editar, excluir e reembolsar
+geram entrada em `logs_auditoria`.
+
+### Migration
+
+Antes do primeiro uso, aplicar `migrations/008_controle_financeiro.sql` no Supabase. Ele cria
+`gastos` e `gastos_categorias` (com as 13 categorias iniciais) e não altera nenhuma tabela
+existente.
 
 ## Como as duas pontas se conectam
 

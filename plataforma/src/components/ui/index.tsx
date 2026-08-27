@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
-import { classes } from "@/lib/format";
+import { classes, lerValorMoeda, valorParaCampo } from "@/lib/format";
 
 /* ------------------------------------------------------------------ Botão */
 
@@ -146,6 +146,82 @@ export function CampoSelecao({
           </option>
         ))}
       </select>
+    </div>
+  );
+}
+
+/**
+ * Campo de valor em reais.
+ *
+ * O estado é o texto digitado, não o número: enquanto a pessoa escreve
+ * "1.250," o valor ainda não é interpretável, e reformatar a cada tecla
+ * empurraria o cursor para o fim da linha. A normalização acontece ao sair do
+ * campo — quem chama recebe o texto e converte com `lerValorMoeda`.
+ */
+export function CampoMoeda({
+  rotulo,
+  valor,
+  aoAlterar,
+  erro,
+  dica,
+  className,
+  id: idProp,
+  required,
+  disabled,
+}: {
+  rotulo: string;
+  valor: string;
+  aoAlterar: (texto: string) => void;
+  erro?: string;
+  dica?: string;
+  className?: string;
+  id?: string;
+  required?: boolean;
+  disabled?: boolean;
+}) {
+  const gerado = useId();
+  const id = idProp ?? gerado;
+
+  return (
+    <div className={className}>
+      <label htmlFor={id} className="mb-1.5 block text-xs font-bold text-grafite-700">
+        {rotulo}
+        {required && <span className="ml-0.5 text-erro">*</span>}
+      </label>
+      <div className="relative">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold text-grafite-400"
+        >
+          R$
+        </span>
+        <input
+          id={id}
+          // "decimal" abre o teclado numérico com vírgula no celular; "numeric"
+          // não oferece o separador decimal em boa parte dos aparelhos.
+          inputMode="decimal"
+          required={required}
+          disabled={disabled}
+          value={valor}
+          placeholder="0,00"
+          aria-describedby={dica || erro ? `${id}-desc` : undefined}
+          aria-invalid={erro ? true : undefined}
+          onChange={(e) => aoAlterar(e.target.value)}
+          onBlur={(e) => {
+            const numero = lerValorMoeda(e.target.value);
+            if (numero !== null) aoAlterar(valorParaCampo(numero));
+          }}
+          className={classes(baseCampo, "pl-9 text-right font-mono", erro && "border-erro")}
+        />
+      </div>
+      {(dica || erro) && (
+        <p
+          id={`${id}-desc`}
+          className={classes("mt-1 text-xs", erro ? "text-erro" : "text-grafite-400")}
+        >
+          {erro ?? dica}
+        </p>
+      )}
     </div>
   );
 }

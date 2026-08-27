@@ -30,6 +30,15 @@ const menu: ItemMenu[] = [
 ];
 
 /**
+ * Financeiro. Seção própria em vez de mais um item em "Operação": o dinheiro
+ * da empresa não é o mesmo assunto que a carteira de imóveis, e separar deixa
+ * espaço para o módulo crescer (contas a pagar, receitas) sem inchar a lista.
+ */
+const menuFinanceiro: ItemMenu[] = [
+  { href: "/painel/financeiro", texto: "Gastos Mensais", permissao: "ver_gastos", icone: "M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" },
+];
+
+/**
  * Área administrativa. Some inteira para quem não tem `ver_usuarios` —
  * corretor e assistente não enxergam sequer o título da seção.
  */
@@ -45,6 +54,7 @@ export function Navegacao({ aoNavegar }: { aoNavegar?: () => void }) {
   if (!usuario) return null;
 
   const permitidos = menu.filter((item) => pode(item.permissao));
+  const permitidosFinanceiro = menuFinanceiro.filter((item) => pode(item.permissao));
   const permitidosAdmin = menuAdministracao.filter((item) => pode(item.permissao));
 
   /** Um item do menu. Extraído para as duas seções renderizarem igual. */
@@ -99,6 +109,15 @@ export function Navegacao({ aoNavegar }: { aoNavegar?: () => void }) {
 
       <nav aria-label="Navegação do painel" className="scroll-fino flex-1 overflow-y-auto px-2.5">
         <ul>{permitidos.map(itemDoMenu)}</ul>
+
+        {permitidosFinanceiro.length > 0 && (
+          <>
+            <p className="px-2.5 pb-3 pt-6 font-mono text-[0.625rem] uppercase tracking-[0.18em] text-verde-500">
+              Financeiro
+            </p>
+            <ul>{permitidosFinanceiro.map(itemDoMenu)}</ul>
+          </>
+        )}
 
         {permitidosAdmin.length > 0 && (
           <>

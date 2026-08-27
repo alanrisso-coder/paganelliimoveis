@@ -29,6 +29,19 @@ export type Permissao =
   | "atribuir_lead"
   | "ver_relatorios"
   | "ver_configuracoes"
+  /* --------------------------------------------------- Controle financeiro */
+  /** Abre o módulo financeiro. Sozinha, dá acesso apenas aos próprios gastos. */
+  | "ver_gastos"
+  /** Enxerga (e edita) o gasto de qualquer pessoa da equipe. */
+  | "ver_todos_gastos"
+  /** Lançar e alterar gastos — limitado aos próprios sem `ver_todos_gastos`. */
+  | "editar_gasto"
+  /** Excluir lançamento (soft delete). */
+  | "excluir_gasto"
+  /** Marcar um gasto como reembolsado e corrigir a data do reembolso. */
+  | "marcar_reembolso"
+  /** Criar, renomear e ativar/desativar categorias de gasto. */
+  | "gerenciar_categorias_gasto"
   /** Abre a área administrativa em modo leitura (lista de usuários). */
   | "ver_usuarios"
   /** Criar, editar, ativar/desativar, excluir usuários e alterar perfis. */
@@ -59,6 +72,12 @@ const matriz: Record<PerfilAcesso, Permissao[]> = {
     "atribuir_lead",
     "ver_relatorios",
     "ver_configuracoes",
+    "ver_gastos",
+    "ver_todos_gastos",
+    "editar_gasto",
+    "excluir_gasto",
+    "marcar_reembolso",
+    "gerenciar_categorias_gasto",
     "ver_usuarios",
     "gerenciar_usuarios",
     "ver_logs",
@@ -84,6 +103,12 @@ const matriz: Record<PerfilAcesso, Permissao[]> = {
     "atribuir_lead",
     "ver_relatorios",
     "ver_configuracoes",
+    // Enxerga o gasto de toda a equipe e fecha o reembolso, mas não exclui
+    // lançamento nem mexe no catálogo de categorias — isso é do administrador.
+    "ver_gastos",
+    "ver_todos_gastos",
+    "editar_gasto",
+    "marcar_reembolso",
     "ver_usuarios",
   ],
   corretor: [
@@ -99,6 +124,10 @@ const matriz: Record<PerfilAcesso, Permissao[]> = {
     "ver_contratos",
     "ver_leads",
     "ver_relatorios",
+    // Sem "ver_todos_gastos": lança e acompanha os próprios gastos e o status
+    // dos próprios reembolsos, e não alcança o de mais ninguém.
+    "ver_gastos",
+    "editar_gasto",
   ],
   assistente: [
     "ver_dashboard",
@@ -110,9 +139,11 @@ const matriz: Record<PerfilAcesso, Permissao[]> = {
     "agendar_visita",
     "ver_contratos",
     "ver_leads",
+    "ver_gastos",
+    "editar_gasto",
   ],
   // Acesso mínimo: consulta o catálogo interno, sem tocar em nada.
-  usuario: ["ver_dashboard", "ver_imoveis", "ver_anuncios"],
+  usuario: ["ver_dashboard", "ver_imoveis", "ver_anuncios", "ver_gastos", "editar_gasto"],
 };
 
 export function podeFazer(perfil: PerfilAcesso, permissao: Permissao): boolean {

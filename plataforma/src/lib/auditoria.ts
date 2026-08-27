@@ -23,6 +23,12 @@ export const ACAO = {
   senhaAlterada: "senha_alterada",
   linkSenhaGerado: "link_senha_gerado",
   acessoNegado: "acesso_negado",
+  gastoCriado: "gasto_criado",
+  gastoEditado: "gasto_editado",
+  gastoExcluido: "gasto_excluido",
+  gastoReembolsado: "gasto_reembolsado",
+  categoriaGastoCriada: "categoria_gasto_criada",
+  categoriaGastoEditada: "categoria_gasto_editada",
 } as const;
 
 export type Acao = (typeof ACAO)[keyof typeof ACAO];

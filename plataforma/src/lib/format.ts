@@ -127,6 +127,52 @@ export function formatarPercentual(valor: number): string {
   return `${numero.format(valor)}%`;
 }
 
+/* --------------------------------------------------------- Valor digitado */
+
+/**
+ * Lê um valor digitado no formato brasileiro.
+ *
+ * "R$ 1.250,00", "1.250,00", "1250,5" e "1250" devem todos chegar ao mesmo
+ * número. O caso ambíguo é o ponto sozinho: em "1.250" ele separa milhar
+ * (1250), em "12.5" ele é decimal. A regra é a que uma pessoa aplica ao ler —
+ * três dígitos depois do último ponto e algo antes dele = milhar.
+ *
+ * Devolve `null` quando não dá para interpretar, em vez de NaN: o chamador
+ * precisa distinguir "vazio/inválido" de "zero".
+ */
+export function lerValorMoeda(entrada: string | number | null | undefined): number | null {
+  if (typeof entrada === "number") return Number.isFinite(entrada) ? entrada : null;
+  if (!entrada) return null;
+
+  const limpo = entrada.replace(/[R$\s ]/g, "").trim();
+  if (!limpo) return null;
+
+  let normalizado: string;
+  if (limpo.includes(",")) {
+    // Vírgula presente = ela é o decimal; ponto só pode ser milhar.
+    normalizado = limpo.replace(/\./g, "").replace(",", ".");
+  } else {
+    const partes = limpo.split(".");
+    const ultima = partes[partes.length - 1];
+    normalizado =
+      partes.length > 1 && ultima.length === 3 && partes[0] !== ""
+        ? partes.join("")
+        : limpo;
+  }
+
+  const numero = Number(normalizado);
+  if (!Number.isFinite(numero)) return null;
+  // Moeda tem duas casas: 10,999 seria gravado como 11,00 pelo NUMERIC(12,2)
+  // e o total exibido não bateria com a soma das linhas.
+  return Math.round(numero * 100) / 100;
+}
+
+/** Texto pronto para o campo de digitação: "1.250,00" (sem o "R$"). */
+export function valorParaCampo(valor: number | null | undefined): string {
+  if (valor === null || valor === undefined || !Number.isFinite(valor)) return "";
+  return valor.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 /* ------------------------------------------------------------------ Datas */
 
 /** Cria Date no fuso local a partir de "YYYY-MM-DD", evitando o off-by-one do UTC. */
