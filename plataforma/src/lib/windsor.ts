@@ -84,15 +84,19 @@ export async function executarAcao(entrada: {
     return { ok: false, erro: "WINDSOR_SEM_API_KEY" };
   }
 
-  const url = `${credenciais.baseUrl}/${encodeURIComponent(entrada.conector)}/actions`;
+  // A chave vai nos dois lugares de propósito. O header seria o suficiente na
+  // documentação geral da API, mas os exemplos do endpoint de actions usam
+  // `?api_key=` — e mandar só no header devolvia `Not authorized`. Query string
+  // acaba em log de proxy, o que é o preço de funcionar.
+  const url =
+    `${credenciais.baseUrl}/${encodeURIComponent(entrada.conector)}/actions` +
+    `?api_key=${encodeURIComponent(credenciais.apiKey)}`;
 
   try {
     const resposta = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // A chave vai no header, e não na query string, para não acabar
-        // gravada em log de proxy junto com a URL.
         "X-Api-Key": credenciais.apiKey,
       },
       body: JSON.stringify({
