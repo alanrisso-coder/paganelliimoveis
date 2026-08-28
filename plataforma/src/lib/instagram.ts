@@ -297,6 +297,12 @@ export function mensagemAmigavel(erro: string): string {
   ) {
     return "A integração com o Instagram ainda não foi configurada. Fale com o administrador do sistema.";
   }
+  // O Windsor devolve esta falha por extenso, dizendo qual usuário e onde
+  // ligar. Vale repassar em vez de resumir: sem isso, o painel só diria
+  // "não foi possível publicar" e ninguém saberia que falta um interruptor.
+  if (/write actions are disabled/i.test(erro)) {
+    return "As write actions estão desligadas na conta do Windsor.ai. Ligue em Settings → API Access (\u201cEnable write actions for Claude, ChatGPT & API\u201d) e tente de novo.";
+  }
   if (erro === "WINDSOR_WRITE_ACTIONS_DESABILITADAS") {
     return "O plano do Windsor.ai não libera publicação no Instagram. Fale com o administrador do sistema.";
   }
