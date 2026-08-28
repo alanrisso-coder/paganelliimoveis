@@ -1,10 +1,22 @@
 /**
- * Cliente da Instagram Graph API (Content Publishing) da Meta.
+ * Publicação no Instagram: escolha do provedor e cliente direto da Graph API.
+ *
+ * Há dois caminhos até o perfil `@paganelliimoveis`, e `publicarNoInstagram`
+ * decide qual usar a cada publicação:
+ *
+ * - **Windsor.ai** (src/lib/instagram-windsor.ts), quando `WINDSOR_API_KEY` e
+ *   `WINDSOR_INSTAGRAM_ACCOUNT` estão configurados. É o caminho preferido: a
+ *   autorização do Instagram fica no Windsor, que renova o token sozinho, em
+ *   vez de depender de um token de longa duração renovado à mão a cada 60 dias.
+ * - **Graph API da Meta**, o resto deste arquivo, usado quando o Windsor não
+ *   está configurado. Mantido para não amarrar a publicação a um fornecedor só.
  *
  * Só roda no servidor — nunca importar este arquivo de um componente client.
  * O token (`INSTAGRAM_ACCESS_TOKEN`) vive só em variável de ambiente e nunca
  * deve chegar ao navegador. Mesmo padrão do cliente do WhatsApp
  * (src/lib/whatsapp.ts), que fala com a mesma Graph API.
+ *
+ * O que vem abaixo descreve o caminho da Meta:
  *
  * A publicação é sempre em duas etapas, nunca uma chamada só:
  *   1. cria um "container" com a mídia (POST /{ig-user-id}/media);
@@ -16,6 +28,8 @@
  * Carrossel tem um nível a mais: um container por imagem (is_carousel_item),
  * depois um container do tipo CAROUSEL agrupando os filhos.
  */
+
+import { publicarViaWindsor, windsorConfigurado } from "./instagram-windsor";
 
 const VERSAO_PADRAO = "v21.0";
 
@@ -141,9 +155,29 @@ async function aguardarContainer(
  * Publica uma ou mais imagens com a legenda informada.
  *
  * `imagensUrls` precisa conter URLs HTTPS que os servidores da Meta consigam
- * baixar — elas são buscadas do lado de lá, não enviadas por nós.
+ * baixar — elas são buscadas do lado de lá, não enviadas por nós. Isso vale
+ * para os dois provedores: o Windsor repassa as URLs para a mesma Meta.
+ *
+ * O corte em `MAX_IMAGENS_CARROSSEL` acontece aqui, e não em cada provedor,
+ * porque o limite é do Instagram — não de quem faz a chamada.
  */
 export async function publicarNoInstagram(params: {
+  imagensUrls: string[];
+  legenda: string;
+}): Promise<ResultadoPublicacao> {
+  const imagens = params.imagensUrls.slice(0, MAX_IMAGENS_CARROSSEL);
+  if (imagens.length === 0) {
+    return { sucesso: false, erro: "SEM_IMAGENS" };
+  }
+
+  if (windsorConfigurado()) {
+    return publicarViaWindsor({ imagensUrls: imagens, legenda: params.legenda });
+  }
+  return publicarViaMeta({ imagensUrls: imagens, legenda: params.legenda });
+}
+
+/** Caminho da Graph API: cria o container, espera processar e publica. */
+async function publicarViaMeta(params: {
   imagensUrls: string[];
   legenda: string;
 }): Promise<ResultadoPublicacao> {
@@ -152,10 +186,7 @@ export async function publicarNoInstagram(params: {
     return { sucesso: false, erro: "CREDENCIAIS_NAO_CONFIGURADAS" };
   }
 
-  const imagens = params.imagensUrls.slice(0, MAX_IMAGENS_CARROSSEL);
-  if (imagens.length === 0) {
-    return { sucesso: false, erro: "SEM_IMAGENS" };
-  }
+  const imagens = params.imagensUrls;
 
   const containerPrincipal = await (imagens.length === 1
     ? criarContainerSimples(credenciais, imagens[0], params.legenda)
@@ -259,8 +290,21 @@ async function buscarPermalink(
  * O texto original continua indo para `instagram_publicacoes.erro`.
  */
 export function mensagemAmigavel(erro: string): string {
-  if (erro === "CREDENCIAIS_NAO_CONFIGURADAS") {
+  if (
+    erro === "CREDENCIAIS_NAO_CONFIGURADAS" ||
+    erro === "WINDSOR_SEM_API_KEY" ||
+    erro === "WINDSOR_SEM_CONTA"
+  ) {
     return "A integração com o Instagram ainda não foi configurada. Fale com o administrador do sistema.";
+  }
+  if (erro === "WINDSOR_WRITE_ACTIONS_DESABILITADAS") {
+    return "O plano do Windsor.ai não libera publicação no Instagram. Fale com o administrador do sistema.";
+  }
+  if (erro === "WINDSOR_CONECTOR_DESCONHECIDO" || /not connected|no account/i.test(erro)) {
+    return "A conta do Instagram não está conectada no Windsor.ai. É preciso autorizar a conexão novamente.";
+  }
+  if (erro === "WINDSOR_TIMEOUT") {
+    return "A publicação demorou demais para responder. Confira o perfil antes de tentar de novo — o post pode ter ido ao ar.";
   }
   if (erro === "SEM_IMAGENS") {
     return "Este anúncio não tem nenhuma foto disponível para publicar.";

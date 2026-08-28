@@ -31,6 +31,7 @@ import {
   montarLegendaPadrao,
 } from "./instagram-conteudo";
 import { converterDbAnuncioParaAnuncio, converterDbImovelParaImovel } from "./supabase-sync-store";
+import { CONTATO } from "./contato";
 import { MAX_IMAGENS_CARROSSEL } from "./instagram";
 
 /** Estados a partir dos quais uma publicação normal pode começar. */
@@ -193,8 +194,10 @@ export async function publicarAnuncio(params: {
     }
 
     const publicadoEm = new Date().toISOString();
-    const postUrl =
-      resultado.permalink || `https://www.instagram.com/p/${resultado.postId ?? ""}`;
+    // O permalink é o único link confiável para o post: o id da mídia não é o
+    // shortcode que aparece em /p/, e pelo Windsor pode nem vir. Sem ele, o
+    // painel manda para o perfil, que sempre existe — melhor que um link morto.
+    const postUrl = resultado.permalink || CONTATO.redes.instagram;
 
     await supabase
       .from("anuncios")

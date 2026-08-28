@@ -46,24 +46,62 @@ vai ao ar quando um administrador marca *Publicar no Instagram*, revisa a prévi
 Só o perfil **administrador** tem a permissão `publicar_instagram`, e ela é revalidada no
 servidor a cada publicação — a checagem de interface não é a fronteira de segurança.
 
+### Como a publicação chega ao Instagram
+
+Há dois provedores, e `publicarNoInstagram` (`src/lib/instagram.ts`) escolhe um a cada
+publicação:
+
+| Provedor | Quando é usado | Onde mora |
+| --- | --- | --- |
+| **Windsor.ai** (preferido) | `WINDSOR_API_KEY` e `WINDSOR_INSTAGRAM_ACCOUNT` configurados | `src/lib/windsor.ts`, `src/lib/instagram-windsor.ts` |
+| **Graph API da Meta** | qualquer outro caso | `src/lib/instagram.ts` |
+
+O Windsor é o caminho preferido porque **a autorização do Instagram fica com ele**, que
+renova o token sozinho. Falando direto com a Meta, alguém precisa gerar um token de longa
+duração à mão e trocá-lo a cada 60 dias — e a publicação simplesmente para de funcionar
+quando isso é esquecido.
+
+Nos dois casos quem baixa as imagens é a Meta, a partir das URLs assinadas do Supabase
+geradas em `src/lib/instagram-imagem.ts`. Os requisitos de formato (JPEG, proporção entre
+4:5 e 1.91:1, no máximo 10 por carrossel) valem igual.
+
+Uma diferença vale registro: pelo Windsor a resposta pode não trazer o id nem o permalink
+do post. Quando não vem, `instagram_post_url` guarda o link do perfil — a publicação deu
+certo do mesmo jeito.
+
 ### Variáveis de ambiente
 
 | Variável | Para que serve |
 | --- | --- |
-| `INSTAGRAM_ACCESS_TOKEN` | Token de longa duração da Meta com acesso à conta |
-| `INSTAGRAM_BUSINESS_ACCOUNT_ID` | ID da conta Instagram Business |
+| `WINDSOR_API_KEY` | Chave da API do Windsor.ai (em windsor.ai → Settings → API key) |
+| `WINDSOR_INSTAGRAM_ACCOUNT` | Conta conectada no Windsor — `paganelliimoveis` |
+| `WINDSOR_API_URL` | Base da API (opcional, padrão `https://connectors.windsor.ai`) |
+| `INSTAGRAM_ACCESS_TOKEN` | Alternativa sem Windsor: token de longa duração da Meta |
+| `INSTAGRAM_BUSINESS_ACCOUNT_ID` | Alternativa sem Windsor: ID da conta Instagram Business |
 | `INSTAGRAM_API_VERSION` | Versão da Graph API (opcional, padrão `v21.0`) |
 | `NEXT_PUBLIC_SITE_URL` | Domínio público, para montar o link do anúncio na legenda — `https://www.paganelliimoveis.com.br` |
 | `ANTHROPIC_API_KEY` | Geração da legenda por IA (opcional — sem ela, a legenda padrão é usada) |
 
-### Configuração na Meta
+### Configuração no Windsor.ai
 
-1. A conta Instagram precisa ser **Business** ou **Creator** e estar vinculada a uma Página do Facebook.
-2. No App da Meta (pode ser o mesmo já usado no WhatsApp), adicionar o produto **Instagram Graph API**.
-3. Conceder as permissões `instagram_basic`, `instagram_content_publish`, `pages_show_list` e `pages_read_engagement`.
-4. Gerar um token de longa duração e colocá-lo em `INSTAGRAM_ACCESS_TOKEN`.
+1. A conta Instagram precisa ser **Business** ou **Creator** e estar vinculada a uma Página
+   do Facebook — exigência da Meta, não do Windsor.
+2. No Windsor, conectar o conector **`instagram`** e autorizar o perfil `@paganelliimoveis`.
+   Atenção: o conector `instagram_public`, usado para *ler* métricas, é outra conexão e
+   **não** habilita publicação.
+3. Copiar a API key do Windsor para `WINDSOR_API_KEY` e definir
+   `WINDSOR_INSTAGRAM_ACCOUNT=paganelliimoveis`.
 
-O Instagram limita **50 publicações por conta a cada 24 horas**.
+Publicar exige um plano do Windsor com *write actions* liberadas; sem isso a API responde
+403 e o painel mostra que o plano não libera a publicação.
+
+### Configuração na Meta (alternativa, sem Windsor)
+
+1. No App da Meta (pode ser o mesmo já usado no WhatsApp), adicionar o produto **Instagram Graph API**.
+2. Conceder as permissões `instagram_basic`, `instagram_content_publish`, `pages_show_list` e `pages_read_engagement`.
+3. Gerar um token de longa duração e colocá-lo em `INSTAGRAM_ACCESS_TOKEN`.
+
+O Instagram limita **50 publicações por conta a cada 24 horas**, seja qual for o provedor.
 
 ### Migration
 
